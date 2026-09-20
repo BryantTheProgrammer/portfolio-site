@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bryant Hayden</title>
+</head>
+<body>
+    <h1>Bryant Hayden</h1>
+
+    <p>IT/OT Engineer</p>
+
+    <h2>Projects</h2>
+
+    <ul>
+        <li>Laser Etcher Modernization</li>
+        <li>SUDS Water Monitoring</li>
+        <li>Ignition SCADA Development</li>
+    </ul>
+</body>
+</html>
