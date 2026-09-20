@@ -1,61 +1,540 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bryant Hayden</title>
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Bryant Hayden is an IT/OT professional focused on SCADA, MES, IIoT, and manufacturing automation."
+    />
+    <title>Bryant Hayden | IT/OT Portfolio</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: auto;
-            padding: 40px;
-            background: #f5f5f5;
-            color: #222;
+      :root {
+        --bg: #0b1020;
+        --panel: #121a2d;
+        --panel-alt: #1b2440;
+        --card: rgba(18, 26, 45, 0.92);
+        --text: #e8edf8;
+        --muted: #a9b7d1;
+        --primary: #73c2fb;
+        --accent: #7ef0c5;
+        --border: rgba(147, 173, 216, 0.2);
+        --shadow: 0 18px 48px rgba(5, 10, 20, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: radial-gradient(circle at top, #14213d 0%, var(--bg) 36%, #050914 100%);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .container {
+        width: min(1100px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(12px);
+        background: rgba(11, 16, 32, 0.72);
+        border-bottom: 1px solid var(--border);
+        z-index: 10;
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 72px;
+      }
+
+      .brand {
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .hero {
+        padding: 88px 0 48px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 34px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        font-size: clamp(2.4rem, 5vw, 4.2rem);
+        line-height: 1.05;
+        margin: 0 0 18px;
+        letter-spacing: -0.04em;
+      }
+
+      .lead {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 620px;
+        margin-bottom: 28px;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 12px 20px;
+        border-radius: 999px;
+        font-weight: 700;
+        border: 1px solid transparent;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+        text-decoration: none;
+      }
+
+      .button.primary {
+        background: linear-gradient(135deg, var(--primary), #a9dcff);
+        color: #07121d;
+      }
+
+      .button.secondary {
+        border-color: var(--border);
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .profile-card {
+        background: linear-gradient(160deg, rgba(116, 194, 251, 0.14), rgba(126, 240, 197, 0.08));
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 26px;
+        box-shadow: var(--shadow);
+      }
+
+      .profile-badge {
+        width: 100%;
+        aspect-ratio: 1 / 1.1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #213454, #0e172c);
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        color: var(--primary);
+        font-size: clamp(4rem, 10vw, 7rem);
+        font-weight: 700;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      .stat {
+        background: rgba(10, 15, 25, 0.4);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px 12px;
+        text-align: center;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.3rem;
+        color: var(--primary);
+      }
+
+      section {
+        padding: 44px 0;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 26px;
+      }
+
+      h2 {
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        margin: 0;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        gap: 22px;
+      }
+
+      .skills-grid,
+      .projects-grid,
+      .experience-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .skill-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .skill-list li {
+        border-left: 3px solid var(--primary);
+        background: rgba(115, 194, 251, 0.04);
+        padding: 10px 14px;
+        border-radius: 0 10px 10px 0;
+        color: var(--text);
+      }
+
+      .project-card {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .project-tag {
+        display: inline-flex;
+        width: fit-content;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(126, 240, 197, 0.08);
+        color: var(--accent);
+        border: 1px solid rgba(126, 240, 197, 0.3);
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .project-card h3,
+      .experience-card h3 {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .project-card p,
+      .experience-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .project-card ul,
+      .experience-card ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+
+      .contact {
+        padding-bottom: 90px;
+      }
+
+      .contact-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .contact-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      @media (max-width: 760px) {
+        nav {
+          flex-direction: column;
+          justify-content: center;
+          gap: 12px;
+          padding: 16px 0;
         }
 
-        h1 {
-            color: #005a9c;
+        .hero-grid,
+        .skills-grid,
+        .projects-grid,
+        .experience-grid {
+          grid-template-columns: 1fr;
         }
 
-        .card {
-            background: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        .stats {
+          grid-template-columns: 1fr;
         }
+
+        .section-header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
     </style>
-</head>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav aria-label="Main navigation">
+          <div class="brand">Bryant Hayden</div>
+          <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#expertise">Expertise</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </nav>
+      </div>
+    </header>
 
-<body>
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow">IT/OT | Manufacturing Automation</div>
+            <h1>Turning plant data into reliable operational insight.</h1>
+            <p class="lead">
+              I’m an IT/OT professional specializing in SCADA, MES, IIoT, and manufacturing automation,
+              helping teams connect people, processes, and production systems with practical digital solutions.
+            </p>
+            <div class="cta-row">
+              <a class="button primary" href="#projects">View Projects</a>
+              <a class="button secondary" href="#contact">Contact Me</a>
+            </div>
+          </div>
 
-    <h1>Bryant Hayden</h1>
+          <aside class="profile-card" aria-label="Professional summary">
+            <div class="profile-badge" aria-hidden="true">BH</div>
+            <div class="stats">
+              <div class="stat">
+                <strong>8+</strong>
+                Years in industrial systems
+              </div>
+              <div class="stat">
+                <strong>10+</strong>
+                Automation initiatives
+              </div>
+              <div class="stat">
+                <strong>24/7</strong>
+                Operational mindset
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
 
-    <p>
-        IT/OT Professional specializing in SCADA, MES, IIoT, and Manufacturing Automation.
-    </p>
+      <section id="about">
+        <div class="container">
+          <div class="section-header">
+            <h2>About</h2>
+          </div>
+          <div class="card">
+            <p>
+              I work at the intersection of technology and production, designing and delivering systems that improve
+              visibility, reduce downtime, and support better manufacturing decisions. My background spans industrial
+              automation, controls integration, data collection, and business-facing digital transformation.
+            </p>
+            <p>
+              Whether the goal is a monitoring platform, a SCADA configuration, or an OT/IT integration, I focus on
+              building solutions that are dependable, scalable, and aligned with the realities of the plant floor.
+            </p>
+          </div>
+        </div>
+      </section>
 
-    <div class="card">
-        <h2>Featured Projects</h2>
+      <section id="expertise">
+        <div class="container">
+          <div class="section-header">
+            <h2>Core Expertise</h2>
+          </div>
+          <div class="grid skills-grid">
+            <div class="card">
+              <h3>Systems &amp; Integration</h3>
+              <ul class="skill-list">
+                <li>SCADA architecture and implementation</li>
+                <li>MES and enterprise system integration</li>
+                <li>IIoT and edge-to-cloud connectivity</li>
+                <li>Vendor and machine data integration</li>
+              </ul>
+            </div>
 
-        <ul>
-            <li>Laser Etcher Modernization</li>
-            <li>SUDS Water Monitoring System</li>
-            <li>Ignition SCADA Development</li>
-            <li>L2L Integrations</li>
-            <li>Plant Mapping Platform</li>
-        </ul>
-    </div>
+            <div class="card">
+              <h3>Automation &amp; Data</h3>
+              <ul class="skill-list">
+                <li>Manufacturing process optimization</li>
+                <li>Plant mapping and operational dashboards</li>
+                <li>Monitoring, alerts, and KPI reporting</li>
+                <li>Controls and data flow troubleshooting</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <div class="card">
-        <h2>Contact</h2>
+      <section id="projects">
+        <div class="container">
+          <div class="section-header">
+            <h2>Featured Projects</h2>
+          </div>
+          <div class="grid projects-grid">
+            <article class="card project-card">
+              <span class="project-tag">Automation</span>
+              <h3>Laser Etcher Modernization</h3>
+              <p>
+                Upgraded legacy manufacturing equipment with improved control visibility and more reliable operational
+                performance.
+              </p>
+              <ul>
+                <li>Modernized equipment interfaces</li>
+                <li>Improved throughput visibility</li>
+                <li>Reduced downtime risk</li>
+              </ul>
+            </article>
 
-        <p>
-            LinkedIn and resume links coming soon.
-        </p>
-    </div>
+            <article class="card project-card">
+              <span class="project-tag">Monitoring</span>
+              <h3>SUDS Water Monitoring System</h3>
+              <p>
+                Built a monitoring platform to track system health, environmental conditions, and performance signals in
+                real time.
+              </p>
+              <ul>
+                <li>Live operational monitoring</li>
+                <li>Data-driven alerting</li>
+                <li>Improved decision support</li>
+              </ul>
+            </article>
 
-</body>
+            <article class="card project-card">
+              <span class="project-tag">SCADA</span>
+              <h3>Ignition SCADA Development</h3>
+              <p>
+                Designed dashboarding and supervisory workflows to improve visibility and support better control-room
+                decision making.
+              </p>
+              <ul>
+                <li>Operator dashboards</li>
+                <li>Tag and alarm strategy</li>
+                <li>Production insight reporting</li>
+              </ul>
+            </article>
+
+            <article class="card project-card">
+              <span class="project-tag">Integration</span>
+              <h3>L2L Integrations</h3>
+              <p>
+                Connected production systems and business-facing workflows to streamline communication between systems and
+                teams.
+              </p>
+              <ul>
+                <li>Cross-system integrations</li>
+                <li>Operational data mapping</li>
+                <li>Process automation support</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience">
+        <div class="container">
+          <div class="section-header">
+            <h2>Experience Snapshot</h2>
+          </div>
+          <div class="grid experience-grid">
+            <div class="card experience-card">
+              <h3>Plant Mapping Platform</h3>
+              <p>
+                Created a map-based operational view that brought site structure, performance indicators, and system context
+                together in one place.
+              </p>
+            </div>
+
+            <div class="card experience-card">
+              <h3>Manufacturing Data Enablement</h3>
+              <p>
+                Supported data collection, architecture, and reporting initiatives that make production information easier to
+                access and act upon.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="contact">
+        <div class="container">
+          <div class="card contact-card">
+            <div>
+              <div class="eyebrow">Let’s Connect</div>
+              <h2>Open to automation, integration, and analytics opportunities.</h2>
+            </div>
+            <div class="contact-links">
+              <a class="button secondary" href="mailto:bryant.hayden@example.com">Email</a>
+              <a class="button secondary" href="https://www.linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a class="button secondary" href="#top">Resume</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
 </html>
