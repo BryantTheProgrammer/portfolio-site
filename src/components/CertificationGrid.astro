@@ -1,0 +1,156 @@
+---
+const certifications = [
+  {
+    id: "ignition-core",
+    title: "Ignition Core Certification",
+    issuer: "Inductive Automation",
+    year: "2026",
+    mark: "IC",
+    category: "Industrial software",
+    summary: "Validated foundation in Ignition platform development, configuration, and support.",
+    details: "A focused credential for building reliable Ignition systems across visualization, data, security, alarming, and operational workflows.",
+    assetPath: "",
+    assetType: "",
+  },
+  {
+    id: "ignition-university",
+    title: "Ignition University Credential",
+    issuer: "Inductive Automation",
+    year: "2025",
+    mark: "IU",
+    category: "SCADA / HMI",
+    summary: "Formal training in the Ignition ecosystem and plant-floor application patterns.",
+    details: "This credential supports practical work across Perspective, gateway configuration, tags, scripting, and production-oriented SCADA design.",
+    assetPath: "",
+    assetType: "",
+  },
+  {
+    id: "responsive-web-design",
+    title: "Responsive Web Design",
+    issuer: "freeCodeCamp",
+    year: "2024",
+    mark: "RW",
+    category: "Web development",
+    summary: "Demonstrated fluency in accessible, responsive HTML and CSS layouts.",
+    details: "A web foundation covering semantic HTML, responsive layouts, accessibility, visual hierarchy, and modern CSS techniques.",
+    assetPath: "",
+    assetType: "",
+  },
+  {
+    id: "git-essentials",
+    title: "Git Essentials",
+    issuer: "LinkedIn Learning",
+    year: "2024",
+    mark: "G",
+    category: "Engineering practice",
+    summary: "Version-control fundamentals for collaborative software delivery.",
+    details: "Covers practical Git workflows, branching, commits, collaboration, and repository hygiene for maintainable project history.",
+    assetPath: "",
+    assetType: "",
+  },
+  {
+    id: "c-sharp",
+    title: "C# Certification",
+    issuer: "Microsoft / freeCodeCamp",
+    year: "2024",
+    mark: "C#",
+    category: "Programming",
+    summary: "A formal programming credential covering core C# concepts and application development.",
+    details: "A programming foundation in C# syntax, object-oriented design, data structures, and application development patterns.",
+    assetPath: "",
+    assetType: "",
+  },
+];
+
+const { featured = false } = Astro.props;
+const visibleCertifications = featured ? certifications.slice(0, 3) : certifications;
+---
+
+<div class="certification-grid">
+  {visibleCertifications.map((certification) => (
+    <button class="certification-card" type="button" data-certification={certification.id} aria-haspopup="dialog">
+      <span class="certification-card__topline">
+        <span class="certification-card__mark">{certification.mark}</span>
+        <span class="certification-card__year">{certification.year}</span>
+      </span>
+      <span class="certification-card__category">{certification.category}</span>
+      <strong>{certification.title}</strong>
+      <span class="certification-card__issuer">{certification.issuer}</span>
+      <span class="certification-card__open">View credential <span aria-hidden="true">↗</span></span>
+    </button>
+  ))}
+</div>
+
+<dialog class="certification-dialog" aria-labelledby="certification-dialog-title">
+  <div class="certification-dialog__panel">
+    <button class="certification-dialog__close" type="button" aria-label="Close certification details">×</button>
+    <p class="eyebrow">Certification detail</p>
+    <div class="certification-dialog__mark" id="certification-dialog-mark">IC</div>
+    <h2 id="certification-dialog-title">Ignition Core Certification</h2>
+    <p class="certification-dialog__meta" id="certification-dialog-meta">Inductive Automation · 2026</p>
+    <p id="certification-dialog-summary">Validated foundation in Ignition platform development, configuration, and support.</p>
+    <div class="certification-dialog__detail" id="certification-dialog-detail"></div>
+    <div class="certification-dialog__asset" id="certification-dialog-asset" hidden>
+      <img id="certification-dialog-image" alt="" />
+      <iframe id="certification-dialog-pdf" title="Certification document preview"></iframe>
+      <a id="certification-dialog-link" class="button button--secondary" target="_blank" rel="noreferrer">Open full credential</a>
+    </div>
+    <p class="certification-dialog__pending" id="certification-dialog-pending">Credential image or PDF can be added here when available.</p>
+  </div>
+</dialog>
+
+<script>
+  type Certification = { title: string; issuer: string; year: string; mark: string; summary: string; details: string; assetPath: string; assetType: string };
+  const certificationData: Record<string, Certification> = {
+    "ignition-core": { title: "Ignition Core Certification", issuer: "Inductive Automation", year: "2026", mark: "IC", summary: "Validated foundation in Ignition platform development, configuration, and support.", details: "A focused credential for building reliable Ignition systems across visualization, data, security, alarming, and operational workflows.", assetPath: "", assetType: "" },
+    "ignition-university": { title: "Ignition University Credential", issuer: "Inductive Automation", year: "2025", mark: "IU", summary: "Formal training in the Ignition ecosystem and plant-floor application patterns.", details: "This credential supports practical work across Perspective, gateway configuration, tags, scripting, and production-oriented SCADA design.", assetPath: "", assetType: "" },
+    "responsive-web-design": { title: "Responsive Web Design", issuer: "freeCodeCamp", year: "2024", mark: "RW", summary: "Demonstrated fluency in accessible, responsive HTML and CSS layouts.", details: "A web foundation covering semantic HTML, responsive layouts, accessibility, visual hierarchy, and modern CSS techniques.", assetPath: "", assetType: "" },
+    "git-essentials": { title: "Git Essentials", issuer: "LinkedIn Learning", year: "2024", mark: "G", summary: "Version-control fundamentals for collaborative software delivery.", details: "Covers practical Git workflows, branching, commits, collaboration, and repository hygiene for maintainable project history.", assetPath: "", assetType: "" },
+    "c-sharp": { title: "C# Certification", issuer: "Microsoft / freeCodeCamp", year: "2024", mark: "C#", summary: "A formal programming credential covering core C# concepts and application development.", details: "A programming foundation in C# syntax, object-oriented design, data structures, and application development patterns.", assetPath: "", assetType: "" },
+  };
+
+  const dialog = document.querySelector<HTMLDialogElement>(".certification-dialog");
+  const closeButton = document.querySelector<HTMLButtonElement>(".certification-dialog__close");
+  const dialogTitle = document.querySelector<HTMLElement>("#certification-dialog-title");
+  const dialogMeta = document.querySelector<HTMLElement>("#certification-dialog-meta");
+  const dialogMark = document.querySelector<HTMLElement>("#certification-dialog-mark");
+  const dialogSummary = document.querySelector<HTMLElement>("#certification-dialog-summary");
+  const dialogDetail = document.querySelector<HTMLElement>("#certification-dialog-detail");
+  const dialogAsset = document.querySelector<HTMLElement>("#certification-dialog-asset");
+  const dialogImage = document.querySelector<HTMLImageElement>("#certification-dialog-image");
+  const dialogPdf = document.querySelector<HTMLIFrameElement>("#certification-dialog-pdf");
+  const dialogLink = document.querySelector<HTMLAnchorElement>("#certification-dialog-link");
+  const dialogPending = document.querySelector<HTMLElement>("#certification-dialog-pending");
+
+  document.querySelectorAll<HTMLButtonElement>("[data-certification]").forEach((card) => {
+    card.addEventListener("click", () => {
+      const certificationId = card.dataset.certification;
+      if (!certificationId) return;
+      const certification = certificationData[certificationId];
+      if (!certification || !dialog || !dialogTitle || !dialogMeta || !dialogMark || !dialogSummary || !dialogDetail || !dialogAsset || !dialogImage || !dialogPdf || !dialogLink || !dialogPending) return;
+      dialogTitle.textContent = certification.title;
+      dialogMeta.textContent = `${certification.issuer} · ${certification.year}`;
+      dialogMark.textContent = certification.mark;
+      dialogSummary.textContent = certification.summary;
+      dialogDetail.textContent = certification.details;
+      dialogImage.hidden = certification.assetType !== "image";
+      dialogPdf.hidden = certification.assetType !== "pdf";
+      dialogAsset.hidden = !certification.assetPath;
+      dialogPending.hidden = Boolean(certification.assetPath);
+      if (certification.assetPath) {
+        dialogLink.href = certification.assetPath;
+        if (certification.assetType === "image") {
+          dialogImage.src = certification.assetPath;
+          dialogImage.alt = `${certification.title} certificate`;
+        }
+        if (certification.assetType === "pdf") dialogPdf.src = certification.assetPath;
+      }
+      dialog.showModal();
+    });
+  });
+
+  closeButton?.addEventListener("click", () => dialog?.close());
+  dialog?.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+</script>

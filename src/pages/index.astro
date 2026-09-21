@@ -1,5 +1,6 @@
 ---
 import SiteNav from "../components/SiteNav.astro";
+import CertificationGrid from "../components/CertificationGrid.astro";
 ---
 
 <!DOCTYPE html>
@@ -262,6 +263,19 @@ import SiteNav from "../components/SiteNav.astro";
               <a href="/journey">Open Professional Showcase</a>
             </article>
           </div>
+        </div>
+      </section>
+
+      <section id="certifications" class="section certifications-preview">
+        <div class="container">
+          <div class="section__header section__header--split">
+            <div>
+              <p class="eyebrow">Credentials</p>
+              <h2 class="section__title">Proof behind the practice.</h2>
+            </div>
+            <a class="button button--secondary" href="/certifications">View all certifications</a>
+          </div>
+          <CertificationGrid featured />
         </div>
       </section>
 

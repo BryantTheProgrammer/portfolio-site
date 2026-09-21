@@ -6,6 +6,7 @@ const links = [
   { id: "personal", label: "Personal", href: "/about" },
   { id: "professional", label: "Professional", href: "/journey" },
   { id: "resume", label: "Resume", href: "/resume" },
+  { id: "certifications", label: "Certifications", href: "/certifications" },
   { id: "labs", label: "Labs", href: "/demo", experimental: true },
 ];
 
@@ -42,7 +43,7 @@ const extraLinks = links.slice(3);
         ))}
         <a class="nav__link nav__link--contact" href="/#contact">Contact</a>
       </div>
-      <details class:list={["nav__more", { "is-active": ["resume", "labs"].includes(active) }]}>
+      <details class:list={["nav__more", { "is-active": ["resume", "certifications", "labs"].includes(active) }]}>
         <summary>More</summary>
         <div class="nav__more-menu">
           {extraLinks.map((link) => (

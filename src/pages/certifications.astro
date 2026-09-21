@@ -1,0 +1,46 @@
+---
+import SiteNav from "../components/SiteNav.astro";
+import CertificationGrid from "../components/CertificationGrid.astro";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Certifications and professional credentials for Bryant Hayden." />
+    <title>Bryant Hayden | Certifications</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="certifications-page">
+    <SiteNav active="certifications" />
+
+    <main>
+      <section class="certifications-hero">
+        <div class="container">
+          <p class="eyebrow">Credentials / 005</p>
+          <h1>Certifications that support the work.</h1>
+          <p class="lead">A growing record of platform knowledge, engineering practice, and the foundations behind production-ready systems.</p>
+        </div>
+      </section>
+
+      <section class="section certifications-collection">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">All credentials</p>
+            <h2 class="section__title">Click a tile to explore.</h2>
+          </div>
+          <CertificationGrid />
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer__content">
+        <p>© 2026 Bryant Hayden</p>
+        <p>IT/OT • SCADA • MES • IIoT</p>
+      </div>
+    </footer>
+  </body>
+</html>
