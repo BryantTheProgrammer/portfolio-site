@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Bryant Hayden — SCADA / MES Developer</title>
+  <desc id="desc">Portfolio of Bryant Hayden, a SCADA and MES developer focused on industrial automation.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#162443"/>
+      <stop offset="0.55" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#050914"/>
+    </linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#73c2fb" stroke-opacity="0.08"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect x="72" y="72" width="74" height="74" rx="18" fill="#0b1020" stroke="#73c2fb" stroke-opacity="0.55" stroke-width="2"/>
+  <text x="109" y="113" fill="#73c2fb" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" text-anchor="middle" dominant-baseline="central">B</text>
+  <rect x="72" y="180" width="104" height="4" rx="2" fill="#7ef0c5"/>
+  <text x="72" y="294" fill="#edf3ff" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="800">Bryant Hayden</text>
+  <text x="72" y="370" fill="#73c2fb" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="2">SCADA / MES DEVELOPER</text>
+  <text x="72" y="452" fill="#adbbd6" font-family="Arial, Helvetica, sans-serif" font-size="25">Industrial automation · IIoT · Production systems</text>
+  <circle cx="1040" cy="470" r="116" fill="none" stroke="#7ef0c5" stroke-opacity="0.25" stroke-width="2"/>
+  <circle cx="1040" cy="470" r="78" fill="none" stroke="#73c2fb" stroke-opacity="0.35" stroke-width="2"/>
+  <path d="M930 470h220M1040 360v220M962 392l156 156M1118 392 962 548" stroke="#73c2fb" stroke-opacity="0.28" stroke-width="3"/>
+  <circle cx="1040" cy="470" r="13" fill="#7ef0c5"/>
+</svg>
