@@ -2,15 +2,16 @@
 const certifications = [
   {
     id: "ignition-core",
-    title: "Ignition Core Certification",
+    title: "Ignition 8.1 Certified",
     issuer: "Inductive Automation",
     year: "2026",
+    date: "March 10, 2026",
     mark: "IC",
     category: "Industrial software",
     summary: "Validated foundation in Ignition platform development, configuration, and support.",
     details: "A focused credential for building reliable Ignition systems across visualization, data, security, alarming, and operational workflows.",
-    assetPath: "",
-    assetType: "",
+    assetPath: "/certifications/ignition-8-1-certified.pdf",
+    assetType: "pdf",
   },
   {
     id: "ignition-university",
@@ -86,9 +87,9 @@ const visibleCertifications = featured ? certifications.slice(0, 3) : certificat
     <button class="certification-dialog__close" type="button" aria-label="Close certification details">×</button>
     <p class="eyebrow">Certification detail</p>
     <div class="certification-dialog__mark" id="certification-dialog-mark">IC</div>
-    <h2 id="certification-dialog-title">Ignition Core Certification</h2>
-    <p class="certification-dialog__meta" id="certification-dialog-meta">Inductive Automation · 2026</p>
-    <p id="certification-dialog-summary">Validated foundation in Ignition platform development, configuration, and support.</p>
+    <h2 id="certification-dialog-title">Ignition 8.1 Certified</h2>
+    <p class="certification-dialog__meta" id="certification-dialog-meta">Inductive Automation · March 10, 2026</p>
+    <p id="certification-dialog-summary">Certified in Ignition 8.1 Core functionality by Inductive Automation.</p>
     <div class="certification-dialog__detail" id="certification-dialog-detail"></div>
     <div class="certification-dialog__asset" id="certification-dialog-asset" hidden>
       <img id="certification-dialog-image" alt="" />
@@ -100,9 +101,9 @@ const visibleCertifications = featured ? certifications.slice(0, 3) : certificat
 </dialog>
 
 <script>
-  type Certification = { title: string; issuer: string; year: string; mark: string; summary: string; details: string; assetPath: string; assetType: string };
+  type Certification = { title: string; issuer: string; year: string; date?: string; mark: string; summary: string; details: string; assetPath: string; assetType: string };
   const certificationData: Record<string, Certification> = {
-    "ignition-core": { title: "Ignition Core Certification", issuer: "Inductive Automation", year: "2026", mark: "IC", summary: "Validated foundation in Ignition platform development, configuration, and support.", details: "A focused credential for building reliable Ignition systems across visualization, data, security, alarming, and operational workflows.", assetPath: "", assetType: "" },
+    "ignition-core": { title: "Ignition 8.1 Certified", issuer: "Inductive Automation", year: "2026", date: "March 10, 2026", mark: "IC", summary: "Certified in Ignition 8.1 Core functionality by Inductive Automation.", details: "Successfully completed the Ignition Core certification test and demonstrated qualification on the Core level functionality of Ignition.", assetPath: "/certifications/ignition-8-1-certified.pdf", assetType: "pdf" },
     "ignition-university": { title: "Ignition University Credential", issuer: "Inductive Automation", year: "2025", mark: "IU", summary: "Formal training in the Ignition ecosystem and plant-floor application patterns.", details: "This credential supports practical work across Perspective, gateway configuration, tags, scripting, and production-oriented SCADA design.", assetPath: "", assetType: "" },
     "responsive-web-design": { title: "Responsive Web Design", issuer: "freeCodeCamp", year: "2024", mark: "RW", summary: "Demonstrated fluency in accessible, responsive HTML and CSS layouts.", details: "A web foundation covering semantic HTML, responsive layouts, accessibility, visual hierarchy, and modern CSS techniques.", assetPath: "", assetType: "" },
     "git-essentials": { title: "Git Essentials", issuer: "LinkedIn Learning", year: "2024", mark: "G", summary: "Version-control fundamentals for collaborative software delivery.", details: "Covers practical Git workflows, branching, commits, collaboration, and repository hygiene for maintainable project history.", assetPath: "", assetType: "" },
@@ -129,7 +130,7 @@ const visibleCertifications = featured ? certifications.slice(0, 3) : certificat
       const certification = certificationData[certificationId];
       if (!certification || !dialog || !dialogTitle || !dialogMeta || !dialogMark || !dialogSummary || !dialogDetail || !dialogAsset || !dialogImage || !dialogPdf || !dialogLink || !dialogPending) return;
       dialogTitle.textContent = certification.title;
-      dialogMeta.textContent = `${certification.issuer} · ${certification.year}`;
+      dialogMeta.textContent = `${certification.issuer} · ${certification.date ?? certification.year}`;
       dialogMark.textContent = certification.mark;
       dialogSummary.textContent = certification.summary;
       dialogDetail.textContent = certification.details;
