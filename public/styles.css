@@ -212,7 +212,7 @@ body:not(.demo-page) main {
 }
 
 .hero__identity {
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-6);
 }
 
 .hero__identity-name {
