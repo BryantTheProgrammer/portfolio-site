@@ -374,6 +374,72 @@ h1 {
   font-size: 1.35rem;
 }
 
+.project-gallery {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 2px 0 var(--space-2);
+}
+
+.gallery-track {
+  display: flex;
+  min-width: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+  border-radius: var(--radius-sm);
+}
+
+.gallery-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  margin: 0;
+  scroll-snap-align: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel-alt);
+}
+
+.gallery-slide img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.gallery-slide figcaption {
+  padding: var(--space-2) var(--space-3);
+  color: var(--muted);
+  font-size: var(--type-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gallery-button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--panel);
+  color: var(--primary-strong);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.gallery-button:hover {
+  transform: translateY(-1px);
+  border-color: var(--primary);
+  background: var(--panel-alt);
+}
+
 .project-card p,
 .experience-card p,
 .project-card ul,
