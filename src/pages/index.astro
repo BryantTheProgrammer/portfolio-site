@@ -127,153 +127,55 @@ import CertificationGrid from "../components/CertificationGrid.astro";
           <div class="section__header">
             <h2 class="section__title">Featured Projects</h2>
           </div>
-          <article class="project-hero">
-            <div class="project-hero__media">
-              <figure class="project-video">
-                <iframe
-                  src="https://www.youtube.com/embed/NlzmohUvFRo"
-                  title="Laser Etcher overhaul project video"
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-                <figcaption>Laser Etcher overhaul</figcaption>
-              </figure>
-              <figure class="project-video">
-                <iframe
-                  src="https://www.youtube.com/embed/O4gmPoP8y_0"
-                  title="Laser Etcher supporting project video"
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-                <figcaption>Supporting production workflow</figcaption>
-              </figure>
-            </div>
-            <div class="project-hero__content">
-              <p class="project-tag">Featured / Automation</p>
+          <div class="grid projects-grid projects-grid--featured">
+            <article class="card project-card project-card--curated">
+              <img class="project-card__image" src="/images/test-image.jpg" alt="Laser Etcher Modernization project" />
               <h3>Laser Etcher Modernization</h3>
-              <p>
-                A full-stack Ignition and Python overhaul that replaced a deprecated Java platform and restored serialized
-                traceability for production.
-              </p>
-              <div class="project-hero__metrics" aria-label="Laser Etcher project impact">
-                <span><strong>$143K+</strong> projected savings</span>
-                <span><strong>11 lines</strong> rollout target</span>
-                <span><strong>5,000</strong> records per batch</span>
-              </div>
-              <div class="project-hero__tags" aria-label="Laser Etcher technologies">
-                <span>Ignition</span>
-                <span>Python</span>
-                <span>SQL</span>
-                <span>MES</span>
-              </div>
-            </div>
-          </article>
-          <div class="grid projects-grid">
-            <article class="card project-card">
-              <span class="project-tag">Automation</span>
-              <h3>Laser Etcher Modernization</h3>
-              <div class="project-gallery" data-gallery>
-                <button class="gallery-button gallery-button--prev" type="button" aria-label="Previous Laser Etcher image">&#8592;</button>
-                <div class="gallery-track">
-                  <figure class="gallery-slide">
-                    <img src="/images/test-image.jpg" alt="Test image for Laser Etcher project" />
-                  </figure>
-                  <figure class="gallery-slide">
-                    <img src="/images/test-image.jpg" alt="Second test image for Laser Etcher project" />
-                  </figure>
-                </div>
-                <button class="gallery-button gallery-button--next" type="button" aria-label="Next Laser Etcher image">&#8594;</button>
-              </div>
-              <p>
-                Replaced a deprecated Java etching platform with a full-stack Ignition and Python application that restored
-                serialized traceability and was projected to save more than $143,000 over three years.
-              </p>
-              <ul>
-                <li>Designed toward an 11-line, 5-plant rollout</li>
-                <li>Integrated PLC, SQL, vendor, ERP, and MES data</li>
-                <li>Supported batches of roughly 5,000 records</li>
-              </ul>
+              <p class="project-card__tagline">Restored serialized traceability with a production-ready Ignition application.</p>
+              <div class="project-card__chips" aria-label="Laser Etcher metrics"><span>$143K+ savings</span><span>11 lines / 5 plants</span><span>5,000 records/batch</span></div>
+              <div class="project-card__chips project-card__chips--tech" aria-label="Laser Etcher technologies"><span>Ignition</span><span>Python/Jython</span><span>SQL</span></div>
             </article>
+            <article class="card project-card project-card--curated">
+              <img class="project-card__image" src="/images/test-image.jpg" alt="SUDS Soap Usage and Dispensing System project" />
+              <h3>SUDS — Soap Usage &amp; Dispensing System</h3>
+              <p class="project-card__tagline">Four-tank water quality monitoring with automated dosing at a fraction of vendor cost.</p>
+              <div class="project-card__chips" aria-label="SUDS metrics"><span>$3,051 delivered</span><span>$35,850 quote</span><span>91% reduction</span></div>
+              <div class="project-card__chips project-card__chips--tech" aria-label="SUDS technologies"><span>RevPi</span><span>Python</span><span>Ignition Perspective</span></div>
+            </article>
+            <article class="card project-card project-card--curated">
+              <img class="project-card__image" src="/images/test-image.jpg" alt="Plant Floor Visibility Platform project" />
+              <h3>Plant Floor Visibility Platform</h3>
+              <p class="project-card__tagline">Real-time operational visibility presented to the North America plant manager network.</p>
+              <div class="project-card__chips" aria-label="Plant Floor Visibility metrics"><span>NA best practice</span><span>Live visibility</span><span>Plant-wide KPIs</span></div>
+              <div class="project-card__chips project-card__chips--tech" aria-label="Plant Floor Visibility technologies"><span>Ignition Perspective</span><span>OPC UA</span><span>L2L</span></div>
+            </article>
+            <article class="card project-card project-card--curated">
+              <img class="project-card__image" src="/images/test-image.jpg" alt="MES API and IIoT Integration project" />
+              <h3>MES, API &amp; IIoT Integration</h3>
+              <p class="project-card__tagline">L2L and RevPi standardization that turned repeatable integration into a two-hour playbook.</p>
+              <div class="project-card__chips" aria-label="MES and IIoT metrics"><span>~2 hr deployment</span><span>Reusable images</span><span>31+ plants</span></div>
+              <div class="project-card__chips project-card__chips--tech" aria-label="MES and IIoT technologies"><span>L2L REST API</span><span>Node-RED</span><span>RevPi</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
 
-            <article class="card project-card">
-              <span class="project-tag">Monitoring</span>
-              <h3>SUDS Water Monitoring System</h3>
-              <div class="project-gallery" data-gallery>
-                <button class="gallery-button gallery-button--prev" type="button" aria-label="Previous SUDS image">&#8592;</button>
-                <div class="gallery-track">
-                  <figure class="gallery-slide">
-                    <img src="/images/test-image.jpg" alt="Test image for SUDS project" />
-                  </figure>
-                  <figure class="gallery-slide">
-                    <img src="/images/test-image.jpg" alt="Second test image for SUDS project" />
-                  </figure>
-                </div>
-                <button class="gallery-button gallery-button--next" type="button" aria-label="Next SUDS image">&#8594;</button>
-              </div>
-              <p>
-                Built an end-to-end four-tank water quality monitoring and automated soap dosing system for $3,051 against
-                a $35,850 vendor quote.
-              </p>
-              <ul>
-                <li>Delivered a 91% cost reduction</li>
-                <li>Developed Python edge software and data normalization</li>
-                <li>Added live monitoring, alarming, and remote control</li>
-              </ul>
-            </article>
-
-            <article class="card project-card">
-              <span class="project-tag">SCADA</span>
-              <h3>Ignition SCADA Development</h3>
-              <div class="project-gallery" data-gallery>
-                <button class="gallery-button gallery-button--prev" type="button" aria-label="Previous Ignition image">&#8592;</button>
-                <div class="gallery-track">
-                  <figure class="gallery-slide">
-                    <img src="/images/test-image.jpg" alt="Test image for Ignition project" />
-                  </figure>
-                  <figure class="gallery-slide">
-                    <img src="/images/test-image.jpg" alt="Second test image for Ignition project" />
-                  </figure>
-                </div>
-                <button class="gallery-button gallery-button--next" type="button" aria-label="Next Ignition image">&#8594;</button>
-              </div>
-              <p>
-                Develop and support Ignition Perspective applications used daily in manufacturing operations, from reusable
-                components and navigation to role-based security, alarming, and diagnostics.
-              </p>
-              <ul>
-                <li>Python/Jython and SQL backend logic</li>
-                <li>Documented development and production testing</li>
-                <li>Operator training and production support</li>
-              </ul>
-            </article>
-
-            <article class="card project-card">
-              <span class="project-tag">Integration</span>
-              <h3>L2L Integrations</h3>
-              <div class="project-gallery" data-gallery>
-                <button class="gallery-button gallery-button--prev" type="button" aria-label="Previous L2L image">&#8592;</button>
-                <div class="gallery-track">
-                  <figure class="gallery-slide">
-                    <img src="/images/test-image.jpg" alt="Test image for L2L project" />
-                  </figure>
-                  <figure class="gallery-slide">
-                    <img src="/images/test-image.jpg" alt="Second test image for L2L project" />
-                  </figure>
-                </div>
-                <button class="gallery-button gallery-button--next" type="button" aria-label="Next L2L image">&#8594;</button>
-              </div>
-              <p>
-                Led site implementation of L2L production, downtime, quality, and reporting modules, integrating the
-                Leading2Lean REST API to automate machine data capture.
-              </p>
-              <ul>
-                <li>Automated production data movement</li>
-                <li>Reduced manual operator entry</li>
-                <li>Aligned site workflows to enterprise standards</li>
-              </ul>
-            </article>
+      <section class="section work-method" aria-labelledby="work-method-title">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">How I work</p>
+            <h2 id="work-method-title" class="section__title">From requirement to confident adoption.</h2>
+          </div>
+          <div class="work-method__strip">
+            <div class="work-step"><span class="work-step__icon" aria-hidden="true">01</span><strong>Requirements</strong></div>
+            <span class="work-step__connector" aria-hidden="true"></span>
+            <div class="work-step"><span class="work-step__icon" aria-hidden="true">02</span><strong>Dev Gateway</strong></div>
+            <span class="work-step__connector" aria-hidden="true"></span>
+            <div class="work-step"><span class="work-step__icon" aria-hidden="true">03</span><strong>Commissioning</strong></div>
+            <span class="work-step__connector" aria-hidden="true"></span>
+            <div class="work-step"><span class="work-step__icon" aria-hidden="true">04</span><strong>Docs</strong></div>
+            <span class="work-step__connector" aria-hidden="true"></span>
+            <div class="work-step"><span class="work-step__icon" aria-hidden="true">05</span><strong>Training</strong></div>
           </div>
         </div>
       </section>
