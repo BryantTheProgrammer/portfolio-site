@@ -79,12 +79,18 @@ img {
 }
 
 .site-header {
-  position: sticky;
+  position: fixed;
+  inset: 0 0 auto;
   top: 0;
   z-index: 20;
+  width: 100%;
   backdrop-filter: blur(12px);
   background: rgba(11, 16, 32, 0.78);
   border-bottom: 1px solid var(--line);
+}
+
+body:not(.demo-page) main {
+  padding-top: 72px;
 }
 
 .nav {
@@ -118,6 +124,19 @@ img {
 .brand:hover {
   color: var(--primary-strong);
   text-decoration: underline;
+}
+
+.site-header--landing .brand span {
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width 0.35s ease, opacity 0.25s ease;
+}
+
+.site-header--landing.is-scrolled .brand span {
+  max-width: 180px;
+  opacity: 1;
 }
 
 .nav__links {
@@ -190,6 +209,29 @@ img {
 .hero {
   position: relative;
   padding: var(--space-20) 0 var(--space-12);
+}
+
+.hero__identity {
+  margin-bottom: var(--space-10);
+}
+
+.hero__identity-name {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(3.8rem, 8vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.hero__identity-role {
+  margin: 26px 0 0;
+  color: var(--accent);
+  font-size: var(--type-sm);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
 .hero::before {
@@ -580,6 +622,10 @@ h1 {
 }
 
 @media (max-width: 760px) {
+  body:not(.demo-page) main {
+    padding-top: 64px;
+  }
+
   .nav {
     min-height: 64px;
     gap: 10px;
@@ -598,7 +644,7 @@ h1 {
     min-width: 0;
     flex: 1 1 auto;
     justify-content: flex-start;
-    overflow-x: auto;
+    overflow: visible;
     overflow-y: hidden;
     padding: 2px 1px 5px;
     scrollbar-width: none;
@@ -671,6 +717,7 @@ h1 {
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
+    z-index: 30;
     display: grid;
     min-width: 148px;
     padding: 6px;

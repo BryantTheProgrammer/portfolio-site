@@ -16,12 +16,16 @@ import SiteNav from "../components/SiteNav.astro";
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <SiteNav active="portfolio" />
+    <SiteNav active="portfolio" landing />
 
     <main id="top">
       <section class="hero">
         <div class="container hero__grid">
           <div class="hero__content">
+            <div class="hero__identity" aria-label="Bryant Hayden portfolio">
+              <p class="hero__identity-name">Bryant Hayden</p>
+              <p class="hero__identity-role">IT/OT / SCADA / Industrial Automation</p>
+            </div>
             <p class="eyebrow">SCADA Full-Stack Developer | Industrial Automation</p>
             <h1>Building production software that holds up on the plant floor.</h1>
             <p class="lead">
@@ -294,6 +298,19 @@ import SiteNav from "../components/SiteNav.astro";
         <p>IT/OT • SCADA • MES • IIoT</p>
       </div>
     </footer>
+    <script is:inline>
+      const landingHeader = document.querySelector(".site-header--landing");
+      const identity = document.querySelector(".hero__identity");
+
+      if (landingHeader && identity) {
+        const updateLandingHeader = () => {
+          landingHeader.classList.toggle("is-scrolled", identity.getBoundingClientRect().bottom < 72);
+        };
+
+        window.addEventListener("scroll", updateLandingHeader, { passive: true });
+        updateLandingHeader();
+      }
+    </script>
     <script src="/script.js" is:inline></script>
   </body>
 </html>
