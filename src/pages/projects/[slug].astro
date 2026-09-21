@@ -1,0 +1,156 @@
+---
+import SiteNav from "../../components/SiteNav.astro";
+import ArchitectureDiagram from "../../components/ArchitectureDiagram.astro";
+import { projects } from "../../data/projects.js";
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const others = projects.filter((item) => item.slug !== project.slug);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={`${project.title}: ${project.tagline}`} />
+    <title>{project.title} — Bryant Hayden</title>
+    <meta property="og:title" content={`${project.title} — Bryant Hayden`} />
+    <meta property="og:description" content={project.tagline} />
+    <meta property="og:image" content="/og-preview.svg" />
+    <meta property="og:type" content="article" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="/og-preview.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="projects-page ship-story-page">
+    <SiteNav active="portfolio" />
+
+    <main>
+      <article class="ship-story">
+        <header class="ship-story__hero">
+          <div class="container">
+            <p class="eyebrow">{project.kicker}</p>
+            <p class="ship-story__back"><a href="/projects">All projects</a></p>
+            <h1>{project.title}</h1>
+            <p class="lead">{project.tagline}</p>
+            <div class="project-card__chips" aria-label={`${project.title} metrics`}>
+              {project.metrics.map((metric) => <span>{metric}</span>)}
+            </div>
+            <div class="project-card__chips project-card__chips--tech" aria-label={`${project.title} technologies`}>
+              {project.tech.map((technology) => <span>{technology}</span>)}
+            </div>
+          </div>
+        </header>
+
+        <div class="container ship-story__body">
+          <section class="ship-block" id="problem">
+            <p class="ship-block__index">01</p>
+            <div>
+              <h2>Problem</h2>
+              <p>{project.problem}</p>
+            </div>
+          </section>
+
+          <section class="ship-block" id="approach">
+            <p class="ship-block__index">02</p>
+            <div>
+              <h2>Approach</h2>
+              <p>{project.approach}</p>
+            </div>
+          </section>
+
+          <section class="ship-block" id="architecture">
+            <p class="ship-block__index">03</p>
+            <div>
+              <h2>Architecture</h2>
+              <p>{project.architectureCaption}</p>
+              <ArchitectureDiagram slug={project.slug} title={project.title} />
+              {project.videos.length > 0 && (
+                <div class="ship-story__media">
+                  {project.videos.map((video) => (
+                    <figure class="project-video">
+                      <iframe src={video.src} title={video.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                      <figcaption>{video.caption}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section class="ship-block" id="implementation">
+            <p class="ship-block__index">04</p>
+            <div>
+              <h2>Implementation</h2>
+              <p>{project.implementation}</p>
+              <figure class="code-figure">
+                <figcaption>
+                  <span>{project.code.filename}</span>
+                  <span>{project.code.caption}</span>
+                </figcaption>
+                <pre><code>{project.code.source}</code></pre>
+              </figure>
+            </div>
+          </section>
+
+          <section class="ship-block" id="results">
+            <p class="ship-block__index">05</p>
+            <div>
+              <h2>Results</h2>
+              <div class="ship-results">
+                {project.results.map((result) => (
+                  <div class="ship-result">
+                    <strong>{result.value}</strong>
+                    <span>{result.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section class="ship-block ship-block--reflection" id="reflection">
+            <p class="ship-block__index">06</p>
+            <div>
+              <h2>Reflection</h2>
+              <p class="ship-reflection-label">What I’d do next</p>
+              <p>{project.reflection}</p>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <section class="section ship-story__more">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">More case studies</p>
+            <h2 class="section__title">Keep going.</h2>
+          </div>
+          <div class="grid projects-grid">
+            {others.map((item) => (
+              <a class="card project-card" href={`/projects/${item.slug}`}>
+                <span class="project-tag">{item.kicker}</span>
+                <h3>{item.title}</h3>
+                <p>{item.tagline}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer__content">
+        <p>© 2026 Bryant Hayden</p>
+        <p>IT/OT • SCADA • MES • IIoT</p>
+      </div>
+    </footer>
+  </body>
+</html>

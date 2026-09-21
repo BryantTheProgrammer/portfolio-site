@@ -1,0 +1,104 @@
+---
+const { slug, title } = Astro.props;
+
+const diagrams = {
+  "laser-etcher": {
+    nodes: [
+      { id: "ui", x: 40, y: 88, w: 150, h: 56, label: "Perspective UI", sub: "Batch / serialization" },
+      { id: "gw", x: 230, y: 88, w: 168, h: 56, label: "Gateway scripts", sub: "etcherAI_P" },
+      { id: "q", x: 230, y: 176, w: 168, h: 48, label: "CommandQueue", sub: "EtcherBusy interlock" },
+      { id: "tcp", x: 438, y: 88, w: 140, h: 56, label: "Raw TCP", sub: "Request / response" },
+      { id: "dyn", x: 618, y: 88, w: 150, h: 56, label: "Dynamark", sub: "Laser etcher" },
+      { id: "sql", x: 438, y: 176, w: 140, h: 48, label: "SQL / tags", sub: "Traceability" },
+    ],
+    edges: [
+      ["ui", "gw"],
+      ["gw", "q"],
+      ["gw", "tcp"],
+      ["tcp", "dyn"],
+      ["gw", "sql"],
+    ],
+  },
+  suds: {
+    nodes: [
+      { id: "tanks", x: 36, y: 80, w: 150, h: 72, label: "4 washer tanks", sub: "ESD soap circuit" },
+      { id: "atlas", x: 220, y: 80, w: 168, h: 72, label: "Atlas Scientific", sub: "Isolated 5 V / diff." },
+      { id: "gnd", x: 220, y: 176, w: 168, h: 48, label: "Star ground", sub: "Noise rejection" },
+      { id: "pi", x: 424, y: 80, w: 150, h: 72, label: "RevPi + Python", sub: "Normalize / dose" },
+      { id: "ui", x: 610, y: 80, w: 158, h: 72, label: "Perspective", sub: "Alarm + control" },
+    ],
+    edges: [
+      ["tanks", "atlas"],
+      ["atlas", "gnd"],
+      ["atlas", "pi"],
+      ["pi", "ui"],
+    ],
+  },
+  "plant-floor-visibility": {
+    nodes: [
+      { id: "opc", x: 40, y: 64, w: 150, h: 52, label: "OPC UA", sub: "PLC / equipment" },
+      { id: "l2l", x: 40, y: 140, w: 150, h: 52, label: "L2L", sub: "Downtime / counts" },
+      { id: "tags", x: 250, y: 96, w: 168, h: 60, label: "Ignition tags", sub: "Shared state model" },
+      { id: "map", x: 478, y: 64, w: 168, h: 52, label: "Floor map", sub: "Live cells" },
+      { id: "kpi", x: 478, y: 140, w: 168, h: 52, label: "KPI suite", sub: "Alarms / OEE" },
+      { id: "na", x: 688, y: 96, w: 100, h: 60, label: "NA review", sub: "Best practice" },
+    ],
+    edges: [
+      ["opc", "tags"],
+      ["l2l", "tags"],
+      ["tags", "map"],
+      ["tags", "kpi"],
+      ["map", "na"],
+    ],
+  },
+  "mes-revpi-integration": {
+    nodes: [
+      { id: "io", x: 32, y: 88, w: 150, h: 64, label: "Field I/O", sub: "Pulses / analog" },
+      { id: "pi", x: 222, y: 80, w: 180, h: 80, label: "RevPi edge", sub: "Cyber-reviewed image" },
+      { id: "nodered", x: 442, y: 48, w: 150, h: 52, label: "Node-RED / Py", sub: "Translate counts" },
+      { id: "l2l", x: 632, y: 40, w: 140, h: 52, label: "L2L REST", sub: "MES, no clipboard" },
+      { id: "edge", x: 632, y: 128, w: 140, h: 52, label: "Ignition Edge", sub: "Local SCADA" },
+    ],
+    edges: [
+      ["io", "pi"],
+      ["pi", "nodered"],
+      ["nodered", "l2l"],
+      ["nodered", "edge"],
+    ],
+  },
+};
+
+const diagram = diagrams[slug];
+
+function center(node) {
+  return { x: node.x + node.w / 2, y: node.y + node.h / 2 };
+}
+
+function edgePath(fromId, toId) {
+  const from = diagram.nodes.find((node) => node.id === fromId);
+  const to = diagram.nodes.find((node) => node.id === toId);
+  const a = center(from);
+  const b = center(to);
+  return `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
+}
+---
+
+{diagram && (
+  <figure class="arch-diagram">
+    <svg viewBox="0 0 820 248" role="img" aria-labelledby={`${slug}-arch-title ${slug}-arch-desc`}>
+      <title id={`${slug}-arch-title`}>{title} architecture</title>
+      <desc id={`${slug}-arch-desc`}>Sanitized block diagram of data flow for {title}.</desc>
+      <rect x="0" y="0" width="820" height="248" rx="16" fill="#050914" />
+      <g fill="none" stroke="rgba(115, 194, 251, 0.45)" stroke-width="1.6">
+        {diagram.edges.map(([from, to]) => <path d={edgePath(from, to)} />)}
+      </g>
+      {diagram.nodes.map((node) => (
+        <g>
+          <rect x={node.x} y={node.y} width={node.w} height={node.h} rx="10" fill="#121a2d" stroke="rgba(126, 240, 197, 0.45)" />
+          <text x={node.x + node.w / 2} y={node.y + node.h / 2 - 6} text-anchor="middle" fill="#edf3ff" font-size="13" font-family="Arial, Helvetica, sans-serif">{node.label}</text>
+          <text x={node.x + node.w / 2} y={node.y + node.h / 2 + 12} text-anchor="middle" fill="#adbbd6" font-size="11" font-family="Arial, Helvetica, sans-serif">{node.sub}</text>
+        </g>
+      ))}
+    </svg>
+  </figure>
+)}

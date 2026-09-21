@@ -819,6 +819,15 @@ h1 {
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
+a.project-card {
+  color: inherit;
+  text-decoration: none;
+}
+
+a.project-card:hover {
+  text-decoration: none;
+}
+
 .project-card:hover,
 .experience-card:hover {
   transform: translateY(-4px);
@@ -1613,6 +1622,163 @@ h1 {
 .projects-hub-grid h2 {
   margin: 0;
   font-size: 1.35rem;
+}
+
+.ship-story__hero {
+  padding: var(--space-16) 0 var(--space-10);
+  background: radial-gradient(circle at 75% 40%, rgba(53, 123, 169, 0.22), transparent 34%);
+}
+
+.ship-story__back {
+  margin: 0 0 var(--space-4);
+  font-size: var(--type-sm);
+}
+
+.ship-story__hero .project-card__chips {
+  margin-top: var(--space-4);
+}
+
+.ship-story__body {
+  display: grid;
+  gap: var(--space-8);
+  padding-bottom: var(--space-16);
+}
+
+.ship-block {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(18, 26, 45, 0.72);
+}
+
+.ship-block h2 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--type-2xl);
+}
+
+.ship-block p:last-child {
+  margin-bottom: 0;
+}
+
+.ship-block__index {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.ship-block--reflection {
+  border-color: rgba(126, 240, 197, 0.28);
+}
+
+.ship-reflection-label {
+  margin: 0 0 var(--space-3);
+  color: var(--accent);
+  font-size: var(--type-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.arch-diagram {
+  margin: var(--space-5) 0 0;
+}
+
+.arch-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.ship-story__media {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.code-figure {
+  margin: var(--space-5) 0 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: #050914;
+}
+
+.code-figure figcaption {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: var(--type-xs);
+}
+
+.code-figure figcaption span:first-child {
+  color: var(--primary-strong);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.code-figure pre {
+  margin: 0;
+  padding: var(--space-5);
+  overflow-x: auto;
+  color: #d7ecff;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.code-figure code {
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.ship-results {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.ship-result {
+  display: grid;
+  gap: 8px;
+  padding: var(--space-4);
+  border: 1px solid rgba(115, 194, 251, 0.22);
+  border-radius: var(--radius-sm);
+  background: rgba(115, 194, 251, 0.05);
+}
+
+.ship-result strong {
+  color: var(--primary-strong);
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+}
+
+.ship-result span {
+  color: var(--muted);
+  font-size: var(--type-sm);
+}
+
+.ship-story__more {
+  padding-top: 0;
+}
+
+@media (max-width: 800px) {
+  .ship-block {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .ship-story__media,
+  .ship-results {
+    grid-template-columns: 1fr;
+  }
 }
 
 .contact-page__card {
