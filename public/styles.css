@@ -387,13 +387,15 @@ h1 {
 
 .stats {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  align-items: stretch;
   gap: var(--space-4);
   margin-top: var(--space-5);
 }
 
 .stat {
+  flex: 1 1 0;
+  min-width: 0;
   background: rgba(10, 15, 25, 0.38);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
@@ -405,7 +407,7 @@ h1 {
 .stat strong {
   display: block;
   color: var(--primary);
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
   margin-bottom: var(--space-1);
 }
 
@@ -1100,7 +1102,7 @@ h1 {
   }
 
   .stats {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 
   .contact-card {
