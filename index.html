@@ -15,11 +15,11 @@
       <div class="container nav">
         <a class="brand" href="#top">Bryant Hayden</a>
         <nav class="nav__links" aria-label="Main navigation">
+          <a href="index.html">Portfolio</a>
           <a href="about.html">Personal</a>
           <a href="journey.html">Professional</a>
-          <a href="#expertise">Expertise</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+          <a href="resume.html">Resume</a>
+          <a href="index.html#contact">Contact</a>
         </nav>
       </div>
     </header>
@@ -79,14 +79,13 @@
           </div>
           <div class="card">
             <p>
-              I am the sole developer and system owner for a plant Ignition SCADA environment, taking projects from
-              operator conversations through requirements, development, testing, commissioning, documentation, and training.
+              I build practical systems at the intersection of people, software, and production. My background combines
+              teaching, STEM mentoring, computer science, and industrial application development.
             </p>
-            <p>
-              My work spans Perspective applications, Python and SQL backend logic, PLC and vendor integrations, MQTT,
-              OPC UA, REST APIs, MES, and edge gateways. I focus on software that is dependable, supportable, and aligned
-              with the realities of production.
-            </p>
+            <div class="cta-row">
+              <a class="button button--secondary" href="about.html">Personal Showcase</a>
+              <a class="button button--secondary" href="journey.html">Professional Showcase</a>
+            </div>
           </div>
         </div>
       </section>
@@ -244,23 +243,25 @@
       <section id="experience" class="section">
         <div class="container">
           <div class="section__header">
-            <h2 class="section__title">Experience Snapshot</h2>
+            <h2 class="section__title">Choose your view</h2>
           </div>
           <div class="grid experience-grid">
             <article class="card experience-card">
-              <h3>Plant Mapping Platform</h3>
+              <p class="eyebrow">Personal</p>
+              <h3>The person behind the work</h3>
               <p>
-                Created a map-based operational view that brought site structure, performance indicators, and system context
-                together in one place.
+                Explore the teaching, robotics, academic, and personal experiences that shaped how I build and communicate.
               </p>
+              <a href="about.html">Open Personal Showcase</a>
             </article>
 
             <article class="card experience-card">
-              <h3>Manufacturing Data Enablement</h3>
+              <p class="eyebrow">Professional</p>
+              <h3>The systems and impact</h3>
               <p>
-                Supported data collection, architecture, and reporting initiatives that make production information easier to
-                access and act upon.
+                Follow the technical progression from computer science to SCADA ownership, automation, and multi-plant impact.
               </p>
+              <a href="journey.html">Open Professional Showcase</a>
             </article>
           </div>
         </div>
@@ -275,6 +276,16 @@
             </div>
             <div class="contact-links">
               <a class="button button--secondary" href="mailto:bryantchayden@gmail.com">Email</a>
+              <button
+                class="button button--secondary copy-email"
+                type="button"
+                data-copy-email="bryantchayden@gmail.com"
+                aria-label="Copy email address"
+                title="Copy email address"
+              >
+                <span class="copy-icon" aria-hidden="true"></span>
+                <span class="copy-email__label">Copy</span>
+              </button>
               <a class="button button--secondary" href="https://www.linkedin.com/in/bhcs1/" target="_blank" rel="noreferrer">LinkedIn</a>
               <a class="button button--secondary" href="resume.html">Resume</a>
             </div>
