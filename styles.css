@@ -202,19 +202,23 @@ h1 {
   pointer-events: none;
 }
 
-.profile-badge {
+.profile-frame {
   position: relative;
-  display: grid;
-  place-items: center;
   width: 100%;
   aspect-ratio: 1 / 1.1;
   border-radius: 22px;
-  background: linear-gradient(180deg, #213454, #0e172c);
+  overflow: hidden;
   border: 1px solid var(--line);
-  color: var(--primary);
-  font-size: clamp(4rem, 8vw, 6.5rem);
-  font-weight: 700;
+  background: linear-gradient(180deg, #213454, #0e172c);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.9) contrast(1.04);
 }
 
 .stats {
