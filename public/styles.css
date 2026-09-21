@@ -122,17 +122,59 @@ img {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--space-6);
+  justify-content: flex-end;
+  gap: 6px;
 }
 
-.nav__links a {
+.nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 8px 13px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
   color: var(--muted);
-  font-size: var(--type-md);
-  transition: color 0.2s ease;
+  font-size: var(--type-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
-.nav__links a:hover {
+.nav__link:hover,
+.nav__link.is-active {
+  border-color: var(--line);
+  background: rgba(115, 194, 251, 0.12);
   color: var(--primary-strong);
+}
+
+.nav__link--experimental {
+  margin-left: 8px;
+  border-color: rgba(126, 240, 197, 0.25);
+  background: rgba(126, 240, 197, 0.06);
+  color: var(--accent);
+}
+
+.nav__link--experimental:hover,
+.nav__link--experimental.is-active {
+  border-color: rgba(126, 240, 197, 0.48);
+  background: rgba(126, 240, 197, 0.15);
+  color: #b8ffe7;
+}
+
+.nav__link--contact {
+  margin-left: 2px;
+}
+
+.nav__badge {
+  padding: 2px 5px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: #07101d;
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .hero {
@@ -1014,45 +1056,12 @@ h1 {
   overflow-x: hidden;
 }
 
-.demo-nav {
+.demo-page .site-header--demo {
   position: fixed;
   inset: 0 0 auto;
   z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px clamp(20px, 5vw, 72px);
-  pointer-events: none;
-}
-
-.demo-nav a {
-  pointer-events: auto;
-}
-
-.demo-mark,
-.demo-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.demo-mark img {
-  width: 30px;
-  height: 30px;
-}
-
-.demo-back {
-  color: var(--muted);
-  transition: color 0.2s ease;
-}
-
-.demo-back:hover {
-  color: var(--primary-strong);
+  border-bottom-color: transparent;
+  background: linear-gradient(180deg, rgba(5, 9, 20, 0.8), transparent);
 }
 
 .demo-main {
@@ -1245,11 +1254,34 @@ h1 {
 }
 
 @media (max-width: 700px) {
-  .demo-nav {
-    padding: 18px 20px;
+  .demo-page .site-header--demo .nav {
+    flex-direction: row;
+    padding: 14px 20px;
   }
 
-  .demo-mark span {
+  .demo-page .site-header--demo .brand span {
+    display: none;
+  }
+
+  .demo-page .site-header--demo .nav__links {
+    gap: 3px;
+  }
+
+  .demo-page .site-header--demo .nav__link {
+    min-height: 32px;
+    padding: 6px 9px;
+    font-size: 0.65rem;
+  }
+
+  .demo-page .site-header--demo .nav__link:not(.nav__link--experimental):not(.nav__link--contact) {
+    display: none;
+  }
+
+  .demo-page .site-header--demo .nav__link--contact {
+    display: none;
+  }
+
+  .demo-page .site-header--demo .nav__badge {
     display: none;
   }
 

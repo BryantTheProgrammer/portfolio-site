@@ -26,6 +26,7 @@ npm run build
 ## Files
 
 - `src/pages/` — Astro page routes
+- `src/components/` — shared site components, including navigation
 - `public/` — static assets served directly by Astro
 - `README.md` — quick usage notes
 " 

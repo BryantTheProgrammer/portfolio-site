@@ -1,0 +1,33 @@
+---
+const { active = "portfolio", demo = false } = Astro.props;
+
+const links = [
+  { id: "portfolio", label: "Portfolio", href: "/" },
+  { id: "personal", label: "Personal", href: "/about" },
+  { id: "professional", label: "Professional", href: "/journey" },
+  { id: "resume", label: "Resume", href: "/resume" },
+  { id: "labs", label: "Labs", href: "/demo", experimental: true },
+];
+---
+
+<header class:list={["site-header", { "site-header--demo": demo }]}>
+  <div class="container nav">
+    <a class="brand" href="/">
+      <img src="/favicon.svg" alt="" />
+      <span>Bryant Hayden</span>
+    </a>
+    <nav class="nav__links" aria-label="Main navigation">
+      {links.map((link) => (
+        <a
+          class:list={["nav__link", { "nav__link--experimental": link.experimental, "is-active": active === link.id }]}
+          href={link.href}
+          aria-current={active === link.id ? "page" : undefined}
+        >
+          {link.label}
+          {link.experimental && <span class="nav__badge">New</span>}
+        </a>
+      ))}
+      <a class="nav__link nav__link--contact" href="/#contact">Contact</a>
+    </nav>
+  </div>
+</header>

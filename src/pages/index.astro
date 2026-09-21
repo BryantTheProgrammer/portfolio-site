@@ -1,3 +1,7 @@
+---
+import SiteNav from "../components/SiteNav.astro";
+---
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,22 +16,7 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <header class="site-header">
-      <div class="container nav">
-        <a class="brand" href="#top">
-          <img src="/favicon.svg" alt="" />
-          <span>Bryant Hayden</span>
-        </a>
-        <nav class="nav__links" aria-label="Main navigation">
-          <a href="/">Portfolio</a>
-          <a href="/about">Personal</a>
-          <a href="/journey">Professional</a>
-          <a href="/resume">Resume</a>
-          <a href="/demo">Demo</a>
-          <a href="/#contact">Contact</a>
-        </nav>
-      </div>
-    </header>
+    <SiteNav active="portfolio" />
 
     <main id="top">
       <section class="hero">
