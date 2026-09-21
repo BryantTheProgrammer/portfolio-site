@@ -720,6 +720,135 @@ h1 {
   background: var(--bg-strong);
 }
 
+.about-page {
+  background: var(--bg-strong);
+}
+
+.about-hero {
+  padding: var(--space-16) 0 var(--space-12);
+}
+
+.about-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: var(--space-10);
+  align-items: center;
+}
+
+.about-hero h1 {
+  max-width: 720px;
+}
+
+.about-hero .lead {
+  max-width: 680px;
+  margin-bottom: 0;
+}
+
+.about-portrait {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--panel-alt);
+  box-shadow: var(--shadow);
+}
+
+.about-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-story {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(18, 26, 45, 0.3);
+}
+
+.about-story__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--space-10);
+}
+
+.about-story__intro .section__title {
+  max-width: 420px;
+}
+
+.about-story__body {
+  color: var(--muted);
+}
+
+.about-story__body p:last-child {
+  margin-bottom: 0;
+}
+
+.about-pillars__grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.about-pillar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.about-pillar__number {
+  color: var(--accent);
+  font-size: var(--type-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.about-pillar h3,
+.about-pillar p {
+  margin: 0;
+}
+
+.about-pillar p {
+  color: var(--muted);
+}
+
+.about-values {
+  padding-top: 0;
+}
+
+.about-values__card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--space-8);
+  align-items: center;
+  background: linear-gradient(135deg, rgba(115, 194, 251, 0.1), rgba(18, 26, 45, 0.94));
+}
+
+.about-values__card .skill-list {
+  color: var(--text);
+}
+
+.about-next {
+  padding-top: 0;
+}
+
+.about-next__content {
+  padding-bottom: var(--space-4);
+}
+
+@media (max-width: 760px) {
+  .about-hero__grid,
+  .about-story__grid,
+  .about-values__card {
+    grid-template-columns: 1fr;
+  }
+
+  .about-portrait {
+    max-width: 280px;
+  }
+
+  .about-pillars__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .journey-hero {
   padding: var(--space-16) 0 var(--space-10);
 }
