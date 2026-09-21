@@ -1,0 +1,170 @@
+---
+const title = "Bryant Hayden | Scroll Lab";
+const description = "An interactive Three.js study of a rotating industrial rotor controlled by scroll.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="demo-page">
+    <header class="demo-nav">
+      <a class="demo-mark" href="/">
+        <img src="/favicon.svg" alt="" />
+        <span>Bryant Hayden</span>
+      </a>
+      <a class="demo-back" href="/">Back to portfolio <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main class="demo-main">
+      <section class="demo-intro">
+        <div class="demo-intro__copy">
+          <p class="demo-kicker">Scroll lab / 001</p>
+          <h1>A machine that follows your movement.</h1>
+          <p class="demo-lede">Scroll through the page to drive the rotor. The motion is deliberately tied to your pace, like turning a physical control instead of watching a passive animation.</p>
+          <div class="demo-instruction"><span class="demo-scroll-line" aria-hidden="true"></span><span>Scroll to engage</span></div>
+        </div>
+        <div class="demo-intro__meta" aria-label="Demo details">
+          <span>Three.js</span>
+          <span>WebGL</span>
+          <span>Scroll-driven</span>
+        </div>
+      </section>
+
+      <section class="demo-stage" aria-label="Interactive 3D rotor">
+        <canvas id="rotor-canvas"></canvas>
+        <div class="demo-stage__label demo-stage__label--top"><span class="demo-pulse"></span>Live system</div>
+        <div class="demo-stage__label demo-stage__label--bottom">Rotor / 001 <span>Scroll input</span></div>
+        <div class="demo-stage__readout" aria-live="polite"><span id="rotation-readout">000</span><small>DEG</small></div>
+      </section>
+
+      <section class="demo-outro">
+        <p class="demo-kicker">End of cycle</p>
+        <h2>Good interfaces make the invisible feel physical.</h2>
+        <p>The scene is rendered in the browser, with scroll progress mapped to the rotor's rotation and the camera's orbit. No video, no pre-rendered frames.</p>
+        <a class="demo-button" href="/">Return to the portfolio <span aria-hidden="true">→</span></a>
+      </section>
+    </main>
+
+    <script>
+      import * as THREE from "three";
+
+      const canvas = document.querySelector("#rotor-canvas");
+      const stage = document.querySelector(".demo-stage");
+      const readout = document.querySelector("#rotation-readout");
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x07101d, 0.075);
+
+      const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+      camera.position.set(0, 0.2, 7.6);
+
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.25;
+
+      scene.add(new THREE.HemisphereLight(0x9fd8ff, 0x07101d, 1.6));
+      const keyLight = new THREE.DirectionalLight(0x8dd4ff, 4.5);
+      keyLight.position.set(4, 5, 5);
+      scene.add(keyLight);
+      const rimLight = new THREE.PointLight(0x71f0c4, 18, 12);
+      rimLight.position.set(-4, -2, 3);
+      scene.add(rimLight);
+
+      const rotor = new THREE.Group();
+      scene.add(rotor);
+
+      const coreMaterial = new THREE.MeshStandardMaterial({
+        color: 0x79caff,
+        metalness: 0.82,
+        roughness: 0.2,
+        emissive: 0x08263d,
+        emissiveIntensity: 0.7,
+      });
+      const darkMaterial = new THREE.MeshStandardMaterial({ color: 0x101c2d, metalness: 0.9, roughness: 0.24 });
+      const accentMaterial = new THREE.MeshStandardMaterial({ color: 0x7ef0c5, metalness: 0.64, roughness: 0.18, emissive: 0x0b5547, emissiveIntensity: 0.8 });
+
+      const core = new THREE.Mesh(new THREE.TorusKnotGeometry(1.26, 0.27, 160, 24, 2, 3), coreMaterial);
+      rotor.add(core);
+
+      const innerRing = new THREE.Mesh(new THREE.TorusGeometry(1.86, 0.045, 12, 96), accentMaterial);
+      innerRing.rotation.x = Math.PI / 2;
+      rotor.add(innerRing);
+
+      const outerRing = new THREE.Mesh(new THREE.TorusGeometry(2.18, 0.035, 12, 96), darkMaterial);
+      outerRing.rotation.x = Math.PI / 2;
+      rotor.add(outerRing);
+
+      const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 2.9, 32), darkMaterial);
+      shaft.rotation.z = Math.PI / 2;
+      rotor.add(shaft);
+
+      const boltGeometry = new THREE.CylinderGeometry(0.12, 0.12, 0.12, 16);
+      for (let index = 0; index < 8; index += 1) {
+        const angle = (index / 8) * Math.PI * 2;
+        const bolt = new THREE.Mesh(boltGeometry, accentMaterial);
+        bolt.position.set(Math.cos(angle) * 1.86, Math.sin(angle) * 1.86, 0.08);
+        bolt.rotation.x = Math.PI / 2;
+        rotor.add(bolt);
+      }
+
+      const particles = new THREE.Points(
+        new THREE.BufferGeometry().setFromPoints(Array.from({ length: 180 }, () => new THREE.Vector3((Math.random() - 0.5) * 9, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 3))),
+        new THREE.PointsMaterial({ color: 0x73c2fb, size: 0.018, transparent: true, opacity: 0.7 })
+      );
+      scene.add(particles);
+
+      let scrollProgress = 0;
+      let displayedProgress = 0;
+
+      const updateScroll = () => {
+        const bounds = stage.getBoundingClientRect();
+        const travel = Math.max(stage.offsetHeight - window.innerHeight, 1);
+        scrollProgress = THREE.MathUtils.clamp(-bounds.top / travel, 0, 1);
+      };
+
+      const resize = () => {
+        const { clientWidth, clientHeight } = stage;
+        camera.aspect = clientWidth / clientHeight;
+        camera.fov = clientWidth < 700 ? 48 : 38;
+        camera.updateProjectionMatrix();
+        renderer.setSize(clientWidth, clientHeight, false);
+      };
+
+      window.addEventListener("scroll", updateScroll, { passive: true });
+      window.addEventListener("resize", resize);
+      resize();
+      updateScroll();
+
+      const animate = (time) => {
+        displayedProgress += (scrollProgress - displayedProgress) * (prefersReducedMotion ? 1 : 0.08);
+        const rotation = displayedProgress * Math.PI * 5.5;
+        rotor.rotation.z = rotation;
+        rotor.rotation.x = Math.sin(displayedProgress * Math.PI) * 0.18;
+        rotor.rotation.y = displayedProgress * 0.85 - 0.25;
+        particles.rotation.y = time * 0.000025;
+        particles.rotation.x = displayedProgress * 0.3;
+        camera.position.x = Math.sin(displayedProgress * Math.PI * 1.5) * 0.9;
+        camera.position.y = 0.2 + Math.cos(displayedProgress * Math.PI) * 0.25;
+        camera.lookAt(0, 0, 0);
+        readout.textContent = String(Math.round((rotation * 180) / Math.PI) % 360).padStart(3, "0");
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      };
+
+      requestAnimationFrame(animate);
+    </script>
+  </body>
+</html>
+
+<style>
+  @import url("/styles.css");
+</style>
