@@ -1,0 +1,70 @@
+---
+import SiteNav from "../components/SiteNav.astro";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Selected SCADA, MES, IIoT, and industrial automation projects by Bryant Hayden." />
+    <title>Bryant Hayden — SCADA / MES Developer</title>
+    <meta property="og:title" content="Bryant Hayden — SCADA / MES Developer" />
+    <meta property="og:description" content="Industrial automation, SCADA, MES, and production systems portfolio." />
+    <meta property="og:image" content="/og-preview.svg" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="/og-preview.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="projects-page">
+    <SiteNav active="portfolio" />
+
+    <main>
+      <section class="projects-hub-hero">
+        <div class="container">
+          <p class="eyebrow">Projects / Production systems</p>
+          <h1>Software that earns its place on the plant floor.</h1>
+          <p class="lead">Selected work across SCADA, MES, IIoT, automation, and manufacturing data systems.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <article class="project-hero">
+            <div class="project-hero__media">
+              <figure class="project-video">
+                <iframe src="https://www.youtube.com/embed/NlzmohUvFRo" title="Laser Etcher overhaul project video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <figcaption>Laser Etcher overhaul</figcaption>
+              </figure>
+              <figure class="project-video">
+                <iframe src="https://www.youtube.com/embed/O4gmPoP8y_0" title="Laser Etcher supporting project video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <figcaption>Supporting production workflow</figcaption>
+              </figure>
+            </div>
+            <div class="project-hero__content">
+              <p class="project-tag">Featured / Automation</p>
+              <h2>Laser Etcher Modernization</h2>
+              <p>Replaced a deprecated Java etching platform with a full-stack Ignition and Python application that restored serialized traceability for production.</p>
+              <div class="project-hero__metrics">
+                <span><strong>$143K+</strong> projected savings</span>
+                <span><strong>11 lines</strong> rollout target</span>
+                <span><strong>5,000</strong> records per batch</span>
+              </div>
+              <div class="project-hero__tags"><span>Ignition</span><span>Python</span><span>SQL</span><span>MES</span></div>
+            </div>
+          </article>
+
+          <div class="grid projects-grid projects-hub-grid">
+            <article class="card project-card"><span class="project-tag">Monitoring</span><h2>SUDS Water Monitoring System</h2><p>Built four-tank water quality monitoring and automated soap dosing for $3,051 against a $35,850 vendor quote.</p><ul><li>91% cost reduction</li><li>Python edge software</li><li>Live alarming and remote control</li></ul></article>
+            <article class="card project-card"><span class="project-tag">SCADA</span><h2>Ignition SCADA Development</h2><p>Developed Perspective applications used daily in manufacturing operations, from reusable components and alarming to diagnostics and support.</p><ul><li>Python/Jython and SQL</li><li>Role-based security</li><li>Operator training</li></ul></article>
+            <article class="card project-card"><span class="project-tag">Integration</span><h2>L2L Integrations</h2><p>Led production, downtime, quality, and reporting integrations using the Leading2Lean REST API and automated machine data capture.</p><ul><li>Reduced manual entry</li><li>Automated production data</li><li>Aligned site workflows</li></ul></article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="container footer__content"><p>© 2026 Bryant Hayden</p><p>IT/OT • SCADA • MES • IIoT</p></div></footer>
+  </body>
+</html>

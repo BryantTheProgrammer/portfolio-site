@@ -10,7 +10,7 @@ const { active = "portfolio", demo = false, landing = false } = Astro.props;
     </a>
     <nav class="nav__links" aria-label="Main navigation">
       <a class:list={["nav__link", { "is-active": active === "portfolio" }]} href="/" aria-current={active === "portfolio" ? "page" : undefined}>Portfolio</a>
-      <a class="nav__link nav__link--contact" href="/#contact">Contact</a>
+      <a class:list={["nav__link", "nav__link--contact", { "is-active": active === "contact" }]} href="/contact" aria-current={active === "contact" ? "page" : undefined}>Contact</a>
     </nav>
   </div>
 </header>
