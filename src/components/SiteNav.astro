@@ -8,6 +8,9 @@ const links = [
   { id: "resume", label: "Resume", href: "/resume" },
   { id: "labs", label: "Labs", href: "/demo", experimental: true },
 ];
+
+const primaryLinks = links.slice(0, 3);
+const extraLinks = links.slice(3);
 ---
 
 <header class:list={["site-header", { "site-header--demo": demo }]}>
@@ -17,17 +20,40 @@ const links = [
       <span>Bryant Hayden</span>
     </a>
     <nav class="nav__links" aria-label="Main navigation">
-      {links.map((link) => (
+      {primaryLinks.map((link) => (
         <a
-          class:list={["nav__link", { "nav__link--experimental": link.experimental, "is-active": active === link.id }]}
+          class:list={["nav__link", { "is-active": active === link.id }]}
           href={link.href}
           aria-current={active === link.id ? "page" : undefined}
         >
           {link.label}
-          {link.experimental && <span class="nav__badge">New</span>}
         </a>
       ))}
-      <a class="nav__link nav__link--contact" href="/#contact">Contact</a>
+      <div class="nav__extras">
+        {extraLinks.map((link) => (
+          <a
+            class:list={["nav__link", { "nav__link--experimental": link.experimental, "is-active": active === link.id }]}
+            href={link.href}
+            aria-current={active === link.id ? "page" : undefined}
+          >
+            {link.label}
+            {link.experimental && <span class="nav__badge">New</span>}
+          </a>
+        ))}
+        <a class="nav__link nav__link--contact" href="/#contact">Contact</a>
+      </div>
+      <details class:list={["nav__more", { "is-active": ["resume", "labs"].includes(active) }]}>
+        <summary>More</summary>
+        <div class="nav__more-menu">
+          {extraLinks.map((link) => (
+            <a href={link.href} aria-current={active === link.id ? "page" : undefined}>
+              {link.label}
+              {link.experimental && <span class="nav__badge">New</span>}
+            </a>
+          ))}
+          <a href="/#contact">Contact</a>
+        </div>
+      </details>
     </nav>
   </div>
 </header>
