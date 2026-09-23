@@ -1586,20 +1586,22 @@ a.project-card:hover {
 }
 
 .work-step {
-  display: flex;
-  min-width: 0;
-  flex: 1 1 0;
+  display: grid;
+  grid-template-columns: 20% 1fr;
   align-items: center;
   gap: 10px;
+  width: 100%;
+  min-width: 0;
   color: var(--text);
 }
 
 .work-step__icon {
   display: grid;
-  flex: 0 0 38px;
   place-items: center;
+  justify-self: center;
   width: 38px;
   height: 38px;
+  aspect-ratio: 1;
   border: 1px solid rgba(126, 240, 197, 0.4);
   border-radius: 50%;
   background: rgba(126, 240, 197, 0.08);
