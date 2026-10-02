@@ -1,7 +1,7 @@
 export const projects = [
   {
     slug: "laser-etcher",
-    image: "/images/test-image.jpg",
+    image: "/images/projects/laser-etcher.png",
     alt: "Laser Etcher Modernization project",
     title: "Laser Etcher Modernization",
     kicker: "Automation / Serialization",
@@ -52,7 +52,7 @@ def onResponseReceived(event):
   },
   {
     slug: "suds",
-    image: "/images/test-image.jpg",
+    image: "/images/projects/Suds%20Logo.png",
     alt: "SUDS Soap Usage and Dispensing System project",
     title: "SUDS — Soap Usage & Dispensing System",
     kicker: "Process / Edge",
@@ -105,7 +105,7 @@ def tank_state(us_cm, low, high):
   },
   {
     slug: "plant-floor-visibility",
-    image: "/images/test-image.jpg",
+    image: "/images/projects/plant-floor-visibility.png",
     alt: "Plant Floor Visibility Platform project",
     title: "Plant Floor Visibility Platform",
     kicker: "SCADA / Operations",
@@ -155,7 +155,7 @@ def cell_style(state):
   },
   {
     slug: "mes-revpi-integration",
-    image: "/images/test-image.jpg",
+    image: "/images/projects/mes-iiot-integration.png",
     alt: "MES API and IIoT Integration project",
     title: "MES, API & IIoT Integration",
     kicker: "IIoT / Integration",

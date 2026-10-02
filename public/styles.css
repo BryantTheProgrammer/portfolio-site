@@ -4,8 +4,8 @@
   --panel: #121a2d;
   --panel-alt: #18233d;
   --card: rgba(18, 26, 45, 0.94);
-  --text: #edf3ff;
-  --muted: #adbbd6;
+  --text: #b5c2d6;
+  --muted: #94a3ba;
   --primary: #73c2fb;
   --primary-strong: #a9dcff;
   --accent: #7ef0c5;
@@ -32,12 +32,12 @@
   --radius-pill: 999px;
 
   --container-width: 1100px;
-  --type-xs: 0.7rem;
-  --type-sm: 0.8rem;
-  --type-md: 0.95rem;
-  --type-lg: 1.08rem;
-  --type-xl: clamp(2.5rem, 5vw, 4.2rem);
-  --type-2xl: clamp(1.9rem, 3vw, 2.7rem);
+  --type-xs: 0.75rem;
+  --type-sm: 0.875rem;
+  --type-md: 1rem;
+  --type-lg: 1.125rem;
+  --type-xl: 3.5rem;
+  --type-2xl: 2.5rem;
 }
 
 * {
@@ -200,7 +200,7 @@ body:not(.demo-page) main {
   border-radius: var(--radius-pill);
   background: var(--accent);
   color: #07101d;
-  font-size: 0.55rem;
+  font-size: 0.75rem;
   letter-spacing: 0.05em;
   line-height: 1;
   text-transform: uppercase;
@@ -218,7 +218,7 @@ body:not(.demo-page) main {
 .hero__identity-name {
   margin: 0;
   color: var(--text);
-  font-size: clamp(3.8rem, 8vw, 7rem);
+  font-size: 4.5rem;
   font-weight: 800;
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -408,7 +408,7 @@ h1 {
 .stat strong {
   display: block;
   color: var(--primary);
-  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-size: 1.25rem;
   margin-bottom: var(--space-1);
 }
 
@@ -727,7 +727,7 @@ h1 {
 
 .project-hero__content h3 {
   margin: 0;
-  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  font-size: 2.25rem;
   line-height: 1;
 }
 
@@ -859,9 +859,11 @@ a.project-card:hover {
 
 .project-card__image {
   width: calc(100% + (var(--space-6) * 2));
+  max-width: none;
   height: 150px;
   margin: calc(var(--space-6) * -1) calc(var(--space-6) * -1) var(--space-2);
   object-fit: cover;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
   border-bottom: 1px solid var(--line);
 }
 
@@ -890,7 +892,7 @@ a.project-card:hover {
   border-radius: var(--radius-pill);
   background: rgba(126, 240, 197, 0.06);
   color: var(--accent);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   line-height: 1.2;
 }
 
@@ -1058,7 +1060,7 @@ a.project-card:hover {
     flex: 0 0 auto;
     min-height: 32px;
     padding: 7px 10px;
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     white-space: nowrap;
   }
 
@@ -1085,7 +1087,7 @@ a.project-card:hover {
     border-radius: var(--radius-pill);
     color: var(--primary-strong);
     cursor: pointer;
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     list-style: none;
@@ -1135,7 +1137,7 @@ a.project-card:hover {
     padding: 10px 11px;
     border-radius: 6px;
     color: var(--muted);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 700;
     white-space: nowrap;
   }
@@ -1177,10 +1179,6 @@ a.project-card:hover {
     align-items: stretch;
     flex-direction: column;
     gap: 0;
-  }
-
-  .work-step {
-    flex: 0 0 auto;
   }
 
   .work-step__connector {
@@ -1234,7 +1232,7 @@ a.project-card:hover {
 .resume-header h1 {
   margin-bottom: var(--space-2);
   color: #0b1830;
-  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-size: 3.5rem;
 }
 
 .resume-role {
@@ -1606,7 +1604,7 @@ a.project-card:hover {
   border-radius: 50%;
   background: rgba(126, 240, 197, 0.08);
   color: var(--accent);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 800;
 }
 
@@ -1888,7 +1886,7 @@ a.project-card:hover {
 
 .journey-content h2 {
   margin-bottom: var(--space-3);
-  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  font-size: 1.5rem;
 }
 
 .journey-content > p:not(.journey-label) {
@@ -1922,7 +1920,7 @@ a.project-card:hover {
   .journey-marker {
     width: 40px;
     height: 40px;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
   }
 
   .journey-content {
@@ -1963,7 +1961,7 @@ a.project-card:hover {
 .demo-kicker {
   margin: 0 0 22px;
   color: var(--accent);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1972,7 +1970,7 @@ a.project-card:hover {
 .demo-intro h1 {
   max-width: 850px;
   margin: 0;
-  font-size: clamp(3rem, 8vw, 8.6rem);
+  font-size: 6rem;
   line-height: 0.92;
   letter-spacing: -0.03em;
 }
@@ -1981,7 +1979,7 @@ a.project-card:hover {
   max-width: 540px;
   margin: 32px 0 0;
   color: var(--muted);
-  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-size: 1.125rem;
 }
 
 .demo-instruction {
@@ -1990,7 +1988,7 @@ a.project-card:hover {
   gap: 12px;
   margin-top: 50px;
   color: var(--text);
-  font-size: 0.76rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2009,7 +2007,7 @@ a.project-card:hover {
   justify-self: end;
   margin-top: 70px;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
@@ -2041,7 +2039,7 @@ a.project-card:hover {
   position: absolute;
   z-index: 1;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2081,13 +2079,13 @@ a.project-card:hover {
   gap: 8px;
   transform: translateY(-50%);
   color: var(--primary-strong);
-  font-size: clamp(2rem, 4vw, 4rem);
+  font-size: 3rem;
   letter-spacing: -0.04em;
 }
 
 .demo-stage__readout small {
   color: var(--muted);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.14em;
 }
 
@@ -2103,7 +2101,7 @@ a.project-card:hover {
 .demo-outro h2 {
   max-width: 850px;
   margin: 0;
-  font-size: clamp(2.5rem, 6vw, 6.6rem);
+  font-size: 4.5rem;
   line-height: 0.96;
   letter-spacing: -0.03em;
 }
@@ -2150,7 +2148,7 @@ a.project-card:hover {
   .demo-page .site-header--demo .nav__link {
     min-height: 32px;
     padding: 6px 9px;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
   }
 
   .demo-page .site-header--demo .nav__link:not(.nav__link--experimental):not(.nav__link--contact) {
@@ -2190,5 +2188,44 @@ a.project-card:hover {
     bottom: 28px;
     left: 20px;
     right: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --type-xl: 2.5rem;
+    --type-2xl: 2rem;
+  }
+
+  .hero__identity-name {
+    font-size: 3.5rem;
+  }
+
+  .project-hero__content h3 {
+    font-size: 1.8rem;
+  }
+
+  .resume-header h1 {
+    font-size: 2.4rem;
+  }
+
+  .journey-content h2 {
+    font-size: 1.35rem;
+  }
+
+  .demo-intro h1 {
+    font-size: 3rem;
+  }
+
+  .demo-lede {
+    font-size: 1rem;
+  }
+
+  .demo-stage__readout {
+    font-size: 2rem;
+  }
+
+  .demo-outro h2 {
+    font-size: 2.5rem;
   }
 }
