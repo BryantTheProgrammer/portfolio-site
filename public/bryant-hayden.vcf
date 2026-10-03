@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Hayden;Bryant;;;
+FN:Bryant Hayden
+TITLE:Controls Engineer
+TEL;TYPE=CELL,VOICE:+1-971-716-6117
+EMAIL;TYPE=INTERNET,WORK:bryantchayden@gmail.com
+URL:https://www.linkedin.com/in/bhcs1/
+ADR;TYPE=WORK:;;Lebanon;Oregon;;;
+NOTE:Controls engineering, SCADA, MES, IIoT, and industrial automation
+END:VCARD

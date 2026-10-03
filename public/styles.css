@@ -1379,6 +1379,187 @@ a.project-card:focus-visible {
   background: transparent;
 }
 
+.contact-card-page {
+  background:
+    radial-gradient(ellipse at 50% 25%, rgba(115, 194, 251, 0.13), transparent 52%),
+    var(--bg-strong);
+}
+
+.contact-card-shell {
+  min-height: calc(100vh - 160px);
+  padding: var(--space-12) 0 var(--space-16);
+}
+
+.contact-card-shell > .container {
+  max-width: 980px;
+}
+
+.contact-card-title {
+  margin-bottom: var(--space-3);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+}
+
+.contact-card-intro {
+  max-width: 640px;
+  margin-bottom: var(--space-8);
+  color: var(--muted);
+  font-size: var(--type-lg);
+}
+
+.virtual-card {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  overflow: hidden;
+  border: 1px solid rgba(157, 176, 212, 0.24);
+  border-radius: var(--radius-xl);
+  background: #f7f9fc;
+  box-shadow: var(--shadow);
+}
+
+.virtual-card__identity {
+  position: relative;
+  display: flex;
+  min-height: 420px;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: clamp(24px, 5vw, 44px);
+  background:
+    radial-gradient(circle at 85% 15%, rgba(126, 240, 197, 0.2), transparent 32%),
+    linear-gradient(145deg, #172d4b, #0b1426 80%);
+  color: #f7f9fc;
+}
+
+.virtual-card__topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.virtual-card__portrait {
+  width: 88px;
+  height: 88px;
+  border: 3px solid rgba(126, 240, 197, 0.8);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+.virtual-card__mark {
+  color: rgba(169, 220, 255, 0.22);
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  line-height: 1;
+}
+
+.virtual-card__name-block {
+  position: relative;
+  margin-top: var(--space-12);
+}
+
+.virtual-card__name-block .eyebrow {
+  margin-bottom: var(--space-3);
+}
+
+.virtual-card__name-block h2 {
+  margin-bottom: var(--space-2);
+  color: #f7f9fc;
+  font-size: clamp(2.2rem, 5vw, 3.25rem);
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+.virtual-card__role {
+  margin-bottom: var(--space-1);
+  color: var(--accent);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.virtual-card__company {
+  margin: 0;
+  color: #b5c2d6;
+}
+
+.virtual-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+}
+
+.virtual-card__tags span {
+  padding: 5px 11px;
+  border: 1px solid rgba(169, 220, 255, 0.22);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.05);
+  color: #c7d8ec;
+  font-size: var(--type-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.virtual-card__details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 5vw, 44px);
+  color: #1a2638;
+}
+
+.virtual-card__details .eyebrow {
+  color: #16866c;
+}
+
+.virtual-card__details h3 {
+  max-width: 350px;
+  margin-bottom: var(--space-6);
+  color: #0b1830;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.virtual-card__links {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.virtual-card__links a {
+  display: grid;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 1px solid #d7dfeb;
+  color: #216b9b;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.virtual-card__links a:hover {
+  color: #124a70;
+}
+
+.virtual-card__label {
+  color: #728198;
+  font-size: var(--type-xs);
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.virtual-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.virtual-card__actions .button--secondary {
+  color: #173b62;
+  border-color: #b8c7d8;
+  background: transparent;
+}
+
 @media (max-width: 760px) {
   .resume-header,
   .resume-entry-heading {
@@ -1403,6 +1584,18 @@ a.project-card:focus-visible {
   .resume-footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .contact-card-shell {
+    padding-top: var(--space-8);
+  }
+
+  .virtual-card {
+    grid-template-columns: 1fr;
+  }
+
+  .virtual-card__identity {
+    min-height: 360px;
   }
 }
 
