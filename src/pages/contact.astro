@@ -1,5 +1,6 @@
 ---
 import SiteNav from "../components/SiteNav.astro";
+import VirtualContactCard from "../components/VirtualContactCard.astro";
 ---
 
 <!DOCTYPE html>
@@ -24,7 +25,7 @@ import SiteNav from "../components/SiteNav.astro";
     <main>
       <section class="contact-hero">
         <div class="container">
-          <p class="eyebrow">Contact / Start a conversation</p>
+          <p class="eyebrow">Start a conversation</p>
           <h1>Let’s talk about production systems that need to work.</h1>
           <p class="lead">I’m open to conversations about SCADA, MES, IIoT, industrial automation, analytics, and the people who make those systems useful.</p>
         </div>
@@ -32,19 +33,7 @@ import SiteNav from "../components/SiteNav.astro";
 
       <section class="section">
         <div class="container">
-          <div class="card contact-page__card">
-            <div>
-              <p class="eyebrow">Reach out directly</p>
-              <h2 class="section__title">Bryant Hayden</h2>
-              <p>For opportunities, project conversations, or technical questions, email is the best place to start.</p>
-            </div>
-            <div class="contact-links">
-              <a class="button button--primary" href="mailto:bryantchayden@gmail.com">Email Bryant</a>
-              <a class="button button--secondary" href="https://www.linkedin.com/in/bhcs1/" target="_blank" rel="noreferrer">LinkedIn</a>
-              <a class="button button--secondary" href="/contact-card">Digital Contact Card</a>
-              <a class="button button--secondary" href="/resume">View Resume</a>
-            </div>
-          </div>
+          <VirtualContactCard />
         </div>
       </section>
     </main>
