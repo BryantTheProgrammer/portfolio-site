@@ -121,16 +121,46 @@ import ProjectGrid from "../components/ProjectGrid.astro";
         <div class="container">
           <div class="section__header">
             <p class="eyebrow">How I work</p>
-            <h2 id="work-method-title" class="section__title">From requirement to confident adoption.</h2>
+            <h2 id="work-method-title" class="section__title">From plant-floor problem to lasting solution.</h2>
           </div>
 
-          <div class="work-method__strip">
-            <div class="work-step"><span class="work-step__icon" aria-hidden="true">01</span><strong>Requirements</strong></div>
-            <div class="work-step"><span class="work-step__icon" aria-hidden="true">02</span><strong>Build &amp; Test</strong></div>
-            <div class="work-step"><span class="work-step__icon" aria-hidden="true">03</span><strong>Commissioning</strong></div>
-            <div class="work-step"><span class="work-step__icon" aria-hidden="true">04</span><strong>Documentation</strong></div>
-            <div class="work-step"><span class="work-step__icon" aria-hidden="true">05</span><strong>Training</strong></div>
-          </div>
+          <ol class="work-method__strip" aria-label="Project delivery steps">
+            <li class="work-step">
+              <span class="work-step__icon" aria-hidden="true">01</span>
+              <div class="work-step__content">
+                <h3>Understand the floor</h3>
+                <p>Observe the workflow, listen to operators, and map the constraints that matter.</p>
+              </div>
+            </li>
+            <li class="work-step">
+              <span class="work-step__icon" aria-hidden="true">02</span>
+              <div class="work-step__content">
+                <h3>Shape the solution</h3>
+                <p>Turn the real process into clear requirements, signals, and success measures.</p>
+              </div>
+            </li>
+            <li class="work-step">
+              <span class="work-step__icon" aria-hidden="true">03</span>
+              <div class="work-step__content">
+                <h3>Build and validate</h3>
+                <p>Develop the application, then test it against actual operating conditions.</p>
+              </div>
+            </li>
+            <li class="work-step">
+              <span class="work-step__icon" aria-hidden="true">04</span>
+              <div class="work-step__content">
+                <h3>Commission and document</h3>
+                <p>Bring it online with a clear support and recovery path.</p>
+              </div>
+            </li>
+            <li class="work-step">
+              <span class="work-step__icon" aria-hidden="true">05</span>
+              <div class="work-step__content">
+                <h3>Train and improve</h3>
+                <p>Prepare operators and maintainers, then refine after launch.</p>
+              </div>
+            </li>
+          </ol>
         </div>
       </section>
 
