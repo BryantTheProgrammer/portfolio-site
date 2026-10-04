@@ -48,6 +48,7 @@ def onResponseReceived(event):
     videos: [
       { src: "https://www.youtube.com/embed/NlzmohUvFRo", title: "Laser Etcher overhaul project video", caption: "Laser Etcher overhaul" },
       { src: "https://www.youtube.com/embed/O4gmPoP8y_0", title: "Laser Etcher supporting project video", caption: "Supporting production workflow" },
+      { src: "https://www.youtube.com/embed/UsK7NBZkWGk", title: "Laser Etcher functional test", caption: "Laser Etcher functional test" },
     ],
   },
   {
@@ -151,7 +152,13 @@ def cell_style(state):
     ],
     reflection:
       "Next I would version the map geometry as data, not Designer drawings, so a line move is a coordinate update instead of a new view — and publish a read-only snapshot for sites that are not on Ignition yet.",
-    videos: [],
+    videos: [
+      {
+        src: "https://www.youtube.com/embed/26jgrERn-EU",
+        title: "Ignition plant floor visibility map demo",
+        caption: "Ignition Perspective live plant-floor map",
+      },
+    ],
   },
   {
     slug: "mes-revpi-integration",
