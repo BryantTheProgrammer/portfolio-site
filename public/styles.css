@@ -422,38 +422,6 @@ h1 {
   background: linear-gradient(180deg, rgba(115, 194, 251, 0.04), transparent 70%);
 }
 
-.portfolio-scroll-cue {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: var(--space-6);
-  padding: 8px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  color: var(--muted);
-  font-size: var(--type-xs);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.portfolio-scroll-cue:hover {
-  border-color: rgba(115, 194, 251, 0.55);
-  color: var(--primary-strong);
-  text-decoration: none;
-}
-
-.portfolio-scroll-cue:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 3px;
-}
-
-.portfolio-scroll-cue span:last-child {
-  color: var(--primary);
-  font-size: 1rem;
-  line-height: 1;
-}
-
 .portfolio-intro__content {
   display: grid;
   grid-template-columns: minmax(210px, 0.72fr) minmax(0, 1.28fr);
