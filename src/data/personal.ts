@@ -5,6 +5,7 @@ export type PersonalMedia = {
   src: string;
   alt: string;
   caption: string;
+  thumbnail?: string;
 };
 
 export type PersonalEntry = {
@@ -34,7 +35,10 @@ export const cubeStory: CubeStoryMoment[] = [
   {
     era: "Middle school",
     years: "Middle school",
-    summary: "I built a Rubik's Cube solving robot with a LEGO NXT kit.",
+    summary:
+      "I learned to solve a 3x3 Rubik's Cube when I was 12 and took part in competitions. I also built a solving robot with a LEGO NXT kit.",
+    link: "https://www.worldcubeassociation.org/persons/2015HAYD02",
+    linkLabel: "View my World Cube Association profile",
   },
   {
     era: "8th grade",
@@ -50,7 +54,7 @@ export const cubeStory: CubeStoryMoment[] = [
     era: "Eastern Oregon University",
     years: "2022 to 2024",
     summary:
-      "I engineered an autonomous Rubik's Cube solving robot from the first idea to a manufactured bot. I worked across CAD, 3D printing, electronics, computer vision, and Python on a Raspberry Pi, then documented the build and bill of materials so future students could extend it.",
+      "I designed and built an autonomous 3x3 Rubik's Cube solver. I modeled the frame and robotic arms in Autodesk Inventor, 3D printed the parts, and built a Raspberry Pi system with two USB cameras, three motor-controller boards, and six stepper motors. Python software detects the cube's colors, computes a solution, and drives the arms to turn it. I documented the build and bill of materials so future students could extend it.",
     link: "#robotics-rubiks-bot",
     linkLabel: "See the robot build",
   },
@@ -169,14 +173,21 @@ export const personalEntries: PersonalEntry[] = [
     years: "2022 to 2024",
     category: "robotics",
     summary:
-      "I built an autonomous solver that brings together CAD, 3D printing, electronics, computer vision, and Python on a Raspberry Pi. I documented the build and bill of materials so future students could extend it.",
-    tags: ["Python", "Computer vision", "Raspberry Pi", "CAD / 3D printing"],
+      "I designed and built an autonomous 3x3 Rubik's Cube solver. A Raspberry Pi uses two USB cameras to capture the cube, Python software detects its colors and computes a solution, and six stepper motors drive the robotic arms. I designed the frame and arms in Autodesk Inventor, 3D printed the parts, and documented the build and bill of materials so future students could extend the project.",
+    tags: ["Python", "Computer vision", "Raspberry Pi", "Autodesk Inventor", "3D printing", "Stepper motors"],
     media: [
       {
         type: "youtube",
         src: "_tdodO76_XQ",
         alt: "Autonomous Rubik's Cube solving robot demonstration",
         caption: "Robot solving demonstration",
+      },
+      {
+        type: "link",
+        src: "/images/Cube%20Solving%20Bot.pdf",
+        alt: "Rubik's Cube Solving Robot project poster thumbnail",
+        caption: "View the project poster",
+        thumbnail: "/images/cube-solving-bot-poster.png",
       },
     ],
     featured: true,
@@ -232,9 +243,22 @@ export const personalEntries: PersonalEntry[] = [
     era: "Pacific University",
     years: "",
     category: "music",
-    summary: "I took part in the orchestra's digital performances.",
-    tags: ["Orchestra", "Digital performance"],
-    media: [],
+    summary: "I took part in the orchestra's digital performance of Beethoven in the Stars.",
+    tags: ["Orchestra", "Digital performance", "Beethoven in the Stars"],
+    media: [
+      {
+        type: "link",
+        src: "https://elsewhereensemble.com/works/beethoven-in-the-stars/",
+        alt: "Read about Beethoven in the Stars by The Elsewhere Ensemble",
+        caption: "About Beethoven in the Stars",
+      },
+      {
+        type: "youtube",
+        src: "r_6QjuPVnls",
+        alt: "Pacific University orchestra performance of Beethoven in the Stars",
+        caption: "Watch the performance",
+      },
+    ],
     featured: false,
   },
   {

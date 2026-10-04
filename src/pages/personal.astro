@@ -70,7 +70,15 @@ const showLabName = labName.trim() !== "" && !labName.includes("[LAB NAME]");
                     {moment.id === "robotics-lab" && showLabName && (
                       <p>That included the {labName} robotics lab.</p>
                     )}
-                    {moment.link && <a href={moment.link}>{moment.linkLabel}</a>}
+                    {moment.link && (
+                      <a
+                        href={moment.link}
+                        target={moment.link.startsWith("https://") ? "_blank" : undefined}
+                        rel={moment.link.startsWith("https://") ? "noreferrer" : undefined}
+                      >
+                        {moment.linkLabel}
+                      </a>
+                    )}
                   </article>
                 </li>
               ))}

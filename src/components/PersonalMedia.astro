@@ -31,6 +31,13 @@ const videoId = media.type === "youtube"
     <img class="personal-media__image" src={media.src} alt={media.alt} loading="lazy" decoding="async" />
     <figcaption>{media.caption}</figcaption>
   </figure>
+) : media.thumbnail ? (
+  <figure class="personal-media personal-media--linked-thumbnail">
+    <a class="personal-media-thumbnail" href={media.src} aria-label={`${media.caption}: ${media.alt}`}>
+      <img src={media.thumbnail} alt={media.alt} loading="lazy" decoding="async" />
+    </a>
+    <figcaption>{media.caption}</figcaption>
+  </figure>
 ) : (
   <a class="personal-media-link" href={media.src} aria-label={media.alt}>
     <span>{media.caption}</span>

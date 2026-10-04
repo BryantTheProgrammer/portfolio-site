@@ -2868,6 +2868,28 @@ a.project-card:focus-visible {
   padding: var(--space-5);
 }
 
+#robotics-rubiks-bot {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: var(--space-3) var(--space-8);
+  align-items: center;
+}
+
+#robotics-rubiks-bot .personal-entry__meta,
+#robotics-rubiks-bot h4,
+#robotics-rubiks-bot > p,
+#robotics-rubiks-bot .personal-entry__tags {
+  grid-column: 1;
+}
+
+#robotics-rubiks-bot .personal-entry__media {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  align-self: center;
+  margin-top: 0;
+}
+
 .personal-entry__meta {
   display: flex;
   flex-wrap: wrap;
@@ -3006,6 +3028,33 @@ a.project-card:focus-visible {
   font-weight: 700;
 }
 
+.personal-media--linked-thumbnail {
+  grid-column: 1 / -1;
+}
+
+.personal-media-thumbnail {
+  display: block;
+  overflow: hidden;
+  background: #f2f2f2;
+}
+
+.personal-media-thumbnail:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: -3px;
+}
+
+.personal-media-thumbnail img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.personal-media-thumbnail:hover img {
+  transform: scale(1.02);
+}
+
 .personal-next {
   padding-top: 0;
 }
@@ -3060,6 +3109,14 @@ a.project-card:focus-visible {
     height: auto;
   }
 
+  #robotics-rubiks-bot {
+    display: block;
+  }
+
+  #robotics-rubiks-bot .personal-entry__media {
+    margin-top: var(--space-5);
+  }
+
   .personal-timeline__card a {
     min-height: 36px;
     align-content: center;
@@ -3100,5 +3157,9 @@ a.project-card:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .personal-media-thumbnail img {
+    transition: none;
   }
 }
