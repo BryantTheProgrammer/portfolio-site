@@ -2,6 +2,7 @@
 import SiteNav from "../components/SiteNav.astro";
 import CertificationGrid from "../components/CertificationGrid.astro";
 import ProjectGrid from "../components/ProjectGrid.astro";
+import SplitHero from "../components/SplitHero.astro";
 ---
 
 <!DOCTYPE html>
@@ -164,32 +165,7 @@ import ProjectGrid from "../components/ProjectGrid.astro";
         </div>
       </section>
 
-      <section id="experience" class="section">
-        <div class="container">
-          <div class="section__header">
-            <h2 class="section__title">Choose your view</h2>
-          </div>
-          <div class="grid experience-grid">
-            <article class="card experience-card">
-              <p class="eyebrow">Personal</p>
-              <h3>The person behind the work</h3>
-              <p>
-                Explore the teaching, robotics, academic, and personal experiences that shaped how I build and communicate.
-              </p>
-              <a href="/about">Open Personal Showcase</a>
-            </article>
-
-            <article class="card experience-card">
-              <p class="eyebrow">Professional</p>
-              <h3>The systems and impact</h3>
-              <p>
-                Follow the technical progression from computer science to SCADA ownership, automation, and multi-plant impact.
-              </p>
-              <a href="/journey">Open Professional Showcase</a>
-            </article>
-          </div>
-        </div>
-      </section>
+      <SplitHero />
 
       <section id="certifications" class="section certifications-preview">
         <div class="container">
