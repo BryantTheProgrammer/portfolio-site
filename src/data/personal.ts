@@ -161,9 +161,28 @@ export const personalEntries: PersonalEntry[] = [
     years: "2020 to 2022",
     category: "robotics",
     summary:
-      "I took designs from the previous year's engineering design challenge and worked out how to manufacture them.",
-    tags: ["Prototyping", "Manufacturing", "Makerspace"],
+      "I helped turn engineering design challenge ideas into manufacturable prototypes. One was an early glove-retainer prototype intended to help someone with limited dexterity put on a medical glove in a sterile environment. We explored a trolley moving along a rail over a vacuum chamber to stretch the glove, then reviewed the first printed design and worked through questions about fit, friction, travel, and how to move the trolley.",
+    tags: ["Prototyping", "Manufacturing", "CAD", "Design iteration"],
     media: [],
+    featured: false,
+  },
+  {
+    id: "robotics-future-class-presentation",
+    title: "The Future of Robotics",
+    era: "Class assignment",
+    years: "November 11, 2023",
+    category: "robotics",
+    summary:
+      "I gave this presentation for a class assignment. It captures ideas I was exploring at the time, rather than a fixed or current position on the future of robotics.",
+    tags: ["Robotics", "Class presentation"],
+    media: [
+      {
+        type: "youtube",
+        src: "6Ua2Oi0WubY",
+        alt: "Bryant Hayden presenting a class assignment on the future of robotics",
+        caption: "Class presentation, November 11, 2023",
+      },
+    ],
     featured: false,
   },
   {
@@ -214,6 +233,25 @@ export const personalEntries: PersonalEntry[] = [
     tags: ["Double bass", "Jazz band", "Concert band", "Orchestra"],
     media: [],
     featured: false,
+  },
+  {
+    id: "music-double-bass-jury",
+    title: "Double bass jury performance",
+    era: "End-of-semester assessment",
+    years: "December 13, 2021",
+    category: "music",
+    summary:
+      "I performed this graded end-of-semester double bass jury on December 13, 2021.",
+    tags: ["Double bass", "Jury", "Performance"],
+    media: [
+      {
+        type: "youtube",
+        src: "cO4q0t3lMwU",
+        alt: "Bryant Hayden performing a double bass jury",
+        caption: "Double bass jury performance",
+      },
+    ],
+    featured: true,
   },
   {
     id: "music-all-state",
@@ -294,12 +332,13 @@ export const personalEntries: PersonalEntry[] = [
   },
   {
     id: "teaching-asta",
-    title: "American String Teachers Association National Conference",
+    title: "ASTA National Conference: String Project Best Practices",
     era: "Atlanta",
     years: "2022",
     category: "teaching",
-    summary: "I presented best practices for string projects at the national conference.",
-    tags: ["ASTA", "Presentation", "String education"],
+    summary:
+      "I co-presented with violinist and music educator Jonathan New at the Pacific University String Project's National String Project Consortium Best Practices session. We shared bow exercises for beginning, intermediate, and advanced students.",
+    tags: ["ASTA", "String Project", "Bow exercises", "String education"],
     media: [],
     featured: false,
   },

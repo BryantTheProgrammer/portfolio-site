@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 420 420"
+     role="img"
+     aria-labelledby="title description">
+  <title id="title">Scrambled Rubik's Cube solving</title>
+  <desc id="description">
+    A three-by-three cube that starts scrambled, solves, and scrambles again.
+  </desc>
+
+  <style>
+    .sticker {
+      stroke: #171b24;
+      stroke-width: 5;
+      stroke-linejoin: round;
+    }
+  </style>
+
+  <g id="cube"></g>
+
+  <script><![CDATA[
+    const colors = {
+      "0,0,1":  "#f5f5f2", // white, top
+      "0,0,-1": "#ffd500", // yellow, bottom
+      "0,-1,0": "#009b48", // green, front
+      "0,1,0":  "#0046ad", // blue, back
+      "1,0,0":  "#c41e3a", // red, right
+      "-1,0,0": "#ff5800"  // orange, left
+    };
+
+    const moves = [
+      ["x",  1,  1],
+      ["z",  1, -1],
+      ["y", -1,  1],
+      ["x", -1, -1],
+      ["z", -1,  1],
+      ["y",  1, -1],
+      ["x",  1, -1],
+      ["z",  1,  1]
+    ];
+
+    const stickers = [];
+
+    // Build all 54 stickers on a solved cube.
+    for (const [normalKey, color] of Object.entries(colors)) {
+      const normal = normalKey.split(",").map(Number);
+      const axis = normal.findIndex(value => value !== 0);
+      const other = [0, 1, 2].filter(i => i !== axis);
+
+      for (let a = -1; a <= 1; a++) {
+        for (let b = -1; b <= 1; b++) {
+          const position = [0, 0, 0];
+          position[axis] = normal[axis];
+          position[other[0]] = a;
+          position[other[1]] = b;
+
+          stickers.push({
+            position,
+            normal: [...normal],
+            color
+          });
+        }
+      }
+    }
+
+    function rotate(vector, axis, direction) {
+      const [x, y, z] = vector;
+
+      if (axis === "x") return [x, -direction * z, direction * y];
+      if (axis === "y") return [direction * z, y, -direction * x];
+      return [-direction * y, direction * x, z];
+    }
+
+    function turn(axis, layer, direction) {
+      const index = { x: 0, y: 1, z: 2 }[axis];
+
+      for (const sticker of stickers) {
+        if (sticker.position[index] === layer) {
+          sticker.position = rotate(sticker.position, axis, direction);
+          sticker.normal = rotate(sticker.normal, axis, direction);
+        }
+      }
+    }
+
+    // Start in a reachable scrambled state.
+    for (const move of moves) turn(...move);
+
+    function project([x, y, z]) {
+      return [
+        210 + 43 * x + 43 * y,
+        220 + 25 * x - 25 * y - 49 * z
+      ];
+    }
+
+    function polygonPoints(sticker) {
+      const { position, normal } = sticker;
+      const axis = normal.findIndex(value => value !== 0);
+      const other = [0, 1, 2].filter(i => i !== axis);
+      const corners = [
+        [-0.44, -0.44],
+        [ 0.44, -0.44],
+        [ 0.44,  0.44],
+        [-0.44,  0.44]
+      ];
+
+      return corners.map(([a, b]) => {
+        const point = [...position];
+        point[axis] = 1.5 * normal[axis];
+        point[other[0]] += a;
+        point[other[1]] += b;
+        return project(point).join(",");
+      }).join(" ");
+    }
+
+    function draw() {
+      const visible = stickers.filter(({ normal }) =>
+        normal[2] === 1 ||
+        normal[1] === -1 ||
+        normal[0] === 1
+      );
+
+      const order = normal =>
+        normal[1] === -1 ? 0 : normal[0] === 1 ? 1 : 2;
+
+      visible.sort((a, b) => order(a.normal) - order(b.normal));
+
+      const cube = document.getElementById("cube");
+      cube.replaceChildren();
+
+      for (const sticker of visible) {
+        const polygon = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "polygon"
+        );
+
+        polygon.setAttribute("class", "sticker");
+        polygon.setAttribute("points", polygonPoints(sticker));
+        polygon.setAttribute("fill", sticker.color);
+        cube.appendChild(polygon);
+      }
+    }
+
+    draw();
+
+    // Reverse the scramble to solve, then repeat it.
+    const sequence = [
+      ...moves.slice().reverse().map(
+        ([axis, layer, direction]) =>
+          [axis, layer, -direction]
+      ),
+      ...moves
+    ];
+
+    if (!window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches) {
+      let step = 0;
+
+      setInterval(() => {
+        turn(...sequence[step]);
+        step = (step + 1) % sequence.length;
+        draw();
+      }, 850);
+    }
+  ]]></script>
+</svg>

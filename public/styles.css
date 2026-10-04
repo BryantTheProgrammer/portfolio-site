@@ -2697,6 +2697,20 @@ a.project-card:focus-visible {
   color: var(--muted);
 }
 
+.personal-cube-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.personal-cube-icon {
+  flex: 0 0 auto;
+  width: 72px;
+  height: 72px;
+  border: 0;
+  background: transparent;
+}
+
 .personal-feature {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -3130,6 +3144,15 @@ a.project-card:focus-visible {
 
   .personal-hero h1 {
     font-size: 2.4rem;
+  }
+
+  .personal-cube-heading {
+    gap: var(--space-2);
+  }
+
+  .personal-cube-icon {
+    width: 56px;
+    height: 56px;
   }
 
   .personal-entry-grid {
