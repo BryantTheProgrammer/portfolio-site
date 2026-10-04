@@ -69,89 +69,92 @@ const visibleCertifications = featured ? certifications.slice(0, 3) : certificat
 
 <div class="certification-grid">
   {visibleCertifications.map((certification) => (
-    <button class="certification-card" type="button" data-certification={certification.id} aria-haspopup="dialog">
-      <span class="certification-card__topline">
-        <span class="certification-card__mark">{certification.mark}</span>
-        <span class="certification-card__year">{certification.year}</span>
-      </span>
-      <span class="certification-card__category">{certification.category}</span>
-      <strong>{certification.title}</strong>
-      <span class="certification-card__issuer">{certification.issuer}</span>
-      <span class="certification-card__open">View credential <span aria-hidden="true">↗</span></span>
-    </button>
+    <article class="certification-card">
+      <div class="certification-card__inner">
+        <div class="certification-card__face certification-card__face--front">
+          <button
+            class="certification-card__flip"
+            type="button"
+            aria-expanded="false"
+            aria-label={`Show details for ${certification.title}`}
+          >
+            <span class="certification-card__topline">
+              <span class="certification-card__mark">{certification.mark}</span>
+              <span class="certification-card__year">{certification.year}</span>
+            </span>
+            <span class="certification-card__category">{certification.category}</span>
+            <strong>{certification.title}</strong>
+            <span class="certification-card__issuer">{certification.issuer}</span>
+            <span class="certification-card__open">View credential <span aria-hidden="true">↻</span></span>
+          </button>
+        </div>
+        <div class="certification-card__face certification-card__face--back" aria-hidden="true" inert>
+          <div class="certification-card__back-content">
+            <button
+              class="certification-card__return"
+              type="button"
+              aria-expanded="false"
+              aria-label={`Return to ${certification.title} summary`}
+              tabindex="-1"
+            >← Back</button>
+            <p class="certification-card__category">{certification.category}</p>
+            <strong class="certification-card__back-title">{certification.title}</strong>
+            <p class="certification-card__back-meta">{certification.issuer} · {certification.date ?? certification.year}</p>
+            <p class="certification-card__back-summary">{certification.summary}</p>
+            <p class="certification-card__back-detail">{certification.details}</p>
+            {certification.assetType === "pdf" && certification.assetPath ? (
+              <>
+                <iframe
+                  class="certification-card__preview"
+                  src={`${certification.assetPath}#toolbar=0&navpanes=0`}
+                  title={`${certification.title} PDF preview`}
+                  loading="lazy"
+                  tabindex="-1"
+                ></iframe>
+                <a class="certification-card__pdf-link" href={certification.assetPath} target="_blank" rel="noreferrer">
+                  Open PDF in a new tab <span aria-hidden="true">↗</span>
+                </a>
+              </>
+            ) : (
+              <p class="certification-card__pending">A document preview is not available for this credential.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
   ))}
 </div>
 
-<dialog class="certification-dialog" aria-labelledby="certification-dialog-title">
-  <div class="certification-dialog__panel">
-    <button class="certification-dialog__close" type="button" aria-label="Close certification details">×</button>
-    <p class="eyebrow">Certification detail</p>
-    <div class="certification-dialog__mark" id="certification-dialog-mark">IC</div>
-    <h2 id="certification-dialog-title">Ignition 8.1 Certified</h2>
-    <p class="certification-dialog__meta" id="certification-dialog-meta">Inductive Automation · March 10, 2026</p>
-    <p id="certification-dialog-summary">Certified in Ignition 8.1 Core functionality by Inductive Automation.</p>
-    <div class="certification-dialog__detail" id="certification-dialog-detail"></div>
-    <div class="certification-dialog__asset" id="certification-dialog-asset" hidden>
-      <img id="certification-dialog-image" alt="" />
-      <iframe id="certification-dialog-pdf" title="Certification document preview"></iframe>
-      <a id="certification-dialog-link" class="button button--secondary" target="_blank" rel="noreferrer">Open full credential</a>
-    </div>
-    <p class="certification-dialog__pending" id="certification-dialog-pending">Credential image or PDF can be added here when available.</p>
-  </div>
-</dialog>
-
 <script>
-  type Certification = { title: string; issuer: string; year: string; date?: string; mark: string; summary: string; details: string; assetPath: string; assetType: string };
-  const certificationData: Record<string, Certification> = {
-    "ignition-core": { title: "Ignition 8.1 Certified", issuer: "Inductive Automation", year: "2026", date: "March 10, 2026", mark: "IC", summary: "Certified in Ignition 8.1 Core functionality by Inductive Automation.", details: "Successfully completed the Ignition Core certification test and demonstrated qualification on the Core level functionality of Ignition.", assetPath: "/certifications/ignition-8-1-certified.pdf", assetType: "pdf" },
-    "ignition-university": { title: "Ignition University Credential", issuer: "Inductive Automation", year: "2025", mark: "IU", summary: "Formal training in the Ignition ecosystem and plant-floor application patterns.", details: "This credential supports practical work across Perspective, gateway configuration, tags, scripting, and production-oriented SCADA design.", assetPath: "", assetType: "" },
-    "responsive-web-design": { title: "Responsive Web Design", issuer: "freeCodeCamp", year: "2024", mark: "RW", summary: "Demonstrated fluency in accessible, responsive HTML and CSS layouts.", details: "A web foundation covering semantic HTML, responsive layouts, accessibility, visual hierarchy, and modern CSS techniques.", assetPath: "", assetType: "" },
-    "git-essentials": { title: "Git Essentials", issuer: "LinkedIn Learning", year: "2024", mark: "G", summary: "Version-control fundamentals for collaborative software delivery.", details: "Covers practical Git workflows, branching, commits, collaboration, and repository hygiene for maintainable project history.", assetPath: "", assetType: "" },
-    "c-sharp": { title: "C# Certification", issuer: "Microsoft / freeCodeCamp", year: "2024", mark: "C#", summary: "A formal programming credential covering core C# concepts and application development.", details: "A programming foundation in C# syntax, object-oriented design, data structures, and application development patterns.", assetPath: "", assetType: "" },
-  };
+  document.querySelectorAll<HTMLElement>(".certification-card").forEach((card) => {
+    const flipButton = card.querySelector<HTMLButtonElement>(".certification-card__flip");
+    const returnButton = card.querySelector<HTMLButtonElement>(".certification-card__return");
+    const front = card.querySelector<HTMLElement>(".certification-card__face--front");
+    const back = card.querySelector<HTMLElement>(".certification-card__face--back");
 
-  const dialog = document.querySelector<HTMLDialogElement>(".certification-dialog");
-  const closeButton = document.querySelector<HTMLButtonElement>(".certification-dialog__close");
-  const dialogTitle = document.querySelector<HTMLElement>("#certification-dialog-title");
-  const dialogMeta = document.querySelector<HTMLElement>("#certification-dialog-meta");
-  const dialogMark = document.querySelector<HTMLElement>("#certification-dialog-mark");
-  const dialogSummary = document.querySelector<HTMLElement>("#certification-dialog-summary");
-  const dialogDetail = document.querySelector<HTMLElement>("#certification-dialog-detail");
-  const dialogAsset = document.querySelector<HTMLElement>("#certification-dialog-asset");
-  const dialogImage = document.querySelector<HTMLImageElement>("#certification-dialog-image");
-  const dialogPdf = document.querySelector<HTMLIFrameElement>("#certification-dialog-pdf");
-  const dialogLink = document.querySelector<HTMLAnchorElement>("#certification-dialog-link");
-  const dialogPending = document.querySelector<HTMLElement>("#certification-dialog-pending");
+    if (!flipButton || !returnButton || !front || !back) {
+      throw new Error("A certification card is missing its flip controls or faces.");
+    }
 
-  document.querySelectorAll<HTMLButtonElement>("[data-certification]").forEach((card) => {
-    card.addEventListener("click", () => {
-      const certificationId = card.dataset.certification;
-      if (!certificationId) return;
-      const certification = certificationData[certificationId];
-      if (!certification || !dialog || !dialogTitle || !dialogMeta || !dialogMark || !dialogSummary || !dialogDetail || !dialogAsset || !dialogImage || !dialogPdf || !dialogLink || !dialogPending) return;
-      dialogTitle.textContent = certification.title;
-      dialogMeta.textContent = `${certification.issuer} · ${certification.date ?? certification.year}`;
-      dialogMark.textContent = certification.mark;
-      dialogSummary.textContent = certification.summary;
-      dialogDetail.textContent = certification.details;
-      dialogImage.hidden = certification.assetType !== "image";
-      dialogPdf.hidden = certification.assetType !== "pdf";
-      dialogAsset.hidden = !certification.assetPath;
-      dialogPending.hidden = Boolean(certification.assetPath);
-      if (certification.assetPath) {
-        dialogLink.href = certification.assetPath;
-        if (certification.assetType === "image") {
-          dialogImage.src = certification.assetPath;
-          dialogImage.alt = `${certification.title} certificate`;
-        }
-        if (certification.assetType === "pdf") dialogPdf.src = certification.assetPath;
+    const setFlipped = (flipped: boolean, restoreFocus = true) => {
+      card.classList.toggle("is-flipped", flipped);
+      flipButton.setAttribute("aria-expanded", String(flipped));
+      returnButton.setAttribute("aria-expanded", String(flipped));
+      front.setAttribute("aria-hidden", String(flipped));
+      back.setAttribute("aria-hidden", String(!flipped));
+      front.toggleAttribute("inert", flipped);
+      back.toggleAttribute("inert", !flipped);
+      flipButton.tabIndex = flipped ? -1 : 0;
+      returnButton.tabIndex = flipped ? 0 : -1;
+      if (restoreFocus) (flipped ? returnButton : flipButton).focus();
+    };
+
+    flipButton.addEventListener("click", () => setFlipped(true));
+    returnButton.addEventListener("click", () => setFlipped(false));
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && card.classList.contains("is-flipped")) {
+        setFlipped(false);
       }
-      dialog.showModal();
     });
-  });
-
-  closeButton?.addEventListener("click", () => dialog?.close());
-  dialog?.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
   });
 </script>

@@ -1,5 +1,6 @@
 ---
 import SiteNav from "../components/SiteNav.astro";
+import BackToTop from "../components/BackToTop.astro";
 import CertificationGrid from "../components/CertificationGrid.astro";
 import SplitHero from "../components/SplitHero.astro";
 ---
@@ -26,7 +27,7 @@ import SplitHero from "../components/SplitHero.astro";
   <body>
     <SiteNav active="portfolio" />
 
-    <main id="top">
+    <main>
       <SplitHero />
 
       <section class="portfolio-intro" id="portfolio-intro">
@@ -77,18 +78,18 @@ import SplitHero from "../components/SplitHero.astro";
             <div class="card">
               <h3>Systems &amp; Delivery</h3>
               <ul class="skill-list">
-                <li>SCADA application ownership</li>
-                <li>Production workflow design</li>
-                <li>MES and ERP operational integration</li>
+                <li>Ignition SCADA application ownership and development</li>
+                <li>Requirements through testing, commissioning, documentation, and operator training</li>
+                <li>Production workflows connecting SCADA, MES, and ERP</li>
               </ul>
             </div>
 
             <div class="card">
-              <h3>Operational Impact</h3>
+              <h3>Integration &amp; Plant Insight</h3>
               <ul class="skill-list">
-                <li>Plant-floor visibility and KPI systems</li>
-                <li>Traceability and serialization</li>
-                <li>Commissioning, documentation, and operator enablement</li>
+                <li>PLC, equipment, MES, and ERP data integration</li>
+                <li>MQTT, OPC UA, REST APIs, and SQL data flows</li>
+                <li>Plant-floor visibility, traceability, and operational KPIs</li>
               </ul>
             </div>
           </div>
@@ -117,16 +118,6 @@ import SplitHero from "../components/SplitHero.astro";
             </div>
             <div class="contact-links">
               <a class="button button--secondary" href="mailto:bryantchayden@gmail.com">Email</a>
-              <button
-                class="button button--secondary copy-email"
-                type="button"
-                data-copy-email="bryantchayden@gmail.com"
-                aria-label="Copy email address"
-                title="Copy email address"
-              >
-                <span class="copy-icon" aria-hidden="true"></span>
-                <span class="copy-email__label">Copy Email</span>
-              </button>
               <a class="button button--secondary" href="https://www.linkedin.com/in/bhcs1/" target="_blank" rel="noreferrer">LinkedIn</a>
               <a class="button button--secondary" href="/contact-card">Contact Card</a>
               <a class="button button--secondary" href="/resume">Resume</a>
@@ -137,6 +128,7 @@ import SplitHero from "../components/SplitHero.astro";
     </main>
 
     <footer class="site-footer">
+      <BackToTop />
       <div class="container footer__content">
         <p>© 2026 Bryant Hayden</p>
         <p>IT/OT • SCADA • MES • IIoT</p>

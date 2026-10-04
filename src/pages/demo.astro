@@ -2,6 +2,7 @@
 const title = "Bryant Hayden — SCADA / MES Developer";
 const description = "An interactive Three.js study of a rotating industrial rotor controlled by scroll.";
 import SiteNav from "../components/SiteNav.astro";
+import BackToTop from "../components/BackToTop.astro";
 ---
 
 <!DOCTYPE html>
@@ -51,6 +52,9 @@ import SiteNav from "../components/SiteNav.astro";
         <a class="demo-button" href="/">Return to the portfolio <span aria-hidden="true">→</span></a>
       </section>
     </main>
+    <footer class="site-footer">
+      <BackToTop />
+    </footer>
 
     <script>
       import * as THREE from "three";

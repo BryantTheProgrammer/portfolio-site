@@ -1,5 +1,6 @@
 ---
 import SiteNav from "../../components/SiteNav.astro";
+import BackToTop from "../../components/BackToTop.astro";
 import ArchitectureDiagram from "../../components/ArchitectureDiagram.astro";
 import { projects } from "../../data/projects.js";
 
@@ -147,6 +148,7 @@ const others = projects.filter((item) => item.slug !== project.slug);
     </main>
 
     <footer class="site-footer">
+      <BackToTop />
       <div class="container footer__content">
         <p>© 2026 Bryant Hayden</p>
         <p>IT/OT • SCADA • MES • IIoT</p>
