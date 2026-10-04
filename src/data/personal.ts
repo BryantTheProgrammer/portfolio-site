@@ -8,6 +8,14 @@ export type PersonalMedia = {
   thumbnail?: string;
 };
 
+export type PersonalEntrySection = {
+  title: string;
+  era: string;
+  years: string;
+  summary: string;
+  tags: string[];
+};
+
 export type PersonalEntry = {
   id: string;
   title: string;
@@ -18,6 +26,7 @@ export type PersonalEntry = {
   tags: string[];
   media: PersonalMedia[];
   featured: boolean;
+  sections?: PersonalEntrySection[];
 };
 
 export type CubeStoryMoment = {
@@ -83,37 +92,14 @@ export const cubeStory: CubeStoryMoment[] = [
 
 export const personalEntries: PersonalEntry[] = [
   {
-    id: "robotics-lego-elementary",
+    id: "robotics-lego",
     title: "LEGO robotics",
-    era: "4th and 5th grade",
-    years: "",
-    category: "robotics",
-    summary: "I first explored team robotics by building and experimenting with LEGO robots.",
-    tags: ["LEGO", "Team robotics", "Exploration"],
-    media: [],
-    featured: false,
-  },
-  {
-    id: "robotics-home-kit",
-    title: "Home LEGO robotics kit",
-    era: "Middle school",
+    era: "Elementary to middle school",
     years: "",
     category: "robotics",
     summary:
-      "I kept building on my own with a home kit, including a LEGO NXT Rubik's Cube solver.",
-    tags: ["LEGO NXT", "Robotics", "Independent building"],
-    media: [],
-    featured: false,
-  },
-  {
-    id: "robotics-middle-school",
-    title: "Middle school LEGO robotics",
-    era: "Middle school",
-    years: "",
-    category: "robotics",
-    summary:
-      "I moved into more competitive robotics, designing and programming under rules and deadlines.",
-    tags: ["LEGO", "Design", "Programming"],
+      "I started with team LEGO robotics in elementary school, then continued building independently with a home kit. By middle school, I was taking on more competitive challenges—designing and programming within rules and deadlines—and built a LEGO NXT robot to solve a Rubik's Cube.",
+    tags: ["LEGO", "LEGO NXT", "Team robotics", "Competition", "Independent building"],
     media: [],
     featured: false,
   },
@@ -212,27 +198,31 @@ export const personalEntries: PersonalEntry[] = [
     featured: true,
   },
   {
-    id: "music-cello",
-    title: "Cello",
-    era: "Middle school",
+    id: "music-strings",
+    title: "Cello & Double Bass",
+    era: "School orchestras and ensembles",
     years: "",
     category: "music",
-    summary: "I played cello in my middle school orchestra.",
-    tags: ["Cello", "Orchestra"],
+    summary: "",
+    tags: [],
     media: [],
     featured: false,
-  },
-  {
-    id: "music-double-bass",
-    title: "Double bass",
-    era: "High school",
-    years: "",
-    category: "music",
-    summary:
-      "I played double bass in jazz band, concert band, orchestra, and two musicals.",
-    tags: ["Double bass", "Jazz band", "Concert band", "Orchestra"],
-    media: [],
-    featured: false,
+    sections: [
+      {
+        title: "Cello",
+        era: "Middle school",
+        years: "",
+        summary: "I played cello in my middle school orchestra.",
+        tags: ["Cello", "Orchestra"],
+      },
+      {
+        title: "Double bass",
+        era: "High school",
+        years: "",
+        summary: "I played double bass in jazz band, concert band, orchestra, and two musicals.",
+        tags: ["Double bass", "Jazz band", "Concert band", "Orchestra"],
+      },
+    ],
   },
   {
     id: "music-double-bass-jury",
@@ -254,26 +244,31 @@ export const personalEntries: PersonalEntry[] = [
     featured: true,
   },
   {
-    id: "music-all-state",
-    title: "All-State Wind Ensemble",
-    era: "Double bassist",
-    years: "2020",
+    id: "music-double-bass-ensembles",
+    title: "Double bass",
+    era: "Ensemble performances",
+    years: "",
     category: "music",
-    summary: "I performed as a double bassist with the All-State Wind Ensemble.",
-    tags: ["Double bass", "Wind ensemble"],
+    summary: "",
+    tags: [],
     media: [],
     featured: false,
-  },
-  {
-    id: "music-portland-youth-philharmonic",
-    title: "Portland Youth Philharmonic",
-    era: "Double bass",
-    years: "2020",
-    category: "music",
-    summary: "I played double bass with Portland Youth Philharmonic.",
-    tags: ["Double bass", "Orchestra"],
-    media: [],
-    featured: false,
+    sections: [
+      {
+        title: "Portland Youth Philharmonic",
+        era: "Double bass",
+        years: "2020",
+        summary: "I played double bass with Portland Youth Philharmonic.",
+        tags: ["Orchestra"],
+      },
+      {
+        title: "All-State Wind Ensemble",
+        era: "Double bassist",
+        years: "2020",
+        summary: "I performed as a double bassist with the All-State Wind Ensemble.",
+        tags: ["Wind ensemble"],
+      },
+    ],
   },
   {
     id: "music-pacific-orchestra",

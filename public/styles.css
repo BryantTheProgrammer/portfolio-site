@@ -2901,6 +2901,44 @@ a.project-card:focus-visible {
   padding: var(--space-5);
 }
 
+.personal-entry__sections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.personal-entry__section {
+  min-width: 0;
+  padding: var(--space-4) var(--space-4) 0 0;
+}
+
+.personal-entry__section + .personal-entry__section {
+  padding-right: 0;
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--line);
+}
+
+.personal-entry__section .personal-entry__meta {
+  margin-bottom: var(--space-2);
+}
+
+.personal-entry__section h5 {
+  margin: 0 0 var(--space-2);
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.personal-entry__section > p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.personal-entry__section .personal-entry__tags {
+  margin-top: var(--space-3);
+}
+
 #robotics-rubiks-bot {
   display: grid;
   grid-column: 1 / -1;
@@ -3180,6 +3218,20 @@ a.project-card:focus-visible {
 
   .personal-entry {
     padding: var(--space-4);
+  }
+
+  .personal-entry__sections {
+    grid-template-columns: 1fr;
+  }
+
+  .personal-entry__section {
+    padding-right: 0;
+  }
+
+  .personal-entry__section + .personal-entry__section {
+    padding: var(--space-4) 0 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
   }
 
   .personal-filters {

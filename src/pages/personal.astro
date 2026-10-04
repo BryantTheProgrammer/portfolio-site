@@ -149,10 +149,30 @@ const showLabName = labName.trim() !== "" && !labName.includes("[LAB NAME]");
                         {entry.featured && <span class="personal-entry__featured">Featured</span>}
                       </div>
                       <h4>{entry.title}</h4>
-                      <p>{entry.summary}</p>
-                      <ul class="personal-entry__tags" aria-label={`${entry.title} topics`}>
-                        {entry.tags.map((tag) => <li>{tag}</li>)}
-                      </ul>
+                      {entry.sections ? (
+                        <div class="personal-entry__sections">
+                          {entry.sections.map((section) => (
+                            <section class="personal-entry__section" aria-label={section.title}>
+                              <div class="personal-entry__meta">
+                                <span>{section.era}</span>
+                                {section.years && <span>{section.years}</span>}
+                              </div>
+                              <h5>{section.title}</h5>
+                              <p>{section.summary}</p>
+                              <ul class="personal-entry__tags" aria-label={`${section.title} topics`}>
+                                {section.tags.map((tag) => <li>{tag}</li>)}
+                              </ul>
+                            </section>
+                          ))}
+                        </div>
+                      ) : (
+                        <>
+                          <p>{entry.summary}</p>
+                          <ul class="personal-entry__tags" aria-label={`${entry.title} topics`}>
+                            {entry.tags.map((tag) => <li>{tag}</li>)}
+                          </ul>
+                        </>
+                      )}
                       {entry.media.length > 0 && (
                         <div class="personal-entry__media">
                           {entry.media.map((media) => <PersonalMedia media={media} />)}
