@@ -1,8 +1,8 @@
 ---
-const { active = "portfolio", demo = false, landing = false } = Astro.props;
+const { active = "portfolio", demo = false } = Astro.props;
 ---
 
-<header class:list={["site-header", { "site-header--demo": demo, "site-header--landing": landing }]}>
+<header class:list={["site-header", { "site-header--demo": demo }]}>
   <div class="container nav">
     <a class="brand" href="/">
       <img src="/favicon.svg" alt="" />

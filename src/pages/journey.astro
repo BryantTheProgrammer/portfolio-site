@@ -1,5 +1,6 @@
 ---
 import SiteNav from "../components/SiteNav.astro";
+import ProjectGrid from "../components/ProjectGrid.astro";
 ---
 
 <!DOCTYPE html>
@@ -33,6 +34,19 @@ import SiteNav from "../components/SiteNav.astro";
             A focused view of my professional growth, technical ownership, and measurable impact across SCADA, MES, IIoT,
             automation, and manufacturing data systems.
           </p>
+        </div>
+      </section>
+
+      <section class="section professional-projects" id="projects">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">Selected industrial work</p>
+            <h2 class="section__title">What I build professionally</h2>
+            <p class="lead">
+              Four projects showing how I connect software, equipment, and production needs into working systems.
+            </p>
+          </div>
+          <ProjectGrid />
         </div>
       </section>
 

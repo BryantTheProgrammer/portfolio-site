@@ -1,7 +1,6 @@
 ---
 import SiteNav from "../components/SiteNav.astro";
 import CertificationGrid from "../components/CertificationGrid.astro";
-import ProjectGrid from "../components/ProjectGrid.astro";
 import SplitHero from "../components/SplitHero.astro";
 ---
 
@@ -25,7 +24,7 @@ import SplitHero from "../components/SplitHero.astro";
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <SiteNav active="portfolio" landing />
+    <SiteNav active="portfolio" />
 
     <main id="top">
       <SplitHero />
@@ -96,15 +95,6 @@ import SplitHero from "../components/SplitHero.astro";
         </div>
       </section>
 
-      <section id="projects" class="section">
-        <div class="container">
-          <div class="section__header">
-            <h2 class="section__title">Featured Projects</h2>
-          </div>
-          <ProjectGrid />
-        </div>
-      </section>
-
       <section id="certifications" class="section certifications-preview">
         <div class="container">
           <div class="section__header section__header--split">
@@ -152,19 +142,6 @@ import SplitHero from "../components/SplitHero.astro";
         <p>IT/OT • SCADA • MES • IIoT</p>
       </div>
     </footer>
-    <script is:inline>
-      const landingHeader = document.querySelector(".site-header--landing");
-      const identity = document.querySelector(".hero__identity");
-
-      if (landingHeader && identity) {
-        const updateLandingHeader = () => {
-          landingHeader.classList.toggle("is-scrolled", identity.getBoundingClientRect().bottom < 72);
-        };
-
-        window.addEventListener("scroll", updateLandingHeader, { passive: true });
-        updateLandingHeader();
-      }
-    </script>
     <script src="/script.js" is:inline></script>
   </body>
 </html>

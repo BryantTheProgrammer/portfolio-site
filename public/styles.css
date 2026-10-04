@@ -126,19 +126,6 @@ body:not(.demo-page) main {
   text-decoration: underline;
 }
 
-.site-header--landing .brand span {
-  display: inline-block;
-  max-width: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-width 0.35s ease, opacity 0.25s ease;
-}
-
-.site-header--landing.is-scrolled .brand span {
-  max-width: 180px;
-  opacity: 1;
-}
-
 .nav__links {
   display: flex;
   align-items: center;
