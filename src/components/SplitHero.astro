@@ -36,5 +36,35 @@
     />
   </div>
 
-  <span class="split-hero__divider" aria-hidden="true"></span>
 </section>
+
+<script>
+  const splitHero = document.querySelector(".split-hero");
+
+  if (splitHero instanceof HTMLElement) {
+    const desktopHover = window.matchMedia("(hover: hover) and (min-width: 761px)");
+
+    splitHero.addEventListener("pointermove", (event) => {
+      if (!desktopHover.matches || event.pointerType !== "mouse") return;
+
+      const bounds = splitHero.getBoundingClientRect();
+      const position = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+      const personalReveal = Math.max(0, Math.min(1, (0.8 - position) / 0.6));
+
+      splitHero.style.setProperty("--x", `${personalReveal * 100}%`);
+
+      if (personalReveal >= 0.999) {
+        splitHero.dataset.active = "personal";
+      } else if (personalReveal <= 0.001) {
+        splitHero.dataset.active = "professional";
+      } else {
+        delete splitHero.dataset.active;
+      }
+    });
+
+    splitHero.addEventListener("pointerleave", () => {
+      splitHero.style.removeProperty("--x");
+      delete splitHero.dataset.active;
+    });
+  }
+</script>

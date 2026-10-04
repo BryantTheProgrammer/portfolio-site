@@ -28,57 +28,48 @@ import SplitHero from "../components/SplitHero.astro";
     <SiteNav active="portfolio" landing />
 
     <main id="top">
-      <section class="hero">
-        <div class="container hero__grid">
-          <div class="hero__content">
+      <SplitHero />
+
+      <section class="portfolio-intro" id="portfolio-intro">
+        <div class="container">
+          <a class="portfolio-scroll-cue" href="#expertise">
+            <span>Scroll to explore</span>
+            <span aria-hidden="true">↓</span>
+          </a>
+          <div class="portfolio-intro__content">
             <div class="hero__identity" aria-label="Bryant Hayden portfolio">
               <p class="hero__identity-name">Bryant Hayden</p>
               <p class="hero__identity-role">Controls Engineer</p>
             </div>
-            <h1>Building production software that holds up on the plant floor.</h1>
-            <p class="lead">
-              Sole developer of a plant Ignition environment — connecting operators, equipment, and MES with Python, SQL,
-              and industrial integrations.
-            </p>
-            <div class="cta-row">
-              <a class="button button--primary" href="/projects">View Projects</a>
-              <a class="button button--secondary" href="/contact">Contact Me</a>
+            <div>
+              <h1>Controls engineering built for the plant floor.</h1>
+              <p class="lead">
+                I build production-ready SCADA, MES, and IIoT systems that connect operators, equipment, and data.
+              </p>
+              <div class="cta-row">
+                <a class="button button--primary" href="/projects">Explore Projects</a>
+                <a class="button button--secondary" href="/contact">Get in Touch</a>
+              </div>
             </div>
-            <ul class="capability-list" aria-label="Key capabilities">
-              <li>SCADA</li>
-              <li>MES</li>
-              <li>IIoT</li>
-              <li>Automation</li>
-            </ul>
           </div>
-
-          <aside class="profile-card" aria-label="Professional summary">
-            <div class="profile-frame">
-              <img
-                class="profile-image"
-                src="/images/headshot3.png"
-                alt="Headshot of Bryant Hayden"
-              />
+          <div class="portfolio-impact" aria-label="Selected project impact">
+            <div class="portfolio-impact__item">
+              <strong>9 lines</strong>
+              <span>supported by plant SCADA</span>
             </div>
-            <div class="stats">
-              <div class="stat">
-                <strong>9 production lines</strong>
-                Supported by the Stayton Ignition SCADA environment
-              </div>
-              <div class="stat">
-                <strong>91%</strong>
-                SUDS cost reduction versus the commercial vendor quote
-              </div>
-              <div class="stat">
-                <strong>~550 hrs/yr</strong>
-                Labor recovered through reporting automation
-              </div>
-              <div class="stat">
-                <strong>31+ plants</strong>
-                IIoT gateway playbook adopted across North America
-              </div>
+            <div class="portfolio-impact__item">
+              <strong>91%</strong>
+              <span>SUDS cost reduction</span>
             </div>
-          </aside>
+            <div class="portfolio-impact__item">
+              <strong>~550 hrs</strong>
+              <span>recovered each year</span>
+            </div>
+            <div class="portfolio-impact__item">
+              <strong>31+ plants</strong>
+              <span>IIoT gateway playbook reach</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -117,55 +108,6 @@ import SplitHero from "../components/SplitHero.astro";
           <ProjectGrid />
         </div>
       </section>
-
-      <section class="section work-method" aria-labelledby="work-method-title">
-        <div class="container">
-          <div class="section__header">
-            <p class="eyebrow">How I work</p>
-            <h2 id="work-method-title" class="section__title">From plant-floor problem to lasting solution.</h2>
-          </div>
-
-          <ol class="work-method__strip" aria-label="Project delivery steps">
-            <li class="work-step">
-              <span class="work-step__icon" aria-hidden="true">01</span>
-              <div class="work-step__content">
-                <h3>Understand the floor</h3>
-                <p>Observe the workflow, listen to operators, and map the constraints that matter.</p>
-              </div>
-            </li>
-            <li class="work-step">
-              <span class="work-step__icon" aria-hidden="true">02</span>
-              <div class="work-step__content">
-                <h3>Shape the solution</h3>
-                <p>Turn the real process into clear requirements, signals, and success measures.</p>
-              </div>
-            </li>
-            <li class="work-step">
-              <span class="work-step__icon" aria-hidden="true">03</span>
-              <div class="work-step__content">
-                <h3>Build and validate</h3>
-                <p>Develop the application, then test it against actual operating conditions.</p>
-              </div>
-            </li>
-            <li class="work-step">
-              <span class="work-step__icon" aria-hidden="true">04</span>
-              <div class="work-step__content">
-                <h3>Commission and document</h3>
-                <p>Bring it online with a clear support and recovery path.</p>
-              </div>
-            </li>
-            <li class="work-step">
-              <span class="work-step__icon" aria-hidden="true">05</span>
-              <div class="work-step__content">
-                <h3>Train and improve</h3>
-                <p>Prepare operators and maintainers, then refine after launch.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
-      </section>
-
-      <SplitHero />
 
       <section id="certifications" class="section certifications-preview">
         <div class="container">
