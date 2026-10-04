@@ -1,0 +1,39 @@
+---
+import type { PersonalMedia } from "../data/personal";
+
+const { media } = Astro.props as { media: PersonalMedia };
+const videoId = media.type === "youtube"
+  ? media.src.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|watch\?v=))([\w-]{11})/)?.[1] ?? media.src
+  : "";
+---
+
+{media.type === "youtube" ? (
+  <figure class="personal-media">
+    <button
+      class="personal-video"
+      type="button"
+      data-youtube-id={videoId}
+      data-youtube-title={media.alt}
+      aria-label={`Load video: ${media.caption}`}
+    >
+      <img
+        src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`}
+        alt={media.alt}
+        loading="lazy"
+        decoding="async"
+      />
+      <span class="personal-video__play" aria-hidden="true"></span>
+    </button>
+    <figcaption>{media.caption}</figcaption>
+  </figure>
+) : media.type === "image" ? (
+  <figure class="personal-media">
+    <img class="personal-media__image" src={media.src} alt={media.alt} loading="lazy" decoding="async" />
+    <figcaption>{media.caption}</figcaption>
+  </figure>
+) : (
+  <a class="personal-media-link" href={media.src} aria-label={media.alt}>
+    <span>{media.caption}</span>
+    <span aria-hidden="true">→</span>
+  </a>
+)}

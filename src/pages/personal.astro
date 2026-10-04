@@ -1,0 +1,221 @@
+---
+import SiteNav from "../components/SiteNav.astro";
+import PersonalMedia from "../components/PersonalMedia.astro";
+import { cubeStory, labName, personalEntries } from "../data/personal";
+
+const categories = [
+  { id: "robotics", label: "Robotics & Making", heading: "Robotics & Making" },
+  { id: "music", label: "Music", heading: "Music" },
+  { id: "teaching", label: "Teaching", heading: "Teaching" },
+] as const;
+
+const showLabName = labName.trim() !== "" && !labName.includes("[LAB NAME]");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Builder & Teacher: the robotics, music, and teaching experiences that shaped Bryant Hayden."
+    />
+    <title>Builder &amp; Teacher | Bryant Hayden</title>
+    <meta property="og:title" content="Builder &amp; Teacher | Bryant Hayden" />
+    <meta
+      property="og:description"
+      content="Robotics, music, and teaching experiences that shaped how I build and share what I learn."
+    />
+    <meta property="og:image" content="/og-preview.svg" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="/og-preview.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="personal-page">
+    <SiteNav active="personal" />
+
+    <main>
+      <section class="personal-hero">
+        <div class="container">
+          <p class="eyebrow">Builder &amp; Teacher</p>
+          <h1>Making things, then helping others make them too.</h1>
+          <p class="lead">
+            Outside of plant floor work, I have spent most of my life building things and then teaching other people how to
+            build them. Robotics, machining, music, and classrooms all shaped how I work today.
+          </p>
+        </div>
+      </section>
+
+      <section class="section personal-feature" id="cube-story" aria-labelledby="cube-story-title">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">Featured story</p>
+            <h2 class="section__title" id="cube-story-title">The Rubik's Cube Thread</h2>
+            <p class="personal-section-intro">
+              One puzzle connected my early experiments, teaching, and a robot I built at university.
+            </p>
+          </div>
+
+          <div class="personal-timeline-scroll" tabindex="0" role="region" aria-label="Rubik's Cube timeline, scroll horizontally">
+            <ol class="personal-timeline">
+              {cubeStory.map((moment) => (
+                <li class="personal-timeline__item">
+                  <article class="personal-timeline__card">
+                    <p class="personal-timeline__era">{moment.era}</p>
+                    {moment.years !== moment.era && <p class="personal-timeline__years">{moment.years}</p>}
+                    <p>{moment.summary}</p>
+                    {moment.id === "robotics-lab" && showLabName && (
+                      <p>That included the {labName} robotics lab.</p>
+                    )}
+                    {moment.link && <a href={moment.link}>{moment.linkLabel}</a>}
+                  </article>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section personal-archive" id="experiences" aria-labelledby="experiences-title">
+        <div class="container">
+          <div class="section__header">
+            <p class="eyebrow">More of the story</p>
+            <h2 class="section__title" id="experiences-title">Experiences that shaped me</h2>
+            <p class="personal-section-intro">
+              Choose a thread to browse the projects, music, and teaching that I keep coming back to.
+            </p>
+          </div>
+
+          <div class="personal-filters" role="group" aria-label="Filter personal experiences">
+            <button class="personal-filter is-active" type="button" data-personal-filter="all" aria-pressed="true">All</button>
+            {categories.map((category) => (
+              <button
+                class="personal-filter"
+                type="button"
+                data-personal-filter={category.id}
+                aria-pressed="false"
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
+          <p class="visually-hidden" data-personal-results aria-live="polite"></p>
+
+          <div class="personal-categories">
+            {categories.map((category) => (
+              <section
+                class="personal-category"
+                data-personal-category={category.id}
+                aria-labelledby={`personal-${category.id}-title`}
+              >
+                <div class="personal-category__heading">
+                  <p class="eyebrow">{category.label}</p>
+                  <h3 id={`personal-${category.id}-title`}>{category.heading}</h3>
+                </div>
+                <div class="personal-entry-grid">
+                  {personalEntries.filter((entry) => entry.category === category.id).map((entry) => (
+                    <article
+                      class="card personal-entry"
+                      id={entry.id}
+                      data-personal-entry
+                      data-category={entry.category}
+                    >
+                      <div class="personal-entry__meta">
+                        <span>{entry.era}</span>
+                        {entry.years && entry.years !== entry.era && <span>{entry.years}</span>}
+                        {entry.featured && <span class="personal-entry__featured">Featured</span>}
+                      </div>
+                      <h4>{entry.title}</h4>
+                      <p>{entry.summary}</p>
+                      <ul class="personal-entry__tags" aria-label={`${entry.title} topics`}>
+                        {entry.tags.map((tag) => <li>{tag}</li>)}
+                      </ul>
+                      {entry.media.length > 0 && (
+                        <div class="personal-entry__media">
+                          {entry.media.map((media) => <PersonalMedia media={media} />)}
+                        </div>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section personal-next">
+        <div class="container personal-next__content">
+          <p class="eyebrow">Keep exploring</p>
+          <h2 class="section__title">See what I build professionally.</h2>
+          <a class="button button--primary" href="/journey">Professional Showcase</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer__content">
+        <p>© 2026 Bryant Hayden</p>
+        <p>Robotics • Music • Teaching</p>
+      </div>
+    </footer>
+
+    <script>
+      const filterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-personal-filter]"));
+      const entries = Array.from(document.querySelectorAll<HTMLElement>("[data-personal-entry]"));
+      const categories = Array.from(document.querySelectorAll<HTMLElement>("[data-personal-category]"));
+      const resultAnnouncement = document.querySelector<HTMLElement>("[data-personal-results]");
+      const youtubeButtons = document.querySelectorAll<HTMLButtonElement>("[data-youtube-id]");
+
+      for (const button of youtubeButtons) {
+        button.addEventListener("click", () => {
+          const videoId = button.dataset.youtubeId;
+          const title = button.dataset.youtubeTitle;
+          if (!videoId || !title) {
+            throw new Error("A personal video is missing its YouTube ID or title.");
+          }
+
+          const iframe = document.createElement("iframe");
+          iframe.className = "personal-video__frame";
+          iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`;
+          iframe.title = title;
+          iframe.loading = "lazy";
+          iframe.allow = "accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+          iframe.allowFullscreen = true;
+          iframe.referrerPolicy = "strict-origin-when-cross-origin";
+          button.replaceWith(iframe);
+        });
+      }
+
+      for (const button of filterButtons) {
+        button.addEventListener("click", () => {
+          const filter = button.dataset.personalFilter ?? "all";
+          let visibleCount = 0;
+
+          for (const filterButton of filterButtons) {
+            const active = filterButton === button;
+            filterButton.classList.toggle("is-active", active);
+            filterButton.setAttribute("aria-pressed", String(active));
+          }
+
+          for (const entry of entries) {
+            const visible = filter === "all" || entry.dataset.category === filter;
+            entry.hidden = !visible;
+            if (visible) visibleCount += 1;
+          }
+
+          for (const category of categories) {
+            category.hidden = filter !== "all" && category.dataset.personalCategory !== filter;
+          }
+
+          if (resultAnnouncement) {
+            resultAnnouncement.textContent = `Showing ${visibleCount} experiences.`;
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
