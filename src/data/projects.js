@@ -108,50 +108,53 @@ def tank_state(us_cm, low, high):
     slug: "plant-floor-visibility",
     image: "/images/projects/plant-floor-visibility.png",
     alt: "Plant Floor Visibility Platform project",
+    overviewImage: "/images/projects/plant-floor-visibility-overview.png",
+    overviewAlt: "Overview of the live plant-floor map with machine status by production area",
     title: "Plant Floor Visibility Platform",
     kicker: "SCADA / Operations",
     tagline: "Real-time operational visibility presented to the North America plant manager network.",
-    metrics: ["NA best practice", "Live visibility", "Plant-wide KPIs"],
-    tech: ["Ignition Perspective", "OPC UA", "L2L"],
+    metrics: ["NA best practice", "Live visibility"],
+    tech: ["Ignition Perspective", "L2L REST API", "Jython"],
     problem:
-      "Supervisors could not see line status, downtime, and alarms on one plant-accurate picture. Data lived in MES, the PLC, and tribal knowledge, so a walk of the floor was still the fastest way to know what was actually running.",
+      "During live production, teams kept asking which machines were down, which lines were impacted, and where on the floor. The answers were buried in scrolling L2L dispatch lists that required logging in and navigating. Every clarification cost response time.",
     approach:
-      "I built an interactive real-time floor map in Ignition Perspective. Equipment state, downtime, and alarms bind to the same tag model the rest of the SCADA uses, so the map is an operator tool first and a leadership view second — not a slide that goes stale after the meeting.",
+      "I built a spatial status layer in Ignition Perspective. Machines sit where they physically are on the plant layout, colored by their most severe open L2L dispatch: red for down, yellow for impacted, and green for no impacting dispatches. All / Maint / IT filters scope by dispatch trade; area buttons jump to each production area, and the map supports zoom and pan. Double-clicking an asset opens that machine in L2L. It is designed to stay open on shared floor displays: a constant visual aid, not a report.",
     architectureCaption:
-      "OPC UA and L2L feed a single Ignition tag model. The Perspective map is a binding, not a screenshot: each cell is a component that inherits run, idle, alarm, and stale from live quality.",
+      "L2L remains the system of record. Once per minute, a single Ignition gateway REST API call reads all open dispatches for the site, resolves the most severe status for each machine by machine code, and refreshes the Perspective floor map. Double-clicking an asset opens that machine directly in L2L.",
     implementation:
-      "State is derived, not painted. A small transform turns quality, running, and alarm into a four-state color contract the map and the KPI tiles share, so a bad OPC subscription cannot look like a running machine.",
+      "I derive status from L2L dispatches: one gateway call refreshes the whole floor, keeping Perspective clients lightweight. Authenticated editing mode lets users move, add, and adjust assets live without a redeploy or Designer work; an L2L custom property defines each asset's map shape. The responsive layout works from an iPad mini to a 75-inch floor TV and in the Ignition Perspective mobile app. This is a visual awareness layer: it does not replace L2L dashboards, control machines, perform analytics, or act as a CMMS. The template needs a new background layout and the site's L2L code and dispatch types; it is already in use at another plant, and other sites have asked for it.",
     code: {
       lang: "python",
-      filename: "equipment_state.py",
-      caption: "Sanitized Perspective transform shared by the floor map and KPI tiles.",
-      source: `STATES = ("stale", "alarm", "run", "idle")
+      filename: "dispatch_status.py",
+      caption: "Sanitized Jython example using normalized dispatch fields.",
+      source: `SEVERITY = {"none": 0, "impacted": 1, "down": 2}
 
-def equipment_state(quality, running, alarm):
-    if quality != "Good":
-        return "stale"
-    if alarm:
-        return "alarm"
-    if running:
-        return "run"
-    return "idle"
+def worst_status_by_machine(open_dispatches, machine_codes):
+    status_by_machine = dict((code, "none") for code in machine_codes)
+    for dispatch in open_dispatches:
+        machine_code = dispatch.get("machine_code")
+        severity = dispatch.get("severity")
+        if machine_code in status_by_machine and severity in ("down", "impacted"):
+            current = status_by_machine[machine_code]
+            if SEVERITY[severity] > SEVERITY[current]:
+                status_by_machine[machine_code] = severity
+    return status_by_machine
 
-def cell_style(state):
+def cell_style(severity):
     return {
-        "stale": {"fill": "#3d4a63", "label": "No data"},
-        "alarm": {"fill": "#e05d5d", "label": "Alarm"},
-        "run": {"fill": "#7ef0c5", "label": "Running"},
-        "idle": {"fill": "#73c2fb", "label": "Idle"},
-    }[state]
+        "down": {"fill": "#ff0000", "label": "Machine/Equipment Down"},
+        "impacted": {"fill": "#ffff00", "label": "Machine/Equipment Impacted"},
+        "none": {"fill": "#008000", "label": "No impacting dispatches"},
+    }[severity]
 `,
     },
     results: [
-      { value: "Best practice", label: "Presented to senior leadership and North America plant managers" },
-      { value: "Live map", label: "Equipment status, downtime, and alarms on one Perspective view" },
-      { value: "Shared model", label: "Same tags drive the floor map and plant-wide KPIs" },
+      { value: "Best practice", label: "Presented to plant leadership and the North America plant manager network" },
+      { value: "One call, whole floor", label: "A single API call per minute keeps every asset current" },
+      { value: "Reusable pattern", label: "New sites need a layout, L2L site code, and dispatch types; already extended to another plant" },
     ],
     reflection:
-      "Next I would version the map geometry as data, not Designer drawings, so a line move is a coordinate update instead of a new view — and publish a read-only snapshot for sites that are not on Ignition yet.",
+      "Next, I would explore an event-driven push from L2L instead of polling, and evaluate the map as a native L2L visualization so sites without Ignition could use it.",
     videos: [
       {
         src: "https://www.youtube.com/embed/26jgrERn-EU",

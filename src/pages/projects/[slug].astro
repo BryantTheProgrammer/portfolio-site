@@ -68,6 +68,28 @@ const others = projects.filter((item) => item.slug !== project.slug);
             </div>
           </section>
 
+          {project.overviewImage && (
+            <section class="ship-block ship-overview">
+              <p class="ship-block__index" aria-hidden="true">VIEW</p>
+              <div>
+                <h2 id={`${project.slug}-overview-title`}>Plant floor at a glance</h2>
+                <figure class="ship-overview__figure">
+                  <button
+                    class="ship-overview__open"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls={`${project.slug}-overview-dialog`}
+                    data-overview-open
+                  >
+                    <img src={project.overviewImage} alt={project.overviewAlt} loading="lazy" />
+                    <span>Open larger view</span>
+                  </button>
+                  <figcaption>{project.overviewAlt}. Select the image to inspect it at a larger size.</figcaption>
+                </figure>
+              </div>
+            </section>
+          )}
+
           <section class="ship-block" id="architecture">
             <p class="ship-block__index">03</p>
             <div>
@@ -126,6 +148,19 @@ const others = projects.filter((item) => item.slug !== project.slug);
             </div>
           </section>
         </div>
+
+        {project.overviewImage && (
+          <dialog
+            class="ship-overview__dialog"
+            id={`${project.slug}-overview-dialog`}
+            aria-labelledby={`${project.slug}-overview-title`}
+          >
+            <button class="ship-overview__close" type="button" aria-label="Close larger image" data-overview-close>
+              Close
+            </button>
+            <img src={project.overviewImage} alt={project.overviewAlt} />
+          </dialog>
+        )}
       </article>
 
       <section class="section ship-story__more">
@@ -154,5 +189,20 @@ const others = projects.filter((item) => item.slug !== project.slug);
         <p>IT/OT • SCADA • MES • IIoT</p>
       </div>
     </footer>
+    <script>
+      document.querySelectorAll("[data-overview-open]").forEach((trigger) => {
+        const dialogId = trigger.getAttribute("aria-controls");
+        if (!dialogId) return;
+
+        const dialog = document.getElementById(dialogId);
+        if (!(dialog instanceof HTMLDialogElement)) return;
+
+        trigger.addEventListener("click", () => dialog.showModal());
+        dialog.querySelector("[data-overview-close]")?.addEventListener("click", () => dialog.close());
+        dialog.addEventListener("click", (event) => {
+          if (event.target === dialog) dialog.close();
+        });
+      });
+    </script>
   </body>
 </html>

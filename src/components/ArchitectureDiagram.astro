@@ -36,19 +36,17 @@ const diagrams = {
   },
   "plant-floor-visibility": {
     nodes: [
-      { id: "opc", x: 40, y: 64, w: 150, h: 52, label: "OPC UA", sub: "PLC / equipment" },
-      { id: "l2l", x: 40, y: 140, w: 150, h: 52, label: "L2L", sub: "Downtime / counts" },
-      { id: "tags", x: 250, y: 96, w: 168, h: 60, label: "Ignition tags", sub: "Shared state model" },
-      { id: "map", x: 478, y: 64, w: 168, h: 52, label: "Floor map", sub: "Live cells" },
-      { id: "kpi", x: 478, y: 140, w: 168, h: 52, label: "KPI suite", sub: "Alarms / OEE" },
-      { id: "na", x: 688, y: 96, w: 100, h: 60, label: "NA review", sub: "Best practice" },
+      { id: "l2l", x: 24, y: 84, w: 148, h: 64, label: "L2L REST API", sub: "Open dispatches" },
+      { id: "gateway", x: 184, y: 84, w: 148, h: 64, label: "Ignition gateway", sub: "1 call / min • Jython" },
+      { id: "status", x: 344, y: 84, w: 148, h: 64, label: "Machine status", sub: "Worst dispatch by code" },
+      { id: "map", x: 504, y: 84, w: 148, h: 64, label: "Perspective map", sub: "Spatial status view" },
+      { id: "machine", x: 664, y: 84, w: 132, h: 64, label: "L2L machine", sub: "Open on double-click" },
     ],
     edges: [
-      ["opc", "tags"],
-      ["l2l", "tags"],
-      ["tags", "map"],
-      ["tags", "kpi"],
-      ["map", "na"],
+      ["l2l", "gateway"],
+      ["gateway", "status"],
+      ["status", "map"],
+      ["map", "machine"],
     ],
   },
   "mes-revpi-integration": {
