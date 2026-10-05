@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laser Etcher State Machine</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
+
+:root {
+–bg:        #0a0c10;
+–surface:   #111318;
+–border:    #1e2230;
+–muted:     #3a3f52;
+–text:      #c8cfe0;
+–dim:       #6b7494;
+
+```
+--idle:      #2a3a5c;
+--idle-glow: #3d6aff;
+--init:      #2a3a2a;
+--init-glow: #3dff6a;
+--tx:        #3a2a10;
+--tx-glow:   #ffaa20;
+--wait:      #3a1a3a;
+--wait-glow: #cc44ff;
+--print:     #1a3a2a;
+--print-glow:#20ffaa;
+--fault:     #3a1a1a;
+--fault-glow:#ff3d3d;
+--notready:  #2a2a1a;
+--notready-glow: #ffdd20;
+```
+
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘JetBrains Mono’, monospace;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* scanline overlay */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background: repeating-linear-gradient(
+0deg,
+transparent,
+transparent 2px,
+rgba(0,0,0,0.08) 2px,
+rgba(0,0,0,0.08) 4px
+);
+pointer-events: none;
+z-index: 1000;
+}
+
+header {
+padding: 28px 40px 20px;
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: baseline;
+gap: 20px;
+}
+
+header h1 {
+font-family: ‘Syne’, sans-serif;
+font-size: 18px;
+font-weight: 800;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: #fff;
+}
+
+header span {
+font-size: 11px;
+color: var(–dim);
+letter-spacing: 0.08em;
+}
+
+.layout {
+display: grid;
+grid-template-columns: 1fr 340px;
+height: calc(100vh - 73px);
+}
+
+/* ── CANVAS ── */
+#canvas-wrap {
+position: relative;
+overflow: hidden;
+background:
+radial-gradient(ellipse at 20% 30%, rgba(61,106,255,0.04) 0%, transparent 60%),
+radial-gradient(ellipse at 80% 70%, rgba(255,61,61,0.03) 0%, transparent 60%);
+}
+
+svg#diagram {
+width: 100%;
+height: 100%;
+display: block;
+}
+
+/* ── NODES ── */
+.state-node {
+cursor: pointer;
+}
+
+.state-node rect {
+rx: 6;
+stroke-width: 1.5;
+transition: filter 0.2s, stroke-width 0.2s;
+}
+
+.state-node:hover rect,
+.state-node.active rect {
+stroke-width: 2.5;
+filter: brightness(1.3);
+}
+
+.state-node text.label {
+font-family: ‘Syne’, sans-serif;
+font-size: 12px;
+font-weight: 700;
+letter-spacing: 0.06em;
+fill: #fff;
+text-anchor: middle;
+dominant-baseline: middle;
+pointer-events: none;
+}
+
+.state-node text.sublabel {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 9px;
+fill: rgba(255,255,255,0.45);
+text-anchor: middle;
+dominant-baseline: middle;
+pointer-events: none;
+}
+
+/* node color themes */
+.n-idle    rect { fill: var(–idle);     stroke: var(–idle-glow); }
+.n-init    rect { fill: var(–init);     stroke: var(–init-glow); }
+.n-tx      rect { fill: var(–tx);       stroke: var(–tx-glow); }
+.n-wait    rect { fill: var(–wait);     stroke: var(–wait-glow); }
+.n-print   rect { fill: var(–print);    stroke: var(–print-glow); }
+.n-fault   rect { fill: var(–fault);    stroke: var(–fault-glow); }
+.n-notready rect { fill: var(–notready); stroke: var(–notready-glow); }
+
+.n-idle.active    rect { filter: drop-shadow(0 0 10px var(–idle-glow)); }
+.n-init.active    rect { filter: drop-shadow(0 0 10px var(–init-glow)); }
+.n-tx.active      rect { filter: drop-shadow(0 0 10px var(–tx-glow)); }
+.n-wait.active    rect { filter: drop-shadow(0 0 10px var(–wait-glow)); }
+.n-print.active   rect { filter: drop-shadow(0 0 10px var(–print-glow)); }
+.n-fault.active   rect { filter: drop-shadow(0 0 10px var(–fault-glow)); }
+.n-notready.active rect { filter: drop-shadow(0 0 10px var(–notready-glow)); }
+
+/* ── EDGES ── */
+.edge path {
+fill: none;
+stroke-width: 1.5;
+marker-end: url(#arrow);
+}
+
+.edge text {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 9px;
+fill: var(–dim);
+}
+
+.e-ok      path { stroke: #3d6aff; }
+.e-msg26   path { stroke: #cc44ff; }
+.e-msg2    path { stroke: #20ffaa; }
+.e-msg3    path { stroke: #20ffaa; stroke-dasharray: 4 3; }
+.e-msg4    path { stroke: #ffdd20; }
+.e-msg12   path { stroke: #ffdd20; stroke-dasharray: 4 3; }
+.e-msg11   path { stroke: #3dff6a; stroke-dasharray: 4 3; }
+.e-error   path { stroke: #ff3d3d; stroke-dasharray: 5 3; }
+.e-user    path { stroke: #888; stroke-dasharray: 3 3; }
+.e-reset   path { stroke: #ff9944; }
+
+/* ── LEGEND ── */
+.legend {
+padding: 20px 18px;
+border-left: 1px solid var(–border);
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 0;
+}
+
+.legend h2 {
+font-family: ‘Syne’, sans-serif;
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 0.14em;
+text-transform: uppercase;
+color: var(–dim);
+margin-bottom: 14px;
+}
+
+.legend-row {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 5px 0;
+border-bottom: 1px solid var(–border);
+}
+
+.legend-row:last-child { border-bottom: none; }
+
+.leg-line {
+width: 28px;
+height: 2px;
+flex-shrink: 0;
+}
+
+.legend-row span {
+font-size: 10px;
+color: var(–text);
+line-height: 1.4;
+}
+
+/* ── DETAIL PANEL ── */
+#detail {
+margin-top: 24px;
+border: 1px solid var(–border);
+border-radius: 6px;
+background: var(–surface);
+padding: 16px;
+flex: 1;
+overflow-y: auto;
+min-height: 0;
+}
+
+#detail h3 {
+font-family: ‘Syne’, sans-serif;
+font-size: 13px;
+font-weight: 700;
+color: #fff;
+margin-bottom: 4px;
+}
+
+#detail .state-code {
+font-size: 9px;
+color: var(–dim);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+margin-bottom: 12px;
+}
+
+#detail p {
+font-size: 10px;
+color: var(–text);
+line-height: 1.7;
+margin-bottom: 10px;
+}
+
+#detail h4 {
+font-size: 9px;
+font-weight: 600;
+color: var(–dim);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+margin: 10px 0 6px;
+}
+
+#detail ul {
+list-style: none;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+
+#detail ul li {
+font-size: 10px;
+color: var(–text);
+line-height: 1.5;
+padding-left: 12px;
+position: relative;
+}
+
+#detail ul li::before {
+content: ‘→’;
+position: absolute;
+left: 0;
+color: var(–dim);
+}
+
+.placeholder {
+color: var(–dim);
+font-size: 11px;
+text-align: center;
+padding: 30px 0;
+line-height: 1.8;
+}
+
+.tag-badge {
+display: inline-block;
+background: rgba(61,106,255,0.15);
+border: 1px solid rgba(61,106,255,0.3);
+border-radius: 3px;
+padding: 1px 6px;
+font-size: 9px;
+color: #6a9fff;
+margin-right: 4px;
+margin-bottom: 4px;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>Laser Etcher — State Machine</h1>
+  <span>Dynamark TCP/IP Protocol · Click any state to inspect</span>
+</header>
+
+<div class="layout">
+
+  <div id="canvas-wrap">
+  <svg id="diagram" viewBox="0 0 900 680" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#555"/>
+      </marker>
+      <marker id="arrow-ok" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#3d6aff"/>
+      </marker>
+      <marker id="arrow-msg26" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#cc44ff"/>
+      </marker>
+      <marker id="arrow-print" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#20ffaa"/>
+      </marker>
+      <marker id="arrow-warn" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#ffdd20"/>
+      </marker>
+      <marker id="arrow-error" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#ff3d3d"/>
+      </marker>
+      <marker id="arrow-reset" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#ff9944"/>
+      </marker>
+      <marker id="arrow-user" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#888"/>
+      </marker>
+    </defs>
+
+```
+<!-- ══════════════════════════════════════════
+     EDGES  (drawn first, behind nodes)
+══════════════════════════════════════════ -->
+
+<!-- DISCONNECTED → INITIALIZING -->
+<g class="edge e-user">
+  <path d="M 150,90 L 150,150" stroke="#888" marker-end="url(#arrow-user)"/>
+  <text x="158" y="125" fill="#888" font-size="9" font-family="JetBrains Mono">TCP connect</text>
+</g>
+
+<!-- INITIALIZING → IDLE_READY (OK after LOADPROJECT + SETMSGs) -->
+<g class="edge e-ok">
+  <path d="M 150,210 L 150,270" stroke="#3d6aff" marker-end="url(#arrow-ok)"/>
+  <text x="158" y="246" fill="#3d6aff" font-size="9" font-family="JetBrains Mono">all OKs</text>
+</g>
+
+<!-- IDLE_READY → TX_IN_FLIGHT (user presses Send) -->
+<g class="edge e-user">
+  <path d="M 220,310 L 360,310" stroke="#888" marker-end="url(#arrow-user)"/>
+  <text x="262" y="302" fill="#888" font-size="9" font-family="JetBrains Mono">sendToPrint()</text>
+</g>
+
+<!-- TX_IN_FLIGHT → WAITING_MSG26 (queue empty, last OK received) -->
+<g class="edge e-ok">
+  <path d="M 500,310 L 620,310" stroke="#3d6aff" marker-end="url(#arrow-ok)"/>
+  <text x="524" y="302" fill="#3d6aff" font-size="9" font-family="JetBrains Mono">EXECTRANS OK</text>
+</g>
+
+<!-- WAITING_MSG26 → IDLE_READY (MSG 26 received) -->
+<g class="edge e-msg26">
+  <path d="M 690,270 C 690,240 520,220 150,240 L 150,270" stroke="#cc44ff" stroke-dasharray="5 3" marker-end="url(#arrow-msg26)"/>
+  <text x="390" y="228" fill="#cc44ff" font-size="9" font-family="JetBrains Mono">MSG 26 → data live</text>
+</g>
+
+<!-- IDLE_READY → PRINTING (MSG 2) -->
+<g class="edge e-msg2">
+  <path d="M 150,350 L 150,430" stroke="#20ffaa" marker-end="url(#arrow-print)"/>
+  <text x="158" y="396" fill="#20ffaa" font-size="9" font-family="JetBrains Mono">MSG 2</text>
+</g>
+
+<!-- PRINTING → IDLE_READY (MSG 3) -->
+<g class="edge e-msg3">
+  <path d="M 120,430 C 80,416 80,364 120,350" stroke="#20ffaa" stroke-dasharray="4 3" marker-end="url(#arrow-print)"/>
+  <text x="30" y="396" fill="#20ffaa" font-size="9" font-family="JetBrains Mono">MSG 3</text>
+</g>
+
+<!-- IDLE_READY → NOT_READY (MSG 4 / MSG 12) -->
+<g class="edge e-msg4">
+  <path d="M 220,480 L 360,510" stroke="#ffdd20" stroke-dasharray="4 3" marker-end="url(#arrow-warn)"/>
+  <text x="256" y="486" fill="#ffdd20" font-size="9" font-family="JetBrains Mono">MSG 4/12</text>
+</g>
+
+<!-- PRINTING → NOT_READY (MSG 4) -->
+<g class="edge e-msg4">
+  <path d="M 220,490 L 360,530" stroke="#ffdd20" stroke-dasharray="4 3" marker-end="url(#arrow-warn)"/>
+</g>
+
+<!-- NOT_READY → IDLE_READY (MSG 1 / MSG 11) -->
+<g class="edge e-msg11">
+  <path d="M 430,490 C 350,460 280,380 218,348" stroke="#3dff6a" stroke-dasharray="4 3" marker-end="url(#arrow-ok)"/>
+  <text x="310" y="450" fill="#3dff6a" font-size="9" font-family="JetBrains Mono">MSG 1/11</text>
+</g>
+
+<!-- TX_IN_FLIGHT → FAULT (ERROR response) -->
+<g class="edge e-error">
+  <path d="M 430,350 L 430,430 L 600,430 L 660,465" stroke="#ff3d3d" stroke-dasharray="5 3" marker-end="url(#arrow-error)"/>
+  <text x="490" y="424" fill="#ff3d3d" font-size="9" font-family="JetBrains Mono">ERROR n</text>
+</g>
+
+<!-- NOT_READY + MSG5 severity≥3 → FAULT -->
+<g class="edge e-error">
+  <path d="M 500,545 L 620,545 L 660,530" stroke="#ff3d3d" stroke-dasharray="5 3" marker-end="url(#arrow-error)"/>
+  <text x="530" y="538" fill="#ff3d3d" font-size="9" font-family="JetBrains Mono">MSG 5 crit</text>
+</g>
+
+<!-- FAULT → IDLE_READY (operator reset) -->
+<g class="edge e-reset">
+  <path d="M 690,465 C 740,410 740,200 430,185 L 220,280" stroke="#ff9944" stroke-dasharray="4 3" marker-end="url(#arrow-reset)"/>
+  <text x="700" y="330" fill="#ff9944" font-size="9" font-family="JetBrains Mono">operator</text>
+  <text x="700" y="342" fill="#ff9944" font-size="9" font-family="JetBrains Mono">reset</text>
+</g>
+
+<!-- DISCONNECTED ← any state (connection loss) -->
+<g class="edge e-error">
+  <path d="M 220,60 C 340,30 600,20 760,50 C 800,58 820,160 820,310 C 820,450 750,560 700,530" stroke="#ff3d3d" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#arrow-error)" opacity="0.4"/>
+  <text x="825" y="290" fill="#ff3d3d" font-size="9" font-family="JetBrains Mono" opacity="0.5">TCP loss</text>
+</g>
+
+<!-- ══════════════════════════════════════════
+     NODES
+══════════════════════════════════════════ -->
+
+<!-- DISCONNECTED -->
+<g class="state-node n-fault" id="n-DISCONNECTED" onclick="selectState('DISCONNECTED')" transform="translate(70,50)">
+  <rect x="0" y="0" width="160" height="50" rx="6" fill="#1a1010" stroke="#ff3d3d" stroke-width="1.5"/>
+  <text class="label" x="80" y="22">DISCONNECTED</text>
+  <text class="sublabel" x="80" y="38">no TCP session</text>
+</g>
+
+<!-- INITIALIZING -->
+<g class="state-node n-init" id="n-INITIALIZING" onclick="selectState('INITIALIZING')" transform="translate(70,150)">
+  <rect x="0" y="0" width="160" height="50" rx="6"/>
+  <text class="label" x="80" y="22">INITIALIZING</text>
+  <text class="sublabel" x="80" y="38">LOADPROJECT + SETMSGs</text>
+</g>
+
+<!-- IDLE_READY -->
+<g class="state-node n-idle" id="n-IDLE_READY" onclick="selectState('IDLE_READY')" transform="translate(70,270)">
+  <rect x="0" y="0" width="160" height="60" rx="6"/>
+  <text class="label" x="80" y="24">IDLE / READY</text>
+  <text class="sublabel" x="80" y="40">marking enabled</text>
+  <text class="sublabel" x="80" y="52">awaiting sendToPrint</text>
+</g>
+
+<!-- TX_IN_FLIGHT -->
+<g class="state-node n-tx" id="n-TX_IN_FLIGHT" onclick="selectState('TX_IN_FLIGHT')" transform="translate(360,280)">
+  <rect x="0" y="0" width="150" height="60" rx="6"/>
+  <text class="label" x="75" y="24">TX IN FLIGHT</text>
+  <text class="sublabel" x="75" y="40">command queue</text>
+  <text class="sublabel" x="75" y="52">draining on OKs</text>
+</g>
+
+<!-- WAITING_MSG26 -->
+<g class="state-node n-wait" id="n-WAITING_MSG26" onclick="selectState('WAITING_MSG26')" transform="translate(610,280)">
+  <rect x="0" y="0" width="160" height="60" rx="6"/>
+  <text class="label" x="80" y="24">WAITING MSG 26</text>
+  <text class="sublabel" x="80" y="40">EXECTRANS done</text>
+  <text class="sublabel" x="80" y="52">data compiling...</text>
+</g>
+
+<!-- PRINTING -->
+<g class="state-node n-print" id="n-PRINTING" onclick="selectState('PRINTING')" transform="translate(70,430)">
+  <rect x="0" y="0" width="160" height="50" rx="6"/>
+  <text class="label" x="80" y="22">PRINTING</text>
+  <text class="sublabel" x="80" y="38">MSG 2 → MSG 3</text>
+</g>
+
+<!-- NOT_READY -->
+<g class="state-node n-notready" id="n-NOT_READY" onclick="selectState('NOT_READY')" transform="translate(360,490)">
+  <rect x="0" y="0" width="160" height="60" rx="6"/>
+  <text class="label" x="80" y="24">NOT READY</text>
+  <text class="sublabel" x="80" y="40">marking disabled</text>
+  <text class="sublabel" x="80" y="52">MSG 4 / MSG 12</text>
+</g>
+
+<!-- FAULT -->
+<g class="state-node n-fault" id="n-FAULT" onclick="selectState('FAULT')" transform="translate(620,465)">
+  <rect x="0" y="0" width="160" height="60" rx="6"/>
+  <text class="label" x="80" y="24">FAULT</text>
+  <text class="sublabel" x="80" y="40">ERROR / MSG 5 crit</text>
+  <text class="sublabel" x="80" y="52">queue cleared</text>
+</g>
+```
+
+  </svg>
+  </div><!-- /canvas-wrap -->
+
+  <!-- ── SIDEBAR ── -->
+
+  <div class="legend">
+    <h2>Edge Legend</h2>
+
+```
+<div class="legend-row">
+  <div class="leg-line" style="background:#3d6aff;"></div>
+  <span>OK response — advance queue</span>
+</div>
+<div class="legend-row">
+  <div class="leg-line" style="background:#cc44ff; background: repeating-linear-gradient(90deg,#cc44ff 0,#cc44ff 4px,transparent 4px,transparent 7px);"></div>
+  <span>MSG 26 — data live</span>
+</div>
+<div class="legend-row">
+  <div class="leg-line" style="background:#20ffaa;"></div>
+  <span>MSG 2 — print start</span>
+</div>
+<div class="legend-row">
+  <div class="leg-line" style="background: repeating-linear-gradient(90deg,#20ffaa 0,#20ffaa 4px,transparent 4px,transparent 7px);"></div>
+  <span>MSG 3 — print end</span>
+</div>
+<div class="legend-row">
+  <div class="leg-line" style="background: repeating-linear-gradient(90deg,#ffdd20 0,#ffdd20 4px,transparent 4px,transparent 7px);"></div>
+  <span>MSG 4/12 — not ready</span>
+</div>
+<div class="legend-row">
+  <div class="leg-line" style="background: repeating-linear-gradient(90deg,#3dff6a 0,#3dff6a 4px,transparent 4px,transparent 7px);"></div>
+  <span>MSG 1/11 — ready</span>
+</div>
+<div class="legend-row">
+  <div class="leg-line" style="background: repeating-linear-gradient(90deg,#ff3d3d 0,#ff3d3d 5px,transparent 5px,transparent 8px);"></div>
+  <span>ERROR / TCP loss / MSG 5 crit</span>
+</div>
+<div class="legend-row">
+  <div class="leg-line" style="background: repeating-linear-gradient(90deg,#ff9944 0,#ff9944 4px,transparent 4px,transparent 7px);"></div>
+  <span>Operator reset</span>
+</div>
+<div class="legend-row">
+  <div class="leg-line" style="background: repeating-linear-gradient(90deg,#888 0,#888 3px,transparent 3px,transparent 6px);"></div>
+  <span>User / external trigger</span>
+</div>
+
+<!-- DETAIL PANEL -->
+<div id="detail">
+  <div class="placeholder">← Click a state<br>to inspect</div>
+</div>
+```
+
+  </div>
+
+</div><!-- /layout -->
+
+<script>
+const STATE_DATA = {
+  DISCONNECTED: {
+    label: "DISCONNECTED",
+    code: "STATE_0",
+    color: "#ff3d3d",
+    desc: "No TCP session exists between Ignition and the Dynamark controller. The readable and writable tags will show bad quality. No commands can be sent.",
+    entry: [
+      "TCP connection dropped or never established",
+      "Ignition TCP driver reports tag quality = Bad"
+    ],
+    exits: [
+      "TCP connect succeeds → INITIALIZING"
+    ],
+    tags: ["EtcherBusy = False", "EtcherFaulted = False", "CommandQueue = []"],
+    actions: []
+  },
+  INITIALIZING: {
+    label: "INITIALIZING",
+    code: "STATE_1",
+    color: "#3dff6a",
+    desc: "TCP session is up. startUp() fires: LOADPROJECT loads the label, then SETMSG commands subscribe to MSG 1–5, 12, and 26. Each command waits for its OK before the next is sent.",
+    entry: [
+      "TCP connection established",
+      "startUp() called (Gateway startup script or tag change)"
+    ],
+    exits: [
+      "All startup OKs received → IDLE_READY",
+      "Any ERROR → FAULT",
+      "TCP drops → DISCONNECTED"
+    ],
+    tags: ["EtcherBusy = True (during init)", "CommandQueue = startup sequence"],
+    actions: ["LOADPROJECT \"store:/jeldwen5\"", "SETMSG 1 1 … SETMSG 26 1"]
+  },
+  IDLE_READY: {
+    label: "IDLE / READY",
+    code: "STATE_2",
+    color: "#3d6aff",
+    desc: "The etcher is online, marking is enabled, and data is loaded and compiled. The print button is enabled. The system is waiting for the operator to trigger a new print cycle.",
+    entry: [
+      "All startup OKs received (from INITIALIZING)",
+      "MSG 26 received — data compiled and live (from WAITING_MSG26)",
+      "MSG 1 or MSG 11 received — marking re-enabled (from NOT_READY)"
+    ],
+    exits: [
+      "sendToPrint() called → TX_IN_FLIGHT",
+      "MSG 2 received (hardware trigger fires) → PRINTING",
+      "MSG 4 or MSG 12 received → NOT_READY",
+      "TCP drops → DISCONNECTED"
+    ],
+    tags: ["EtcherBusy = False", "EtcherFaulted = False", "CommandQueue = []"],
+    actions: []
+  },
+  TX_IN_FLIGHT: {
+    label: "TX IN FLIGHT",
+    code: "STATE_3",
+    color: "#ffaa20",
+    desc: "A command sequence is actively being sent. sendToPrint() fired BEGINTRANS and loaded the remaining commands into CommandQueue. Each OK received by onResponseReceived() pops and sends the next command. The print button is disabled.",
+    entry: [
+      "sendToPrint() called with EtcherBusy = False",
+      "EtcherBusy set to True",
+      "BEGINTRANS sent as first command"
+    ],
+    exits: [
+      "EXECTRANS OK received (queue empty) → WAITING_MSG26",
+      "Any ERROR response → FAULT",
+      "TCP drops → DISCONNECTED"
+    ],
+    tags: ["EtcherBusy = True", "CommandQueue = [remaining cmds...]"],
+    actions: ["BEGINTRANS", "SETTEXT × 12", "ENABLESECTION × 2", "EXECTRANS"]
+  },
+  WAITING_MSG26: {
+    label: "WAITING MSG 26",
+    code: "STATE_4",
+    color: "#cc44ff",
+    desc: "EXECTRANS has been acknowledged. The queue is empty. The printer is internally compiling the new label data. EtcherBusy remains True — the print button stays disabled — because the data is NOT yet safe to print until MSG 26 arrives.",
+    entry: [
+      "EXECTRANS OK received",
+      "CommandQueue is empty",
+      "EtcherBusy remains True"
+    ],
+    exits: [
+      "MSG 26 received → IDLE_READY (EtcherBusy cleared)",
+      "MSG 4 / MSG 12 (marking disabled mid-compile) → NOT_READY",
+      "ERROR response → FAULT",
+      "TCP drops → DISCONNECTED"
+    ],
+    tags: ["EtcherBusy = True", "CommandQueue = []"],
+    actions: ["(waiting — no commands sent)"]
+  },
+  PRINTING: {
+    label: "PRINTING",
+    code: "STATE_5",
+    color: "#20ffaa",
+    desc: "The hardware print trigger has fired. MSG 2 signals print start. The laser is actively marking. sendToPrint() is blocked. MSG 3 signals end of print and returns to IDLE_READY.",
+    entry: [
+      "MSG 2 received — hardware print-go triggered"
+    ],
+    exits: [
+      "MSG 3 received (print complete) → IDLE_READY",
+      "MSG 4 received (fault mid-print) → NOT_READY",
+      "TCP drops → DISCONNECTED"
+    ],
+    tags: ["EtcherBusy = True (cannot send new data during print)"],
+    actions: []
+  },
+  NOT_READY: {
+    label: "NOT READY",
+    code: "STATE_6",
+    color: "#ffdd20",
+    desc: "Marking mode has been disabled or suspended. This can be caused by an interlock, a user disabling marking at the controller, or a non-critical fault. MSG 4 = marking disabled/faulted. MSG 12 = marking suspended. The system waits for the condition to clear.",
+    entry: [
+      "MSG 4 — marking mode disabled or system fault",
+      "MSG 12 — marking mode suspended (interlock, cover open, etc.)"
+    ],
+    exits: [
+      "MSG 1 — system ready (marking re-enabled) → IDLE_READY",
+      "MSG 11 — marking mode re-enabled → IDLE_READY",
+      "MSG 5 severity ≥ 3 (critical fault) → FAULT",
+      "TCP drops → DISCONNECTED"
+    ],
+    tags: ["EtcherBusy = True (block UI)", "CommandQueue = [] (cleared on entry)"],
+    actions: []
+  },
+  FAULT: {
+    label: "FAULT",
+    code: "STATE_7",
+    color: "#ff3d3d",
+    desc: "A protocol ERROR response was received, or MSG 5 reported a critical/hardware fault (severity 3 or 4). The command queue is cleared. EtcherFaulted = True. The print button is disabled. Operator acknowledgment is required.",
+    entry: [
+      "ERROR <n> response received from printer",
+      "MSG 5 with severity 3 (critical) or 4 (hardware reset required)"
+    ],
+    exits: [
+      "Operator resets EtcherFaulted → IDLE_READY (if printer is healthy)",
+      "TCP drops → DISCONNECTED"
+    ],
+    tags: ["EtcherFaulted = True", "EtcherBusy = False", "CommandQueue = []"],
+    actions: ["Log error with code", "Alert operator", "Await manual reset"]
+  }
+};
+
+function selectState(id) {
+  // Clear previous active
+  document.querySelectorAll('.state-node').forEach(n => n.classList.remove('active'));
+
+  const node = document.getElementById('n-' + id);
+  if (node) node.classList.add('active');
+
+  const d = STATE_DATA[id];
+  const detail = document.getElementById('detail');
+
+  let html = `
+    <h3>${d.label}</h3>
+    <div class="state-code">${d.code}</div>
+    <p>${d.desc}</p>
+  `;
+
+  if (d.entry && d.entry.length) {
+    html += `<h4>Entry Conditions</h4><ul>`;
+    d.entry.forEach(e => html += `<li>${e}</li>`);
+    html += `</ul>`;
+  }
+
+  if (d.exits && d.exits.length) {
+    html += `<h4>Exits</h4><ul>`;
+    d.exits.forEach(e => html += `<li>${e}</li>`);
+    html += `</ul>`;
+  }
+
+  if (d.tags && d.tags.length) {
+    html += `<h4>Tag State</h4><div style="margin-top:4px">`;
+    d.tags.forEach(t => html += `<span class="tag-badge">${t}</span>`);
+    html += `</div>`;
+  }
+
+  if (d.actions && d.actions.length) {
+    html += `<h4>Commands</h4><ul>`;
+    d.actions.forEach(a => html += `<li>${a}</li>`);
+    html += `</ul>`;
+  }
+
+  detail.innerHTML = html;
+}
+</script>
+
+</body>
+</html>

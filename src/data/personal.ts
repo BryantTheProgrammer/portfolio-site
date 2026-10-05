@@ -141,6 +141,25 @@ export const personalEntries: PersonalEntry[] = [
     featured: true,
   },
   {
+    id: "robotics-pen-plotter-concept",
+    title: "Pen plotter concept",
+    era: "Concept",
+    years: "",
+    category: "robotics",
+    summary:
+      "An electronics concept for a pen plotter, laid out around a Raspberry Pi, two stepper motors, and a controller board.",
+    tags: ["Pen plotter", "Raspberry Pi", "Stepper motors", "Electronics"],
+    media: [
+      {
+        type: "image",
+        src: "/images/projects/pen-plotter-concept.PNG",
+        alt: "Pen plotter electronics concept showing a Raspberry Pi, two stepper motors, and a controller board",
+        caption: "Pen plotter electronics concept",
+      },
+    ],
+    featured: false,
+  },
+  {
     id: "robotics-makerspace",
     title: "Makerspace R&D Assistant",
     era: "Pacific University",

@@ -4,19 +4,22 @@ const { slug, title } = Astro.props;
 const diagrams = {
   "laser-etcher": {
     nodes: [
-      { id: "ui", x: 40, y: 88, w: 150, h: 56, label: "Perspective UI", sub: "Batch / serialization" },
-      { id: "gw", x: 230, y: 88, w: 168, h: 56, label: "Gateway scripts", sub: "etcherAI_P" },
-      { id: "q", x: 230, y: 176, w: 168, h: 48, label: "CommandQueue", sub: "EtcherBusy interlock" },
-      { id: "tcp", x: 438, y: 88, w: 140, h: 56, label: "Raw TCP", sub: "Request / response" },
-      { id: "dyn", x: 618, y: 88, w: 150, h: 56, label: "Dynamark", sub: "Laser etcher" },
-      { id: "sql", x: 438, y: 176, w: 140, h: 48, label: "SQL / tags", sub: "Traceability" },
+      { id: "erp", x: 20, y: 68, w: 106, h: 64, label: "Titan ERP", sub: "CSV schedule" },
+      { id: "sql", x: 146, y: 68, w: 112, h: 64, label: "Ignition / SQL", sub: "CSV ingest" },
+      { id: "hmi", x: 278, y: 68, w: 114, h: 64, label: "Perspective HMI", sub: "Operator" },
+      { id: "gateway", x: 412, y: 68, w: 130, h: 64, label: "Gateway", sub: "etcherAI_P" },
+      { id: "tcp", x: 562, y: 68, w: 105, h: 64, label: "Dynamark TCP", sub: "One command" },
+      { id: "laser", x: 687, y: 68, w: 112, h: 64, label: "Domino laser", sub: "Etch mark" },
+      { id: "plc", x: 348, y: 168, w: 174, h: 56, label: "DL05 PLC", sub: "Glass present / advance" },
     ],
     edges: [
-      ["ui", "gw"],
-      ["gw", "q"],
-      ["gw", "tcp"],
-      ["tcp", "dyn"],
-      ["gw", "sql"],
+      ["erp", "sql"],
+      ["sql", "hmi"],
+      ["hmi", "gateway"],
+      ["gateway", "tcp"],
+      ["tcp", "laser"],
+      ["plc", "hmi"],
+      ["plc", "gateway"],
     ],
   },
   suds: {

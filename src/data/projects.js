@@ -3,48 +3,87 @@ export const projects = [
     slug: "laser-etcher",
     image: "/images/projects/laser-etcher.png",
     alt: "Laser Etcher Modernization project",
+    viewTitle: "Operator HMI and diagnostics",
+    viewImages: [
+      {
+        src: "/images/projects/laser-etcher-2.png",
+        alt: "Laser Etcher operator HMI showing the schedule, sequence search, rework controls, record paging, live etch preview, and record values",
+      },
+      {
+        src: "/images/projects/laser-etcher-state-machine.png",
+        alt: "Dynamark state-machine diagnostics view with machine states, transition legend, and live etcherAI_P.writeToEtcher log",
+      },
+      {
+        src: "/images/projects/laser-etcher-table.JPEG",
+        alt: "Laser etcher and operator HMI installed beside the glass production table",
+      },
+    ],
     title: "Laser Etcher Modernization",
     kicker: "Automation / Serialization",
-    tagline: "Restored serialized traceability with a production-ready Ignition application.",
-    metrics: ["$143K+ savings", "11 lines / 5 plants", "5,000 records/batch"],
-    tech: ["Ignition", "Python/Jython", "SQL"],
+    tagline: "I replaced a deprecated, network-dependent etching package with an in-house Ignition system that marks glass from the production schedule.",
+    metrics: ["$143K+ per implementation", "11 lines / 5 plants (rollout target)", "5,000 records/batch"],
+    tech: ["Ignition Perspective", "Python/Jython", "SQL", "TCP / Dynamark", "PLC"],
     problem:
-      "The plant’s laser etching line still depended on a manual, fragile Java workflow. Operators could not trust serialization at production pace, and the vendor protocol would not forgive a second command while a mark was in flight: Dynamark expects a strict request/response conversation over raw TCP, not a fire-and-forget socket.",
+      "PPS, a deprecated Java-based etching package, depended on the network. When PPS or the network went down, lasers stopped etching to schedule: during one outage about 60,000 units shipped unetched, Venice went months unable to etch, and Stayton's etcher was beyond repair. Stayton was the only site without etching on a standard production line. The permanent etch identifies who made a unit, what it is, and where it was built, and traces back to its order and line. When labels are missing, it is the last ID left; it also supports warranty and customer care, IG certification, and brand.",
     approach:
-      "I replaced the Java client with event-driven Ignition Perspective and gateway scripts. Operator work stayed in a Perspective UI that can page through a 5,000-record batch; the gateway owned the TCP session, a CommandQueue tag, and an EtcherBusy interlock so the etcher never saw overlapping requests.",
+      "I built a full-stack Python/Ignition replacement in house, deployed and supported on a local Ignition server. Titan ERP exports the production schedule as CSV to a network path; Ignition watches for new files and loads them into SQL. A Perspective HMI presents the batch. As each glass lite rides the float table, the DL05 PLC detects its position and triggers the Domino laser with the current record's data; the exit sensor advances the record. The gateway owns the Dynamark TCP conversation and waits for each response before sending the next command, preventing replies from getting scrambled. Etching runs locally without an internet dependency.",
     architectureCaption:
-      "Perspective submits a job. Gateway module etcherAI_P serializes one Dynamark frame onto TCP, waits for the ACK, then releases EtcherBusy so the next queued command can run.",
+      "Titan ERP schedules arrive as CSV and load into SQL. Perspective presents the batch; the DL05 detects glass position and advances records, while the local Ignition gateway serializes Dynamark commands to the Domino laser and waits for each response.",
     implementation:
-      "The gateway script is a small state machine, not a UI timer. Commands land on a tag-backed queue. onResponseReceived is the only path that clears the busy flag, which keeps the protocol honest when the line is under load.",
+      "I built the Ignition and Python software; controls and mechanical partners handled the laser and float-table integration. Dynamark is a text protocol over TCP port 20000, terminated by CR/LF; replies are OK, RESULT, or ERROR n. On startup, the gateway loads the label and subscribes to SETMSG 1–5, 12, and 26. Its state machine covers DISCONNECTED, INITIALIZING, IDLE/READY, TX IN FLIGHT, WAITING MSG 26, PRINTING (MSG 2 to MSG 3), NOT READY (MSG 4/12), and FAULT (ERROR, TCP loss, or MSG 5). The CommandQueue, EtcherBusy, EtcherFaulted, and isConnected tags support this flow. A diagnostics view shows the state diagram and live etcherAI_P.writeToEtcher log for multi-session debugging. The operator HMI includes schedule selection, Start/Stop, Cycle-Start/Send-to-Print, Mark-Done and Mark-Reject, Show Rework, a live etch preview with record values, and paging through batches of about 5,000 records (about 500 pages). I added Sequence Search after operators requested it on the floor. Etch content is standardized, including the JW prefix and AAMA certification information, so it can replace the separate AAMA Gold sticker.",
     code: {
       lang: "python",
       filename: "etcherAI_P.py",
-      caption: "Sanitized Jython from the gateway module. Plant hostnames, serial payloads, and vendor constants removed.",
-      source: `# etcherAI_P — one Dynamark conversation at a time
-QUEUE = "[default]Etcher/CommandQueue"
-BUSY = "[default]Etcher/EtcherBusy"
-LAST_ACK = "[default]Etcher/LastAck"
+      caption: "Sanitized Jython excerpt. Tag paths and label name are placeholders.",
+      source: `TCP_WRITE_TAG = "[provider]PLACEHOLDER/Etcher/Write"
+COMMAND_QUEUE_TAG = "[provider]PLACEHOLDER/Etcher/CommandQueue"
+ETCHER_BUSY_TAG = "[provider]PLACEHOLDER/Etcher/EtcherBusy"
+ETCHER_FAULTED_TAG = "[provider]PLACEHOLDER/Etcher/EtcherFaulted"
 
-def enqueue(command):
-    if system.tag.readBlocking([BUSY])[0].value:
-        return False
-    system.tag.writeBlocking([BUSY, QUEUE], [True, command])
-    return True
+def writeToEtcher(command):
+    system.tag.writeBlocking([TCP_WRITE_TAG], [command + "\\r\\n"])
 
-def onResponseReceived(event):
-    payload = event.getMessage() or ""
-    ack = payload.startswith("ACK")
-    # Busy clears only after a complete response — never on send.
-    system.tag.writeBlocking([LAST_ACK, BUSY], [ack, False])
+def setMsgsTrue(message_types):
+    return ["SETMSG %d 1" % message_type for message_type in message_types]
+
+def startUp():
+    commands = ['LOADPROJECT "<label-name>"']
+    commands.extend(setMsgsTrue([1, 2, 3, 4, 5, 12, 26]))
+    system.tag.writeBlocking([COMMAND_QUEUE_TAG], [commands])
+    sendNextCommand()
+
+def sendNextCommand():
+    busy = system.tag.readBlocking([ETCHER_BUSY_TAG])[0].value
+    if busy:
+        return
+    queue = system.tag.readBlocking([COMMAND_QUEUE_TAG])[0].value or []
+    if not queue:
+        return
+    command = queue.pop(0)
+    system.tag.writeBlocking(
+        [COMMAND_QUEUE_TAG, ETCHER_BUSY_TAG], [queue, True])
+    writeToEtcher(command)
+
+def onResponse(response):
+    response = response.strip()
+    if response.startswith("ERROR") or response == "MSG 5":
+        system.tag.writeBlocking(
+            [ETCHER_BUSY_TAG, ETCHER_FAULTED_TAG], [False, True])
+        return
+    if response == "OK" or response in ("MSG 3", "MSG 4", "MSG 12"):
+        system.tag.writeBlocking([ETCHER_BUSY_TAG], [False])
+        sendNextCommand()
 `,
     },
     results: [
-      { value: "$143K+", label: "Projected three-year savings versus keeping the Java platform" },
-      { value: "11 / 5", label: "Line and plant rollout the architecture was designed to support" },
-      { value: "5,000", label: "Records per batch in the operator UI, across ~500 pages" },
+      { value: "$143K+", label: "Projected 3-year net avoidance per in-house build: vendor build/licensing avoided plus about $25K/year support/licensing. Reuse adds no vendor fee per line." },
+      { value: "Outage-proof", label: "Etches locally from the loaded schedule without a live network, PPS, or internet dependency" },
+      { value: "5,000 / batch", label: "Records per batch; sequence search added from operator feedback" },
     ],
+    resultsNote:
+      "Conservative. Excludes label elimination and service-trip savings, and scales with each line deployed.",
     reflection:
-      "Next I would extract the TCP session into a dedicated driver with a recorded protocol log for commissioning, and parameterize plant IDs so the same project can drop onto the remaining lines without copying tags by hand.",
+      "Next, I would complete the rollout pattern with a dedicated Ignition server per glass plant, so no site depends on another site's connection, and parameterize site and line IDs so I can deploy the project to the remaining lines without hand-copying tags.",
     videos: [
       { src: "https://www.youtube.com/embed/NlzmohUvFRo", title: "Laser Etcher overhaul project video", caption: "Laser Etcher overhaul" },
       { src: "https://www.youtube.com/embed/O4gmPoP8y_0", title: "Laser Etcher supporting project video", caption: "Supporting production workflow" },
@@ -55,6 +94,13 @@ def onResponseReceived(event):
     slug: "suds",
     image: "/images/projects/Suds%20Logo.png",
     alt: "SUDS Soap Usage and Dispensing System project",
+    viewTitle: "SUDS installation",
+    viewImages: [
+      {
+        src: "/images/projects/SUDS.JPEG",
+        alt: "Installed SUDS enclosure with Raspberry Pi and four conductivity displays",
+      },
+    ],
     title: "SUDS — Soap Usage & Dispensing System",
     kicker: "Process / Edge",
     tagline: "Four-tank water quality monitoring with automated dosing at a fraction of vendor cost.",

@@ -13,6 +13,9 @@ export function getStaticPaths() {
 
 const { project } = Astro.props;
 const others = projects.filter((item) => item.slug !== project.slug);
+const viewImages =
+  project.viewImages ??
+  (project.overviewImage ? [{ src: project.overviewImage, alt: project.overviewAlt }] : []);
 ---
 
 <!DOCTYPE html>
@@ -32,7 +35,7 @@ const others = projects.filter((item) => item.slug !== project.slug);
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body class="projects-page ship-story-page">
-    <SiteNav active="portfolio" />
+    <SiteNav active="projects" />
 
     <main>
       <article class="ship-story">
@@ -68,24 +71,37 @@ const others = projects.filter((item) => item.slug !== project.slug);
             </div>
           </section>
 
-          {project.overviewImage && (
+          {viewImages.length > 0 && (
             <section class="ship-block ship-overview">
               <p class="ship-block__index" aria-hidden="true">VIEW</p>
               <div>
-                <h2 id={`${project.slug}-overview-title`}>Plant floor at a glance</h2>
-                <figure class="ship-overview__figure">
-                  <button
-                    class="ship-overview__open"
-                    type="button"
-                    aria-haspopup="dialog"
-                    aria-controls={`${project.slug}-overview-dialog`}
-                    data-overview-open
-                  >
-                    <img src={project.overviewImage} alt={project.overviewAlt} loading="lazy" />
-                    <span>Open larger view</span>
-                  </button>
-                  <figcaption>{project.overviewAlt}. Select the image to inspect it at a larger size.</figcaption>
-                </figure>
+                <h2 id={`${project.slug}-overview-title`}>{project.viewTitle ?? "Plant floor at a glance"}</h2>
+                <div class="ship-story__media">
+                  {viewImages.map((image, index) => {
+                    const dialogId = `${project.slug}-overview-dialog-${index}`;
+                    return (
+                      <figure class="ship-overview__figure">
+                        <button
+                          class="ship-overview__open"
+                          type="button"
+                          aria-haspopup="dialog"
+                          aria-controls={dialogId}
+                          data-overview-open
+                        >
+                          <img src={image.src} alt={image.alt} loading="lazy" />
+                          <span>Open larger view</span>
+                        </button>
+                        <figcaption>{image.alt}. Select the image to inspect it at a larger size.</figcaption>
+                        <dialog class="ship-overview__dialog" id={dialogId} aria-labelledby={`${project.slug}-overview-title`}>
+                          <button class="ship-overview__close" type="button" aria-label="Close larger image" data-overview-close>
+                            Close
+                          </button>
+                          <img src={image.src} alt={image.alt} />
+                        </dialog>
+                      </figure>
+                    );
+                  })}
+                </div>
               </div>
             </section>
           )}
@@ -136,6 +152,7 @@ const others = projects.filter((item) => item.slug !== project.slug);
                   </div>
                 ))}
               </div>
+              {project.resultsNote && <p>{project.resultsNote}</p>}
             </div>
           </section>
 
@@ -149,18 +166,6 @@ const others = projects.filter((item) => item.slug !== project.slug);
           </section>
         </div>
 
-        {project.overviewImage && (
-          <dialog
-            class="ship-overview__dialog"
-            id={`${project.slug}-overview-dialog`}
-            aria-labelledby={`${project.slug}-overview-title`}
-          >
-            <button class="ship-overview__close" type="button" aria-label="Close larger image" data-overview-close>
-              Close
-            </button>
-            <img src={project.overviewImage} alt={project.overviewAlt} />
-          </dialog>
-        )}
       </article>
 
       <section class="section ship-story__more">
