@@ -2236,18 +2236,7 @@ a.project-card:focus-visible {
     height: 100%;
     transform: none;
     overflow: hidden;
-  }
-
-  .split-hero__mobile-art-link {
-    position: absolute;
-    z-index: 3;
-    inset: 0;
     pointer-events: auto;
-  }
-
-  .split-hero__mobile-art-link:focus-visible {
-    outline: 3px solid var(--primary);
-    outline-offset: -8px;
   }
 
   .split-hero__image {
@@ -2268,37 +2257,11 @@ a.project-card:focus-visible {
 
   .split-hero__mobile-copy {
     margin: 0;
+    max-width: 34ch;
     color: var(--muted);
     font-size: var(--type-sm);
     line-height: 1.5;
     text-align: center;
-  }
-
-  .split-hero__mobile-action {
-    display: inline-flex;
-    min-height: 40px;
-    align-items: center;
-    justify-content: center;
-    padding: 4px 8px;
-    color: var(--primary-strong);
-    font-weight: 700;
-    text-align: center;
-    text-decoration: none;
-  }
-
-  .split-hero__mobile-action[hidden] {
-    display: none;
-  }
-
-  .split-hero__mobile-action:hover,
-  .split-hero__mobile-action:focus-visible {
-    color: #fff;
-    text-decoration: underline;
-  }
-
-  .split-hero__mobile-action:focus-visible {
-    outline: 3px solid var(--primary);
-    outline-offset: 2px;
   }
 }
 
