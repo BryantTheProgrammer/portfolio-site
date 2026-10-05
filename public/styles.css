@@ -2214,8 +2214,12 @@ a.project-card:focus-visible {
     grid-template-rows: minmax(0, 1fr) auto;
     height: clamp(420px, calc(100svh - 144px), 760px);
     min-height: 420px;
-    transition: none;
+    transition: --x 0.3s ease;
     touch-action: pan-y;
+  }
+
+  .split-hero.is-dragging {
+    transition: none;
   }
 
   .split-hero__link {
@@ -2257,40 +2261,39 @@ a.project-card:focus-visible {
     grid-row: 2;
     margin: 0 clamp(16px, 5vw, 28px) clamp(16px, 5vw, 28px);
     display: grid;
-    gap: var(--space-3);
-    padding: clamp(16px, 4vw, 24px);
-    border: 1px solid rgba(169, 220, 255, 0.24);
-    border-radius: var(--radius-lg);
-    background: rgba(8, 14, 27, 0.92);
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(12px);
+    justify-items: center;
+    gap: var(--space-2);
+    padding: 0 8px;
   }
 
-  .split-hero__mobile-nav > .eyebrow {
+  .split-hero__mobile-copy {
     margin: 0;
-    color: var(--primary);
+    color: var(--muted);
+    font-size: var(--type-sm);
+    line-height: 1.5;
     text-align: center;
   }
 
   .split-hero__mobile-action {
-    display: grid;
-    min-height: 52px;
-    place-items: center;
-    padding: 10px 16px;
-    border: 1px solid rgba(169, 220, 255, 0.35);
-    border-radius: var(--radius-md);
-    background: rgba(169, 220, 255, 0.1);
-    color: #e6efff;
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    color: var(--primary-strong);
     font-weight: 700;
     text-align: center;
     text-decoration: none;
   }
 
+  .split-hero__mobile-action[hidden] {
+    display: none;
+  }
+
   .split-hero__mobile-action:hover,
   .split-hero__mobile-action:focus-visible {
-    border-color: var(--primary);
-    background: rgba(169, 220, 255, 0.18);
     color: #fff;
+    text-decoration: underline;
   }
 
   .split-hero__mobile-action:focus-visible {

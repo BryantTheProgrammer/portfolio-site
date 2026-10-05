@@ -41,9 +41,9 @@
     ></a>
   </div>
 
-  <nav class="split-hero__mobile-nav" aria-label="Choose your portfolio">
-    <p class="eyebrow">Swipe to choose; tap to explore</p>
-    <a class="split-hero__mobile-action" href="/journey" aria-live="polite">Explore the professional showcase</a>
+  <nav class="split-hero__mobile-nav" aria-label="Portfolio introduction">
+    <p class="split-hero__mobile-copy">Swipe through my work and the interests that shape it.</p>
+    <a class="split-hero__mobile-action" href="/journey" aria-live="polite" hidden>Explore the professional showcase</a>
   </nav>
 </section>
 
@@ -58,31 +58,37 @@
     let pointerStartX = 0;
     let isDragging = false;
     let hasDragged = false;
+    let suppressNextClick = false;
+    let selectedDestination: string | null = "/journey";
+    let pendingDestination = "/journey";
 
     const setMobileSelection = (position: number) => {
       const personalSelected = position < 0.5;
-      const destination = personalSelected ? "/personal" : "/journey";
-      const actionText = personalSelected ? "Explore the personal page" : "Explore the professional showcase";
+      pendingDestination = personalSelected ? "/personal" : "/journey";
 
       splitHero.style.setProperty("--x", `${position * 100}%`);
       splitHero.dataset.active = personalSelected ? "personal" : "professional";
-
-      if (mobileAction instanceof HTMLAnchorElement) {
-        mobileAction.href = destination;
-        mobileAction.textContent = actionText;
-      }
-
-      if (!isDragging && mobileArtLink instanceof HTMLAnchorElement) {
-        mobileArtLink.href = destination;
-        mobileArtLink.setAttribute("aria-label", `Explore the ${label}`);
-      }
     };
 
-    const syncMobileArtLink = () => {
-      if (!(mobileArtLink instanceof HTMLAnchorElement) || !(mobileAction instanceof HTMLAnchorElement)) return;
+    const commitMobileSelection = () => {
+      selectedDestination = pendingDestination;
+      const personalSelected = selectedDestination === "/personal";
+      if (mobileAction instanceof HTMLAnchorElement) {
+        mobileAction.href = selectedDestination;
+        mobileAction.textContent = personalSelected ? "Explore the personal page" : "Explore the professional showcase";
+        mobileAction.hidden = false;
+      }
 
-      mobileArtLink.href = mobileAction.href;
-      mobileArtLink.setAttribute("aria-label", mobileAction.textContent ?? "Explore selected showcase");
+      if (mobileArtLink instanceof HTMLAnchorElement) {
+        mobileArtLink.href = selectedDestination;
+        mobileArtLink.setAttribute(
+          "aria-label",
+          personalSelected ? "Open the personal page" : "Open the professional showcase",
+        );
+      }
+
+      splitHero.style.setProperty("--x", "50%");
+      delete splitHero.dataset.active;
     };
 
     splitHero.addEventListener("pointermove", (event) => {
@@ -129,31 +135,47 @@
       hasDragged = false;
       pointerStartX = event.clientX;
       event.preventDefault();
+      splitHero.classList.add("is-dragging");
       splitHero.setPointerCapture(event.pointerId);
     });
 
     splitHero.addEventListener("pointerup", () => {
       const wasDragging = isDragging;
       isDragging = false;
-      syncMobileArtLink();
+      splitHero.classList.remove("is-dragging");
 
       if (!wasDragging) return;
 
       if (hasDragged) {
+        commitMobileSelection();
         hasDragged = false;
+        suppressNextClick = true;
+        window.setTimeout(() => {
+          suppressNextClick = false;
+        }, 0);
       } else if (mobileArtLink instanceof HTMLAnchorElement) {
-        mobileArtLink.click();
+        if (selectedDestination) mobileArtLink.click();
       }
     });
 
     splitHero.addEventListener("pointercancel", () => {
+      splitHero.classList.remove("is-dragging");
+      if (hasDragged) {
+        commitMobileSelection();
+      } else {
+        splitHero.style.setProperty("--x", "50%");
+        delete splitHero.dataset.active;
+      }
+
       isDragging = false;
       hasDragged = false;
-      syncMobileArtLink();
     });
 
     splitHero.addEventListener("click", (event) => {
-      if (mobileInteraction.matches && isDragging) event.preventDefault();
+      if (mobileInteraction.matches && (suppressNextClick || !selectedDestination || isDragging || hasDragged)) {
+        event.preventDefault();
+        suppressNextClick = false;
+      }
     });
 
     splitHero.addEventListener("pointerleave", () => {
