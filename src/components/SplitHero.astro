@@ -19,7 +19,7 @@
     </span>
   </a>
 
-  <div class="split-hero__portrait" aria-hidden="true">
+  <div class="split-hero__portrait">
     <img
       class="split-hero__image split-hero__image--professional"
       src="/img/bryant-pro.png"
@@ -34,8 +34,17 @@
       width="1024"
       height="1024"
     />
+    <a
+      class="split-hero__mobile-art-link"
+      href="/journey"
+      aria-label="Explore the Professional Showcase"
+    ></a>
   </div>
 
+  <nav class="split-hero__mobile-nav" aria-label="Choose your portfolio">
+    <p class="eyebrow">Swipe to choose; tap to explore</p>
+    <a class="split-hero__mobile-action" href="/journey" aria-live="polite">Explore the professional showcase</a>
+  </nav>
 </section>
 
 <script>
@@ -43,8 +52,52 @@
 
   if (splitHero instanceof HTMLElement) {
     const desktopHover = window.matchMedia("(hover: hover) and (min-width: 761px)");
+    const mobileInteraction = window.matchMedia("(max-width: 760px), (hover: none)");
+    const mobileArtLink = splitHero.querySelector(".split-hero__mobile-art-link");
+    const mobileAction = splitHero.querySelector(".split-hero__mobile-action");
+    let pointerStartX = 0;
+    let isDragging = false;
+    let hasDragged = false;
+
+    const setMobileSelection = (position: number) => {
+      const personalSelected = position < 0.5;
+      const destination = personalSelected ? "/personal" : "/journey";
+      const actionText = personalSelected ? "Explore the personal page" : "Explore the professional showcase";
+
+      splitHero.style.setProperty("--x", `${position * 100}%`);
+      splitHero.dataset.active = personalSelected ? "personal" : "professional";
+
+      if (mobileAction instanceof HTMLAnchorElement) {
+        mobileAction.href = destination;
+        mobileAction.textContent = actionText;
+      }
+
+      if (!isDragging && mobileArtLink instanceof HTMLAnchorElement) {
+        mobileArtLink.href = destination;
+        mobileArtLink.setAttribute("aria-label", `Explore the ${label}`);
+      }
+    };
+
+    const syncMobileArtLink = () => {
+      if (!(mobileArtLink instanceof HTMLAnchorElement) || !(mobileAction instanceof HTMLAnchorElement)) return;
+
+      mobileArtLink.href = mobileAction.href;
+      mobileArtLink.setAttribute("aria-label", mobileAction.textContent ?? "Explore selected showcase");
+    };
 
     splitHero.addEventListener("pointermove", (event) => {
+      if (mobileInteraction.matches && isDragging) {
+        const bounds = splitHero.getBoundingClientRect();
+        const position = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+
+        if (Math.abs(event.clientX - pointerStartX) > 8) {
+          hasDragged = true;
+        }
+
+        setMobileSelection(position);
+        return;
+      }
+
       if (!desktopHover.matches || event.pointerType !== "mouse") return;
 
       const bounds = splitHero.getBoundingClientRect();
@@ -62,7 +115,50 @@
       }
     });
 
+    splitHero.addEventListener("pointerdown", (event) => {
+      if (
+        !mobileInteraction.matches ||
+        event.button !== 0 ||
+        !(event.target instanceof Element) ||
+        !event.target.closest(".split-hero__portrait")
+      ) {
+        return;
+      }
+
+      isDragging = true;
+      hasDragged = false;
+      pointerStartX = event.clientX;
+      event.preventDefault();
+      splitHero.setPointerCapture(event.pointerId);
+    });
+
+    splitHero.addEventListener("pointerup", () => {
+      const wasDragging = isDragging;
+      isDragging = false;
+      syncMobileArtLink();
+
+      if (!wasDragging) return;
+
+      if (hasDragged) {
+        hasDragged = false;
+      } else if (mobileArtLink instanceof HTMLAnchorElement) {
+        mobileArtLink.click();
+      }
+    });
+
+    splitHero.addEventListener("pointercancel", () => {
+      isDragging = false;
+      hasDragged = false;
+      syncMobileArtLink();
+    });
+
+    splitHero.addEventListener("click", (event) => {
+      if (mobileInteraction.matches && isDragging) event.preventDefault();
+    });
+
     splitHero.addEventListener("pointerleave", () => {
+      if (mobileInteraction.matches) return;
+
       splitHero.style.removeProperty("--x");
       delete splitHero.dataset.active;
     });
