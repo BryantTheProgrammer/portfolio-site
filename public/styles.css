@@ -1162,6 +1162,7 @@ a.project-card:focus-visible {
     min-width: 0;
     flex: 1 1 auto;
     justify-content: flex-start;
+    gap: 2px;
     overflow: visible;
     overflow-y: hidden;
     padding: 2px 1px 5px;
@@ -1175,8 +1176,8 @@ a.project-card:focus-visible {
   .nav__link {
     flex: 0 0 auto;
     min-height: 32px;
-    padding: 7px 10px;
-    font-size: 0.75rem;
+    padding: 7px 4px;
+    font-size: 0.72rem;
     white-space: nowrap;
   }
 
@@ -3363,5 +3364,28 @@ a.project-card:focus-visible {
 
   .personal-media-thumbnail img {
     transition: none;
+  }
+}
+
+@media (max-width: 360px) {
+  body:not(.demo-page) main {
+    padding-top: 96px;
+  }
+
+  body:not(.demo-page) .nav {
+    min-height: 96px;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 8px 0;
+  }
+
+  body:not(.demo-page) .nav__links {
+    flex: 0 0 100%;
+    width: 100%;
+    justify-content: space-between;
+    gap: 0;
+    overflow: visible;
+    overflow-y: visible;
+    padding: 2px 0;
   }
 }
