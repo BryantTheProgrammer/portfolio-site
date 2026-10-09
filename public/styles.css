@@ -1139,6 +1139,17 @@ a.project-card:focus-visible {
   color: var(--muted);
 }
 
+.site-credit {
+  margin: var(--space-4) 0 0;
+  color: var(--muted);
+  font-size: var(--type-sm);
+  text-align: center;
+}
+
+.site-credit span {
+  color: var(--text);
+}
+
 @media (max-width: 760px) {
   body:not(.demo-page) main {
     padding-top: 64px;

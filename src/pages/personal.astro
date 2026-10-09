@@ -1,6 +1,7 @@
 ---
 import SiteNav from "../components/SiteNav.astro";
 import BackToTop from "../components/BackToTop.astro";
+import SiteCredit from "../components/SiteCredit.astro";
 import PersonalMedia from "../components/PersonalMedia.astro";
 import { cubeStory, labName, personalEntries } from "../data/personal";
 
@@ -202,6 +203,7 @@ const showLabName = labName.trim() !== "" && !labName.includes("[LAB NAME]");
         <p>© 2026 Bryant Hayden</p>
         <p>Robotics • Music • Teaching</p>
       </div>
+      <SiteCredit />
     </footer>
 
     <script>
