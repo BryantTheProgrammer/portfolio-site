@@ -89,6 +89,11 @@ img {
   border-bottom: 1px solid var(--line);
 }
 
+.page-top-anchor {
+  width: 1px;
+  height: 1px;
+}
+
 body:not(.demo-page) main {
   padding-top: 72px;
 }
