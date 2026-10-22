@@ -11,5 +11,8 @@
   "dependencies": {
     "astro": "latest",
     "three": "^0.186.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
   }
 }
