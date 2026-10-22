@@ -4,6 +4,7 @@ import BackToTop from "../components/BackToTop.astro";
 import SiteCredit from "../components/SiteCredit.astro";
 import CertificationGrid from "../components/CertificationGrid.astro";
 import SplitHero from "../components/SplitHero.astro";
+import SiteIcons from "../components/SiteIcons.astro";
 ---
 
 <!DOCTYPE html>
@@ -24,7 +25,7 @@ import SplitHero from "../components/SplitHero.astro";
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/og-preview.svg" />
     <link rel="stylesheet" href="/styles.css" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <SiteIcons />
   </head>
   <body>
     <SiteNav active="portfolio" />

@@ -3,6 +3,7 @@ import SiteNav from "../components/SiteNav.astro";
 import BackToTop from "../components/BackToTop.astro";
 import SiteCredit from "../components/SiteCredit.astro";
 import CertificationGrid from "../components/CertificationGrid.astro";
+import SiteIcons from "../components/SiteIcons.astro";
 ---
 
 <!DOCTYPE html>
@@ -20,7 +21,7 @@ import CertificationGrid from "../components/CertificationGrid.astro";
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/og-preview.svg" />
     <link rel="stylesheet" href="/styles.css" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <SiteIcons />
   </head>
   <body class="certifications-page">
     <SiteNav active="certifications" />

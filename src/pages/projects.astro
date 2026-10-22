@@ -3,6 +3,7 @@ import SiteNav from "../components/SiteNav.astro";
 import BackToTop from "../components/BackToTop.astro";
 import ProjectGrid from "../components/ProjectGrid.astro";
 import SiteCredit from "../components/SiteCredit.astro";
+import SiteIcons from "../components/SiteIcons.astro";
 ---
 
 <!DOCTYPE html>
@@ -20,7 +21,7 @@ import SiteCredit from "../components/SiteCredit.astro";
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/og-preview.svg" />
     <link rel="stylesheet" href="/styles.css" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <SiteIcons />
   </head>
   <body class="projects-page">
     <SiteNav active="projects" />

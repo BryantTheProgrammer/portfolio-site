@@ -4,6 +4,7 @@ import BackToTop from "../components/BackToTop.astro";
 import SiteCredit from "../components/SiteCredit.astro";
 import PersonalMedia from "../components/PersonalMedia.astro";
 import { cubeStory, labName, personalEntries } from "../data/personal";
+import SiteIcons from "../components/SiteIcons.astro";
 
 const categories = [
   { id: "robotics", label: "Robotics & Making", heading: "Robotics & Making" },
@@ -35,7 +36,7 @@ const showLabName = labName.trim() !== "" && !labName.includes("[LAB NAME]");
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/og-preview.svg" />
     <link rel="stylesheet" href="/styles.css" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <SiteIcons />
   </head>
   <body class="personal-page">
     <SiteNav active="personal" />
